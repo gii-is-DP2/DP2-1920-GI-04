@@ -183,6 +183,29 @@ I want to automatically set up a promotion of 10% at the final natural week of t
 * It's not applied to previously booked services
 *	Trigger for this action is still undecided, it will depend on the technology
 
+# Sprint Planning
+Sprint | User Story | Asignee
+------ | ---------- | -------------
+Sprint 2 | US01 | Youssef San José Khamer
+Sprint 2 | US02 | Youssef San José Khamer
+Sprint 2 | US03 | Youssef San José Khamer
+Sprint 2 | US04 | Youssef San José Khamer
+Sprint 2 | US05 | Youssef San José Khamer
+Sprint 2 | US06 | Youssef San José Khamer
+Sprint 2 | US07 | Youssef San José Khamer
+Sprint 2 | US08 | Youssef San José Khamer
+Sprint 2 | US09 | Youssef San José Khamer
+Sprint 2 | US10 | Youssef San José Khamer
+Sprint 2 | US11 | Youssef San José Khamer
+Sprint 2 | US18 | Youssef San José Khamer
+Sprint 2 | US19 | Youssef San José Khamer
+Sprint 2 | US20 | Youssef San José Khamer
+Sprint 3 | US12 | Youssef San José Khamer
+Sprint 3 | US14 | Youssef San José Khamer
+Sprint 3 | US15 | Youssef San José Khamer
+Sprint 4 | US13 | Youssef San José Khamer
+Sprint 4 | US16 | Youssef San José Khamer
+Sprint 4 | US17 | Youssef San José Khamer
 
 # License
 
