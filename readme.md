@@ -49,10 +49,10 @@ Details:
 
 Use cases:
 
-* Creating a beauty service with the title 'Grooming' and PetType 'Cat', and it is created successfully (:heavy_check_mark:)
-* Creating a beauty service with the title 'Grooming' and PetType 'Dog', and it is created successfully (:heavy_check_mark:)
-* Creating a beauty service with the title 'Grooming' and PetType 'Dog', and it is not created since a beauty service with that title and type was just created before (:x:)
-* Creating a beauty service with a blank title and any no PetType selected, and it is not created successfully (:x:)
+* Creating a beauty service with the title 'Grooming' and PetType 'Cat', and it is created successfully. - :heavy_check_mark:
+* Creating a beauty service with the title 'Grooming' and PetType 'Dog', and it is created successfully. - :heavy_check_mark:
+* Creating a beauty service with the title 'Grooming' and PetType 'Dog', and it is not created since a beauty service with that title and type was just created before. - :x:
+* Creating a beauty service with a blank title and any no PetType selected, and it is not created successfully. - :x:
 
 ### US02 - Listing Beauty Services
 As an user of the system or a guest  
@@ -61,8 +61,8 @@ I want to be able to list all beauty services provided by PetClinic
 
 Use cases:
 
-* Creating a beauty service with "enabled" set to true, and it appears on the listing (:heavy_check_mark:)
-* Creating a beauty service with "enabled" set to false, and it doesn't appear on the listing (:x:)
+* Creating a beauty service with "enabled" set to true, and it appears on the listing. - :heavy_check_mark:
+* Creating a beauty service with "enabled" set to false, and it doesn't appear on the listing. - :x:
 
 ### US03 - Filtering Beauty Services
 As an user of the system or a guest  
@@ -71,8 +71,8 @@ I want to be able to filter beauty services by PetType
 
 Use cases:
 
-* Creating a beauty service with "cat" PetType, and it appears on the filtering set on "cat" (:heavy_check_mark:)
-* Creating a beauty service with "dog" PetType, and it doesn't appear on the filtering set on "cat" (:x:)
+* Creating a beauty service with "cat" PetType, and it appears on the filtering set on "cat". - :heavy_check_mark:
+* Creating a beauty service with "dog" PetType, and it doesn't appear on the filtering set on "cat". - :x:
 
 ### US04 - Editing Beauty Services
 As an administrator  
@@ -87,9 +87,9 @@ Details:
 
 Use cases:
 
-* Edit a beauty service with a given name and enabled set to true, and change it to "Test A" and enabled set to false. It's successful. (:heavy_check_mark:)
-* Edit a beauty service with a given name, and change it to "Test A" and change the PetType. It's not successful. (:x:)
-* Edit a beauty service with a given name, and change it to "". It's not successful (:x:)
+* Edit a beauty service with a given name and enabled set to true, and change it to "Test A" and enabled set to false. It's successful. - :heavy_check_mark:
+* Edit a beauty service with a given name, and change it to "Test A" and change the PetType. It's not successful. - :x:
+* Edit a beauty service with a given name, and change it to "". It's not successful. - :x:
 
 ### US05 - Booking Beauty Service Visit
 As an owner  
@@ -98,16 +98,16 @@ I want to be able to book a visit for a beauty service I’m interested in
 
 Details:
 
-*	You can’t book more than one visit at the same time for the same pet
-*	You can only book visits for tomorrow at the earliest
-*	Visit hours are divided in X minutes intervals (a different amount of time depending on each service)
+*	You can’t book more than one visit at the same time for the same pet.
+*	You can only book visits for tomorrow at the earliest.
+*	Visit hours are divided in X minutes intervals (a different amount of time depending on each service).
 *	You can’t select a time slot for a visit if the vet that provides that service is already booked on it.
 
 Use Cases:
 
-* Book a beauty service visit for a free timeslot, for a pet you own, for a service of that PetType. It's successful. (:heavy_check_mark:)
-* Book a beauty service visit for a free timeslot, for a pet you own, for a service of other PetType. It's not successful. (:x:)
-* Book a beauty service visit for a free timeslot, for a pet you own, for a service of that PetType. It's successful. The, with another owner, do the same for that very same timeslot, and a another service of the same Vet. It's not successful. (:x:)
+* Book a beauty service visit for a free timeslot, for a pet you own, for a service of that PetType. It's successful. - :heavy_check_mark:
+* Book a beauty service visit for a free timeslot, for a pet you own, for a service of other PetType. It's not successful. - :x:
+* Book a beauty service visit for a free timeslot, for a pet you own, for a service of that PetType. It's successful. The, with another owner, do the same for that very same timeslot, and a another service of the same Vet. It's not successful. - :x:
 
 ### US06 - Removing Beauty Service Visit
 As an owner  
@@ -116,15 +116,15 @@ I want to be able to withdraw my booked beauty service visits
 
 Details:
 
-* You can only remove it if one day before the booked day at the latest
-* You can only remove it if it's yours (of your pet)
-* If it's removed and a voucher was used, the voucher remains redeemed and unable to be used again
+* You can only remove it if one day before the booked day at the latest.
+* You can only remove it if it's yours (of your pet).
+* If it's removed and a voucher was used, the voucher remains redeemed and unable to be used again.
 
 Use Cases:
 
-* Book a beauty service visit for a free timeslot for tomorrow, for a pet you own, for a service of that PetType. It's successful. Remove it inmediately after. It's successful. (:heavy_check_mark:)
-* Book a beauty service visit for a free timeslot of today, for a pet you own, for a service of that PetType. It's successful. Remove it inmediately after. It's not successful. (:x:)
-* Book a beauty service visit for a free timeslot for tomorrow, for a pet you own, for a service of that PetType. It's successful. Remove it inmediately after logged as another user. It's not successful. (:x:)
+* Book a beauty service visit for a free timeslot for tomorrow, for a pet you own, for a service of that PetType. It's successful. Remove it inmediately after. It's successful. - :heavy_check_mark:
+* Book a beauty service visit for a free timeslot of today, for a pet you own, for a service of that PetType. It's successful. Remove it inmediately after. It's not successful. - :x:
+* Book a beauty service visit for a free timeslot for tomorrow, for a pet you own, for a service of that PetType. It's successful. Remove it inmediately after logged as another user. It's not successful. - :x:
 
 ### US07 - Creating Discount Vouchers
 As an administrator  
@@ -133,45 +133,80 @@ I want to be able to create a custom discount voucher for an owner, with a disco
 
 Details:
 
-* Discount percentage can't be either higher than 100% nor lower than 0%
-* Description can't be empty
+* Discount percentage can't be either higher than 100% nor lower than 0%.
+* Description can't be empty.
 
 Use Cases:
 
-* Create a discount voucher for an existing owner, with 15% discount percentage and the description "Test.". It's successful. (:heavy_check_mark:)
-* Create a discount voucher for an existing owner, with -1% discount percentage and the description "Test.". It's not successful. (:x:)
-* Create a discount voucher for an existing owner, with 15% discount percentage and the description "". It's not successful. (:x:)
+* Create a discount voucher for an existing owner, with 15% discount percentage and the description "Test.". It's successful. - :heavy_check_mark:
+* Create a discount voucher for an existing owner, with -1% discount percentage and the description "Test.". It's not successful. - :x:
+* Create a discount voucher for an existing owner, with 15% discount percentage and the description "". It's not successful. - :x:
 
 ### US08 - Using Discount Vouchers
-As an owner
-So that I can pay less for a service I’m interested in
+As an owner  
+So that I can pay less for a service I’m interested in  
 I want to redeem one of my vouchers while booking a beauty service.
+
+Details:
 
 *	Only non-used vouchers can be redeemed on a new visit, being marked as used immediately after.
 *	No more than one voucher can be used on the same visit.
 *	No voucher can be used if there’s a promotion set up for that service on that date (booked date, not booking date).
-*	Voucher redemption is done during visit booking
+*	Voucher redemption is done during visit booking.
+
+Use Cases:
+
+* Book a beauty service visit and while doing it, assign a voucher to be redeemed, being it a non used voucher and being there no promotion set for that service and date. It's successful. - :heavy_check_mark:
+* Book a beauty service visit and while doing it, assign a voucher to be redeemed, being it an used voucher and being there no promotion set for that service and date. It's not successful. - :x:
+* Book a beauty service visit and while doing it, assign a voucher to be redeemed, being it a non used voucher and being there a promotion set for that service and date. It's not successful. - :x:
 
 ### US09 - Listing Your Vouchers
-As an owner
-So that I can keep track of my vouchers
+As an owner  
+So that I can keep track of my vouchers  
 I want to display a list of them, with their info and sorted by date
-*	Used vouchers don’t appear
+
+Details:
+
+*	Used vouchers don’t appear.
+
+Use Cases:
+
+* As an administrator, create a voucher for an owner. It's successful. As an owner, list your vouchers. It appears listed. - :heavy_check_mark:
+* As an administrator, create a voucher for an owner. It's successful. As an owner, use that voucher on a beauty service visit. Then, list your voucher. It doesn't appear listed. - :x:
 
 ### US10 - Listing an User's Vouchers
-As an administrator
-So that I can keep track of any user’s vouchers
+As an administrator  
+So that I can keep track of any user’s vouchers  
 I want to display a list of them, with their info and sorted by date
-*	Used vouchers do appear
+
+Details:
+
+*	Used vouchers do appear.
+
+Use Cases:
+
+* As an administrator, create a voucher for an owner. It's successful. List that owner's vouchers. It appears listed. - :heavy_check_mark:
+* As an administrator, create a voucher for an owner. It's successful. As an owner, use that voucher on a beauty service visit. Then, as an administrator, list that owner's vouchers. It appears listed. - :heavy_check_mark:
+* As an administrator, create a voucher for an owner. It's successful. As another owner, list the first owner's vouchers. It's forbidden. - :x:
 
 ### US11 - Setting up Promotions
-As an administrator
-So that I can make a service more appealing during a certain time
+As an administrator  
+So that I can make a service more appealing during a certain time  
 I want to be able to set up promotions for any service
+
+Details:
+
 *	The end date needs to be after the start date, and neither of them can be past dates
 *	The percentage of discount can’t be neither higher than 100 nor lower than 0
 *	Percentage of discount, end date, start date and beuty service are all mandatory values
 *	The promotion isn’t applied to already booked visits, even if the booked date is during the promotion
+
+Use Cases:
+
+* As an administrator, create a promotion with proper dates and 15% discount. It's successful. As an owner, book a service visit for the same service both during the promotion and not. The difference between prices should be of 15% - :heavy_check_mark:
+* As an owner, book a service visit for a certain date. It's successful. As an administrator, create a promotion with proper dates that fall into the previously booked date and 15% discount. It's successful. The price before creating the promotion and after creating the promotion can't be different. - :x:
+* As an administrator, create a promotion with past dates and 15% discount. It's not successful. - :x:
+* As an administrator, create a promotion with proper dates and 101% discount. It's not successful. - :x:
 
 ### US12 - Create Beauty Contests Automatically
 As an administrator
