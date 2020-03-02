@@ -209,77 +209,153 @@ Use Cases:
 * As an administrator, create a promotion with proper dates and 101% discount. It's not successful. - :x:
 
 ### US12 - Create Beauty Contests Automatically
-As an administrator
-So that I can create monthly contests without having to be constantly on the lookout
+As an administrator  
+So that I can create monthly contests without having to be constantly on the lookout  
 I want the system to automatically set them up a week before its month starts
+
+Details:
+
 *	Trigger for this action is still undecided, it will depend on the technology
 *	Beauty contests can’t be created for a past month
 *	Beauty contests can’t be created for a month that already has a beauty service created
-*	Even though the trigger for the automation will happen a month before, it’s not a problem if beauty services are created sooner than that for any reason (although the system wont support it on its UI as of now, it can evolve and change in the future)
+*	Even though the trigger for the automation will happen a week before, it’s not a problem if beauty services are created sooner than that for any reason (although the system wont support that kind of action on its UI as of now, it can evolve and change in the future)
+
+Use Cases:
+
+* Create a beauty contest for the next month, being it not created yet. It's successful. - :heavy_check_mark:
+* Create a beauty contest for the next month, being it already created. It's not successful. - :x:
+* Create a beauty contest for the past month, being it not created yet. It's not successful. - :x:
 
 ### US13 - Listing Beauty Contests
-As an user of the system or a guest
-So that I can browse and see information about pasts contests
+As an user of the system or a guest  
+So that I can browse and see information about past contests  
 I want to be able to list all beauty contests sorted by date
+
+Details:
+
 *	Future contests, if already created, are not listed if you’re not an administrator
 
+Use Cases:
+
+* Create a beauty contest for the current month, being it not created yet. It's successful. As an owner, list contests. It appears listed. - :heavy_check_mark:
+* Create a beauty contest for the next month, being it not created yet. It's successful. As an owner, list contests. It does not appear - :x:
+* Create a beauty contest for the next month, being it not created yet. It's successful. As an administrator, list contests. It appears listed - :heavy_check_mark:
+
 ### US14 - Displaying Beauty Contest Information
-As an user of the system or a guest
-So that I can see information about a contest, be it past or current
+As an user of the system or a guest  
+So that I can see information about a contest, be it past or current  
 I want to be able to display detailed information about the selected contest
-*	Moth, participants and winner (if elapsed and selected) are shown
+
+Details:
+
+*	Month, participants and winner (if elapsed and selected) are shown
 *	Future contests, if already created, are not allowed to be displayed if you’re not an administrator
 
+Use Cases:
+
+* Create a beauty contest for the current month, being it not created yet. It's successful. As an owner, try to display it. It's successful. - :heavy_check_mark:
+* Create a beauty contest for the next month, being it not created yet. It's successful. As an owner, try to display it. It's not successful - :x:
+* Create a beauty contest for the next month, being it not created yet. It's successful. As an administrator, try to display it. It's successful - :heavy_check_mark:
+
 ### US15 - Participating on a Beauty Contest
-As an owner
-So that me and my pet can have fun participating on a beauty contest
+As an owner  
+So that me and my pet can have fun participating on a beauty contest  
 I want to be able to register a participation by adding a photo after a beauty service visit
+
+Details:
+
 *	You can only add a photo after the visit date has elapsed
 *	You cannot add a photo if one has already been added before
 *	You cannot add a photo if the date of the contest has already ended (usually, the month of the visit)
 
+Use Cases:
+
+* Register participation with to the current month's contest, having a visit (already past) in this month with no participation registered. It's successful. :heavy_check_mark:
+* Register participation with to the current month's contest, having a visit (not yet past) in this month with no participation registered. It's not successful. :x:
+* Register participation with to the past month's contest, having a visit (already past) in this month with no participation registered. It's not successful. :x:
+* Register participation with to the current month's contest, having a visit (already past) in the past month with no participation registered. It's not successful. :x:
+* Register participation with to the current month's contest, having a visit (already past) in this month with a participation already registered. It's not successful. :x:
+
 ### US16 - Withdrawing from a Beauty Contest
-As an owner
-So that I can be able to change my mind about participating on a contest
+As an owner  
+So that I can be able to change my mind about participating on a contest  
 I want to be able to withdraw my participation
+
+Details:
+
 * You can only withdraw your participation if it's yours
 * You can only withdraw your participation if the contest has not elapsed
 
+Use Cases:
+
+* Withdraw a participation to the current month's contest of a visit done on that month. It's successful. :heavy_check_mark:
+* Withdraw a participation to the past month's contest of a visit done on that month. It's not successful. :x:
+
 ### US17 - Choosing a Beauty Contest Winner
-As an administrator
-So that contest winners can be chosen depending on the management’s criterion
+As an administrator  
+So that contest winners can be chosen depending on the management’s criterion  
 I want to be able to choose a winner for a past contest
+
+Details:
+
 *	A winner can’t be chosen if the contest hasn’t ended
 *	A winner can’t be chosen for a contest that already has a winner
 *	A winner can’t be chosen if it hasn’t signed up in that contest (the beauty service visit took place during that month and a visit photo was uploaded)
 *	Only an administrator can choose a winner for a contest
 
+Use Cases:
+
+* Choose a winner of the past month's contest, which has no winner selected yet. It's successful. :heavy_check_mark:
+* Choose a winner of the current month's contest, which has no winner selected yet. It's not successful. :x:
+* Choose a winner of the next month's contest, which has no winner selected yet. It's not successful. :x:
+* Choose a winner of the current month's contest, which already has a winner selected. It's not successful. :x:
+
 ### US18 - Give Away a Voucher for each Beauty Service Visit
-As an administrator
-So that customers get an incentive to visit our clinic again
+As an administrator  
+So that customers get an incentive to visit our clinic again  
 I want 5% discount vouchers to be given away automatically after every beauty service visit valued at 10€ or more
+
+Details:
+
 *	If the beauty service that was booked has a price lower than 10€, no discount voucher is given
 *	The voucher is given at the time of the visit
 *	Trigger for this action is still undecided, it will depend on the technology
 
+Use Cases:
+
+* As an owner, list your vouchers. Book a beauty service visit valued at 15€. Wait for that visit to take place. After that, list your vouchers again. There has to be only one new voucher valued at 5% discount. It's successful. :heavy_check_mark:
+* As an owner, list your vouchers. Book a beauty service visit valued at 9€. Wait for that visit to take place. After that, list your vouchers again. There has to be no new voucher. It's successful(ly not found). :x:
+
+
 ### US19 - Give Away a Voucher for the Winner of a Contest
-As an administrator
-So that customers get involved in contests and our services are booked more often
+As an administrator  
+So that customers get involved in contests and our services are booked more often  
 I want the winner of a contest to earn a 50% discount voucher when selected as such
+
+Details:
+
 *	The voucher is automatically given at the winner selection
 *	If the winner could not be selected (because of any of its listed reasons), the voucher is not given either
 
+Use Cases:
+
+* Have various participants on the current month's contest. Wait for the month to end. After that, choose a winner. List that owner's vouchers before and after selecting him as a winner. There must only be one more voucher valued at 50% discount. It's successful. :heavy_check_mark:
+* Have various participants on the current month's contest. Wait for the month to end. After that, choose a winner. List another owner's vouchers before and after selecting the first one as a winner. Check if there's any new voucher. There's no new voucher. :x:
+
 ### US20 - Set Up Contest Final Week Promotion Automatically
-As an administrator
-So that I can engage owners in the contest and have a final push of service purchase at the end of the month
+As an administrator  
+So that I can engage owners in the contest and have a final push of service purchase at the end of the month  
 I want to automatically set up a promotion of 10% at the final natural week of the month
+
+Details:
+
 * It's not applied to previously booked services
 *	Trigger for this action is still undecided, it will depend on the technology
 
 Use cases:
 
-* This is an use case (:heavy_check_mark:)
-* And this is another (:x:)
+* As an owner, book a new beauty service visit the day before the last week of the month. When the last week starts, book that same service again. The second time the price should be 10% less. The promotion is effective. :heavy_check_mark:
+* As an owner, book a new beauty service visit two days before the last week of the month. At the next day, book that same service again. The price should be exactly the same. The promotion is not effective. :x:
 
 # Sprint Planning
 Sprint | User Story | Asignee
