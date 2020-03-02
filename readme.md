@@ -35,54 +35,112 @@ Beauty contest that lasts a month (one is held every month), and where a winner 
 ## User Stories
 
 ### US01 - Creating Beauty Service
-As an administrator
-So that owners can have a catalogue of services to pay for
+As an administrator  
+So that owners can have a catalogue of services to pay for  
 I want to add new beauty services to the system.
+
+Details:
+
 *	No two BeautyServices can have the same title and be of the same PetType
 *	No BeautyService can have a negative price
 *	All BeautyServices need to be assigned to a PetType 
 *	No Beauty Service can have a blank title
+* Beauty services can be "enabled" or not, being shown in the page to owners and guests only if set as such
+
+Use cases:
+
+* Creating a beauty service with the title 'Grooming' and PetType 'Cat', and it is created successfully (:heavy_check_mark:)
+* Creating a beauty service with the title 'Grooming' and PetType 'Dog', and it is created successfully (:heavy_check_mark:)
+* Creating a beauty service with the title 'Grooming' and PetType 'Dog', and it is not created since a beauty service with that title and type was just created before (:x:)
+* Creating a beauty service with a blank title and any no PetType selected, and it is not created successfully (:x:)
 
 ### US02 - Listing Beauty Services
-As an user of the system or a guest
-So that I can look up for information about which beauty services can interest me
+As an user of the system or a guest  
+So that I can look up for information about which beauty services can interest me  
 I want to be able to list all beauty services provided by PetClinic
 
+Use cases:
+
+* Creating a beauty service with "enabled" set to true, and it appears on the listing (:heavy_check_mark:)
+* Creating a beauty service with "enabled" set to false, and it doesn't appear on the listing (:x:)
+
 ### US03 - Filtering Beauty Services
-As an user of the system or a guest
-So that I can search for the services that interest me more efficiently
+As an user of the system or a guest  
+So that I can search for the services that interest me more efficiently  
 I want to be able to filter beauty services by PetType
 
+Use cases:
+
+* Creating a beauty service with "cat" PetType, and it appears on the filtering set on "cat" (:heavy_check_mark:)
+* Creating a beauty service with "dog" PetType, and it doesn't appear on the filtering set on "cat" (:x:)
+
 ### US04 - Editing Beauty Services
-As an administrator
-So that I can keep up to date the information displayed on the web about a service of our clinic
+As an administrator  
+So that I can keep up to date the information displayed on the web about a service of our clinic  
 I want to be able to update information of the services on the system
+
+Details:
+
 *	PetType cannot be changed
 *	All the creating restrictions are also applied on updating
+* If you change the "enabled" property to false, previously booked services remain unaffected even if the date is on the future.
+
+Use cases:
+
+* Edit a beauty service with a given name and enabled set to true, and change it to "Test A" and enabled set to false. It's successful. (:heavy_check_mark:)
+* Edit a beauty service with a given name, and change it to "Test A" and change the PetType. It's not successful. (:x:)
+* Edit a beauty service with a given name, and change it to "". It's not successful (:x:)
 
 ### US05 - Booking Beauty Service Visit
-As an owner
-So that my pet remains beautiful, healthy and happy
+As an owner  
+So that my pet remains beautiful, healthy and happy  
 I want to be able to book a visit for a beauty service I’m interested in
+
+Details:
+
 *	You can’t book more than one visit at the same time for the same pet
 *	You can only book visits for tomorrow at the earliest
 *	Visit hours are divided in X minutes intervals (a different amount of time depending on each service)
 *	You can’t select a time slot for a visit if the vet that provides that service is already booked on it.
 
+Use Cases:
+
+* Book a beauty service visit for a free timeslot, for a pet you own, for a service of that PetType. It's successful. (:heavy_check_mark:)
+* Book a beauty service visit for a free timeslot, for a pet you own, for a service of other PetType. It's not successful. (:x:)
+* Book a beauty service visit for a free timeslot, for a pet you own, for a service of that PetType. It's successful. The, with another owner, do the same for that very same timeslot, and a another service of the same Vet. It's not successful. (:x:)
+
 ### US06 - Removing Beauty Service Visit
-As an owner
-So that I can change my plans after booking a visit
+As an owner  
+So that I can change my plans after booking a visit  
 I want to be able to withdraw my booked beauty service visits
+
+Details:
+
 * You can only remove it if one day before the booked day at the latest
 * You can only remove it if it's yours (of your pet)
 * If it's removed and a voucher was used, the voucher remains redeemed and unable to be used again
 
+Use Cases:
+
+* Book a beauty service visit for a free timeslot for tomorrow, for a pet you own, for a service of that PetType. It's successful. Remove it inmediately after. It's successful. (:heavy_check_mark:)
+* Book a beauty service visit for a free timeslot of today, for a pet you own, for a service of that PetType. It's successful. Remove it inmediately after. It's not successful. (:x:)
+* Book a beauty service visit for a free timeslot for tomorrow, for a pet you own, for a service of that PetType. It's successful. Remove it inmediately after logged as another user. It's not successful. (:x:)
+
 ### US07 - Creating Discount Vouchers
-As an administrator
-So that I can make individual offers or solve voucher incidents
+As an administrator  
+So that I can make individual offers or solve voucher incidents  
 I want to be able to create a custom discount voucher for an owner, with a discount percentage and a description
+
+Details:
+
 * Discount percentage can't be either higher than 100% nor lower than 0%
 * Description can't be empty
+
+Use Cases:
+
+* Create a discount voucher for an existing owner, with 15% discount percentage and the description "Test.". It's successful. (:heavy_check_mark:)
+* Create a discount voucher for an existing owner, with -1% discount percentage and the description "Test.". It's not successful. (:x:)
+* Create a discount voucher for an existing owner, with 15% discount percentage and the description "". It's not successful. (:x:)
 
 ### US08 - Using Discount Vouchers
 As an owner
@@ -182,6 +240,11 @@ So that I can engage owners in the contest and have a final push of service purc
 I want to automatically set up a promotion of 10% at the final natural week of the month
 * It's not applied to previously booked services
 *	Trigger for this action is still undecided, it will depend on the technology
+
+Use cases:
+
+* This is an use case (:heavy_check_mark:)
+* And this is another (:x:)
 
 # Sprint Planning
 Sprint | User Story | Asignee
