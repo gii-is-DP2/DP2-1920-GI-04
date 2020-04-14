@@ -16,10 +16,16 @@
 package org.springframework.samples.petclinic.service;
 
 
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Iterator;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.samples.petclinic.model.Authorities;
 import org.springframework.samples.petclinic.repository.AuthoritiesRepository;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -50,6 +56,29 @@ public class AuthoritiesService {
 		authority.setUsername(username);
 		authority.setAuthority(role);
 		authoritiesRepository.save(authority);
+	}
+	
+	
+	// Utility services
+	
+	public Collection<Authorities> getPrincipalAuthorities() {
+		Collection<Authorities> authorities = new HashSet<Authorities>();
+		Authentication logged = SecurityContextHolder.getContext().getAuthentication();
+		if(logged != null) {
+			authorities = this.authoritiesRepository.findAuthoritiesByUser(logged.getName());
+		}
+		return authorities;
+	}
+	
+	public Boolean checkAdminAuth() {
+		Collection<Authorities> authorities = this.getPrincipalAuthorities();
+		Iterator<Authorities> iterator = authorities.iterator();
+		Boolean res = false;
+		while(iterator.hasNext() && !res) {
+			Authorities ite = iterator.next();
+			res = ite.getAuthority().equals("admin");
+		}
+		return res;
 	}
 
 

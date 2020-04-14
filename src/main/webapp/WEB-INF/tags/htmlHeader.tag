@@ -19,6 +19,8 @@ PetClinic :: a Spring Framework demonstration
     <%-- CSS generated from LESS --%>
     <spring:url value="/resources/css/petclinic.css" var="petclinicCss"/>
     <link href="${petclinicCss}" rel="stylesheet"/>
+    <spring:url value="/resources/css/global.css" var="globalCss"/>
+    <link href="${globalCss}" rel="stylesheet"/>
 
 
     <%-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries --%>

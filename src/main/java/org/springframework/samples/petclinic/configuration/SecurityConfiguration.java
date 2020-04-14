@@ -10,7 +10,6 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
@@ -39,6 +38,13 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 				.antMatchers("/admin/**").hasAnyAuthority("admin")
 				.antMatchers("/owners/**").hasAnyAuthority("owner","admin")				
 				.antMatchers("/vets/**").authenticated()
+				.antMatchers("/beauty-service/list").permitAll()
+				.antMatchers("/beauty-service/{beautyServiceId}").permitAll()
+				.antMatchers("/beauty-service/admin/**").hasAnyAuthority("admin")
+				.antMatchers("/beauty-service/visit/owner/**").hasAnyAuthority("owner")
+				.antMatchers("/discount-voucher/owner/**").hasAnyAuthority("owner")
+				.antMatchers("/discount-voucher/admin/**").hasAnyAuthority("admin")
+				.antMatchers("/promotion/admin/**").hasAnyAuthority("admin")
 				.anyRequest().denyAll()
 				.and()
 				 	.formLogin()

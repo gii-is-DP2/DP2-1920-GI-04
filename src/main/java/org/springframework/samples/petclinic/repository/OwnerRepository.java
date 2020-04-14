@@ -50,6 +50,8 @@ public interface OwnerRepository {
 	 * @throws org.springframework.dao.DataRetrievalFailureException if not found
 	 */
 	Owner findById(int id) throws DataAccessException;
+	
+	Owner findOwnerByUsername(String name) throws DataAccessException;
 
 	/**
 	 * Save an <code>Owner</code> to the data store, either inserting or updating it.

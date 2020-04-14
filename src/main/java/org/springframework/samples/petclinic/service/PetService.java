@@ -54,6 +54,11 @@ public class PetService {
 	public Collection<PetType> findPetTypes() throws DataAccessException {
 		return petRepository.findPetTypes();
 	}
+
+	@Transactional(readOnly = true)
+	public PetType findPetType(Integer id) throws DataAccessException {
+		return petRepository.findPetType(id);
+	}
 	
 	@Transactional
 	public void saveVisit(Visit visit) throws DataAccessException {
@@ -62,7 +67,7 @@ public class PetService {
 
 	@Transactional(readOnly = true)
 	public Pet findPetById(int id) throws DataAccessException {
-		return petRepository.findById(id);
+		return petRepository.findById(id).orElse(null);
 	}
 
 	@Transactional(rollbackFor = DuplicatedPetNameException.class)
@@ -77,6 +82,10 @@ public class PetService {
 
 	public Collection<Visit> findVisitsByPetId(int petId) {
 		return visitRepository.findByPetId(petId);
+	}
+	
+	public Collection<Pet> findPetsByOwner(Integer ownerId){
+		return petRepository.findPetsByOwner(ownerId);
 	}
 
 }

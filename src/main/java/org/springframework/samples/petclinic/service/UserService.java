@@ -44,4 +44,8 @@ public class UserService {
 		user.setEnabled(true);
 		userRepository.save(user);
 	}
+
+	public User find(String username) throws DataAccessException {
+		return userRepository.findById(username).orElse(null);
+	}
 }
