@@ -16,7 +16,7 @@ public class StringToBeautyServiceVisitConverter implements Converter<String, Be
         try {
         	Integer id = Integer.valueOf(source);
             return beautyServiceVisitService.find(id);
-        } catch (SecurityException ex) {
+        } catch (Throwable ex) {
             return null;
         }
     }

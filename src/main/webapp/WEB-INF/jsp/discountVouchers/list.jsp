@@ -14,6 +14,7 @@
             <th>Description</th>
             <th>Discount</th>
             <th>Date</th>
+            <th>Used</th>
         </tr>
         </thead>
         <tbody>
@@ -26,7 +27,15 @@
                     <c:out value="${voucher.discount} "/>
                 </td>
                 <td>
-                    <c:out value="${voucher.date}"/>
+                    <c:out value="${voucher.created}"/>
+                </td>
+                <td>
+	                <c:if test="${voucher.redeemedBeautyServiceVisit != null}">
+                    	<c:out value="${voucher.redeemedBeautyServiceVisit.title}"/>
+	                </c:if>
+	                <c:if test="${voucher.redeemedBeautyServiceVisit == null || voucher.redeemedBeautyServiceVisit.date < now}">
+		                No
+	                </c:if>
                 </td>
             </tr>
         </c:forEach>

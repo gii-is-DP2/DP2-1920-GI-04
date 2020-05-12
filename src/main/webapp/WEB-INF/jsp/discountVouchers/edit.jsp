@@ -10,11 +10,11 @@
             New Discount Voucher
         </h2>
         <form:form modelAttribute="discountVoucher" action="/discount-voucher/admin/save" class="form-horizontal">
-            <input type="hidden" name="id" value="${discountVoucher.id}"/>
-            <input type="hidden" name="owner" value="${discountVoucher.owner.id}"/>
-            <input type="hidden" name="created" value="${discountVoucher.created}"/>
-            <input type="hidden" name="redeemedBeautyServiceVisit" value="${discountVoucher.redeemedBeautyServiceVisit.id}"/>
             <div class="form-group has-feedback">
+	            <input type="hidden" name="id" value="${discountVoucher.id}"/>
+	            <input type="hidden" name="owner" value="${discountVoucher.owner.id}"/>
+	            <input type="hidden" name="created" value='${createdDate}'/>
+	            <input type="hidden" name="redeemedBeautyServiceVisit" value="${null}"/>
                 <petclinic:inputField label="Discount" name="discount"/>
                 <petclinic:inputField label="Description" name="description"/>
             </div>

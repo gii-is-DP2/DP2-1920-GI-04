@@ -1,10 +1,13 @@
 package org.springframework.samples.petclinic.web;
 
 
+import java.util.Collection;
+
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.samples.petclinic.model.BeautyService;
+import org.springframework.samples.petclinic.model.PetType;
 import org.springframework.samples.petclinic.service.BeautyServiceService;
 import org.springframework.samples.petclinic.service.PetService;
 import org.springframework.samples.petclinic.service.VetService;
@@ -35,7 +38,10 @@ public class BeautyServiceController {
 	@GetMapping("/list")
 	public String showBeautyServiceList(ModelMap model, @RequestParam(value = "petType", required = false) Integer petType) {
 		Iterable<BeautyService> beautyServices = this.beautyServiceService.showBeautyServiceList(petType);
+		Collection<PetType> petTypes = this.petService.findPetTypes();
 		model.addAttribute("beautyServices", beautyServices);
+		model.addAttribute("petTypes", petTypes);
+		model.addAttribute("selectedType", petType);
 		return "beautyServices/list";
 	}
 
@@ -44,7 +50,6 @@ public class BeautyServiceController {
 		try {
 			BeautyService beautyService = this.beautyServiceService.viewBeautyService(beautyServiceId);
 			model.addAttribute("beautyService", beautyService);
-			model = this.prepareEditModel(model);
 			return "beautyServices/view";
 		} catch(Throwable e){
 			redirectAttributes.addFlashAttribute("errorMessage", "master.error");

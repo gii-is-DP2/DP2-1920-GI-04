@@ -58,10 +58,11 @@ public class BeautyServiceService {
 	
 	@Transactional
 	public BeautyService edit(BeautyService beautyService) {
-		Assert.isTrue(beautyService.getId() != null && beautyService.getId() != 0, "beautyservice.error.notfound");
-		BeautyService original = this.find(beautyService.getId());
-		Assert.notNull(original, "beautyservice.error.notfound");
-		Assert.isTrue(original.getType().equals(beautyService.getType()), "beautyservice.error.edittype");
+		if(beautyService.getId() != null) {
+			BeautyService original = this.find(beautyService.getId());
+			Assert.notNull(original, "beautyservice.error.notfound");
+			Assert.isTrue(original.getType().equals(beautyService.getType()), "beautyservice.error.edittype");			
+		}
 		return this.save(beautyService);
 	}
 

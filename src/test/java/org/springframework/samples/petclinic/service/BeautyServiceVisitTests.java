@@ -43,7 +43,7 @@ class BeautyServiceVisitTests {
 		visit = this.beautyServiceVisitService.bookBeautyServiceVisit(visit, null);
 		assertThat(
 			visit.getFinalPrice() == service.getPrice()
-			&& !visit.getCancelled()
+			&& !visit.isCancelled()
 		).isTrue();
 		
 	}
@@ -105,13 +105,13 @@ class BeautyServiceVisitTests {
 		Collection<Pet> pets = this.petService.findPetsByOwner(1);
 		visit.setPet(pets.iterator().next());
 		visit = this.beautyServiceVisitService.bookBeautyServiceVisit(visit, null);
-		assertThat(!visit.getCancelled()).isTrue();
+		assertThat(!visit.isCancelled()).isTrue();
 		
 		// Cancel it
 		
 		this.beautyServiceVisitService.cancelVisit(visit.getId());
 		visit = this.beautyServiceVisitService.find(visit.getId());
-		assertThat(visit.getCancelled()).isTrue();
+		assertThat(visit.isCancelled()).isTrue();
 		
 	}
 	
@@ -129,7 +129,7 @@ class BeautyServiceVisitTests {
 		visit.setDate(LocalDateTime.now().plus(1, ChronoUnit.DAYS).minus(1, ChronoUnit.SECONDS));
 		
 		visit = this.beautyServiceVisitService.bookBeautyServiceVisit(visit, null);
-		assertThat(!visit.getCancelled()).isTrue();
+		assertThat(!visit.isCancelled()).isTrue();
 		
 		// Cancel it
 
@@ -150,7 +150,7 @@ class BeautyServiceVisitTests {
 		visit.setPet(pets.iterator().next());
 		
 		visit = this.beautyServiceVisitService.bookBeautyServiceVisit(visit, null);
-		assertThat(!visit.getCancelled()).isTrue();
+		assertThat(!visit.isCancelled()).isTrue();
 		
 		// TODO auth as owner2
 		

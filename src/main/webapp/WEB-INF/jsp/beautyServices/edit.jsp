@@ -24,7 +24,8 @@
                 <div class="control-group">
                     <petclinic:selectField name="vet" label="Vet" itemLabel="firstName" names="${vets}" size="${vets.size()}"/>
                 </div>
-                <petclinic:inputField label="Base price" name="price"/>
+                <petclinic:inputField label="Price" name="price"/>
+                <petclinic:checkboxField label="Enabled" name="enabled"/>
             </div>
             <div class="form-group">
                 <div class="col-sm-offset-2 col-sm-10">

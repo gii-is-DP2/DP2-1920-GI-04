@@ -19,14 +19,13 @@ import lombok.Data;
 @Entity
 @Table(name = "beautyServiceVisits")
 public class BeautyServiceVisit extends NamedEntity {
-	@NotNull
+
 	@Valid
-	@ManyToOne
+	@ManyToOne(optional = false)
 	private BeautyService beautyService;
 
-	@NotNull
 	@Valid
-	@ManyToOne
+	@ManyToOne(optional = false)
 	private Pet pet;
 
 	@Valid
@@ -38,11 +37,9 @@ public class BeautyServiceVisit extends NamedEntity {
 	@DateTimeFormat(pattern = "yyyy/MM/dd HH:mm:ss")
 	private LocalDateTime date;
 
-	@NotNull
 	@Min(0)
-	private Double finalPrice;
+	private double finalPrice;
 
-	@NotNull
-	private Boolean cancelled;
+	private boolean cancelled;
 
 }

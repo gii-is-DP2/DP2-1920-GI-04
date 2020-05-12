@@ -1,6 +1,8 @@
 package org.springframework.samples.petclinic.web;
 
 
+import java.time.LocalDateTime;
+
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,6 +47,7 @@ public class BeautyServiceVisitController {
 	public String findVisitsByPrincipal(ModelMap model) {
 		Iterable<BeautyServiceVisit> principalVisits = this.beautyServiceVisitService.findActiveVisitsByPrincipal();
 		model.addAttribute("beautyServiceVisits", principalVisits);
+		model.addAttribute("now", LocalDateTime.now());
 		return "beautyServiceVisits/list";
 	}
 
@@ -81,7 +84,7 @@ public class BeautyServiceVisitController {
 		} else {
 			try {
 				this.beautyServiceVisitService.bookBeautyServiceVisit(beautyServiceVisitForm.getBeautyServiceVisit(), beautyServiceVisitForm.getDiscountVoucher());
-				return "redirect:/beauty-service/visit/list";
+				return "redirect:/beauty-service/visit/owner/list";
 			} catch (Throwable e) {
 				model.addAttribute("beautyServiceVisitForm", beautyServiceVisitForm);
 				model = this.prepareEditModel(model, beautyServiceVisitForm.getBeautyServiceVisit().getBeautyService().getId());

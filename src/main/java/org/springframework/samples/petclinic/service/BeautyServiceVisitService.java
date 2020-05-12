@@ -92,6 +92,7 @@ public class BeautyServiceVisitService {
 		if(voucher != null) {
 			voucher = this.discountVoucherService.find(voucher.getId());
 			Assert.isTrue(voucher != null && voucher.getOwner().getId() == principal.getId(), "discountvoucher.error.notfound");
+			Assert.isNull(voucher.getRedeemedBeautyServiceVisit(), "discountvoucher.error.alreadyused");
 			visit.setFinalPrice(visit.getBeautyService().getPrice() * effectivePercentage(voucher.getDiscount()));
 		}
 		

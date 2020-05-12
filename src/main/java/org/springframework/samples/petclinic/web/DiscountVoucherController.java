@@ -1,6 +1,8 @@
 package org.springframework.samples.petclinic.web;
 
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Collection;
 
 import javax.validation.Valid;
@@ -35,6 +37,7 @@ public class DiscountVoucherController {
 		Collection<DiscountVoucher> discountVouchers = this.discountVoucherService.listPrincipalAvailableVouchers();
 		model.addAttribute("discountVouchers", discountVouchers);
 		model.addAttribute("ownerUserName", principal.getUser().getUsername());
+		model.addAttribute("now", LocalDateTime.now());
 		return "discountVouchers/list";
 	}
 
@@ -44,13 +47,15 @@ public class DiscountVoucherController {
 		Collection<DiscountVoucher> discountVouchers = this.discountVoucherService.listOwnerDiscountVouchers(ownerId);
 		model.addAttribute("discountVouchers", discountVouchers);
 		model.addAttribute("ownerUserName", owner.getUser().getUsername());
+		model.addAttribute("now", LocalDateTime.now());
 		return "discountVouchers/list";
 	}
 
 	@GetMapping("/admin/create")
 	public String createDiscountVoucher(@RequestParam(value = "ownerId", required = false) Integer ownerId, ModelMap model) {
-		model.addAttribute("discountVoucher", this.discountVoucherService.create(ownerId));
-		model = this.prepareEditModel(model);
+		DiscountVoucher discountVoucher = this.discountVoucherService.create(ownerId);		
+		model.addAttribute("discountVoucher", discountVoucher);
+		model = this.prepareEditModel(model, discountVoucher);
 		return "discountVouchers/edit";
 	}
 	
@@ -58,7 +63,7 @@ public class DiscountVoucherController {
 	public String saveBeautyService(@Valid DiscountVoucher discountVoucher, BindingResult bindingResult, ModelMap model) {
 		if(bindingResult.hasErrors()) {
 			model.addAttribute("discountVoucher", discountVoucher);
-			model = this.prepareEditModel(model);
+			model = this.prepareEditModel(model, discountVoucher);
 			return "discountVouchers/edit";
 		} else {
 			try {
@@ -66,7 +71,7 @@ public class DiscountVoucherController {
 				return "redirect:/discount-voucher/admin/list?ownerId=" + discountVoucher.getOwner().getId();
 			} catch (Throwable e) {
 				model.addAttribute("discountVoucher", discountVoucher);
-				model = this.prepareEditModel(model);
+				model = this.prepareEditModel(model, discountVoucher);
 				if(e.getMessage() != null && e.getMessage().contains(".error.")) {
 					model.addAttribute("errorMessage", e.getMessage());
 				}
@@ -78,7 +83,8 @@ public class DiscountVoucherController {
 	
 	// Auxiliary Methods
 	
-	private ModelMap prepareEditModel(ModelMap model) {
+	private ModelMap prepareEditModel(ModelMap model, DiscountVoucher voucher) {
+		model.addAttribute("createdDate", voucher.getCreated().format(DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss")));
 		return model;
 	}
 

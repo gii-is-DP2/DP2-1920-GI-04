@@ -5,7 +5,7 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="petclinic" tagdir="/WEB-INF/tags" %>
 
-<petclinic:layout pageName="beautyServices">
+<petclinic:layout pageName="beautyServiceVisits">
     <h2>Beauty Services</h2>
 
     <table id="beautyServiceVisitsTable" class="table table-striped">
@@ -15,6 +15,7 @@
             <th>Pet</th>
             <th>Date</th>
             <th>Price</th>
+            <th></th>
         </tr>
         </thead>
         <tbody>
@@ -34,6 +35,14 @@
                 </td>
                 <td>
                     <c:out value="${visit.finalPrice}"/>
+                </td>
+                <td>
+	                <c:if test="${visit.date > now}">
+	                    <spring:url value="/beauty-service/visit/owner/{beautyServiceId}/cancel" var="cancelUrl">
+	                        <spring:param name="beautyServiceId" value="${visit.id}"/>
+	                    </spring:url>
+	                    <a href="${fn:escapeXml(cancelUrl)}">Cancel</a>
+	                </c:if>
                 </td>
             </tr>
         </c:forEach>

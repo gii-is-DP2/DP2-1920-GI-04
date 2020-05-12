@@ -22,11 +22,12 @@ public class BeautyService extends NamedEntity {
 	@NotBlank
 	private String title;
 
-	@ManyToOne
+	@Valid
+	@ManyToOne(optional = false)
 	private PetType type;
 
 	@Valid
-	@ManyToOne
+	@ManyToOne(optional = false)
 	@JoinColumn(name = "vet_id")
 	private Vet vet;
 

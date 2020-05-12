@@ -3,6 +3,8 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="petclinic" tagdir="/WEB-INF/tags" %>
+<%@ taglib prefix="sec"
+	uri="http://www.springframework.org/security/tags"%>
 
 <petclinic:layout pageName="owners">
 
@@ -37,6 +39,17 @@
         <spring:param name="ownerId" value="${owner.id}"/>
     </spring:url>
     <a href="${fn:escapeXml(addUrl)}" class="btn btn-default">Add New Pet</a>
+    
+	<sec:authorize access="hasAnyAuthority('admin')">
+	    <spring:url value="/discount-voucher/admin/list" var="vouchersUrl">
+	        <spring:param name="ownerId" value="${owner.id}"/>
+	    </spring:url>
+	    <a href="${fn:escapeXml(vouchersUrl)}" class="btn btn-default">List discount voucher</a>
+	    <spring:url value="/discount-voucher/admin/create" var="voucherUrl">
+	        <spring:param name="ownerId" value="${owner.id}"/>
+	    </spring:url>
+	    <a href="${fn:escapeXml(voucherUrl)}" class="btn btn-default">Create discount voucher</a>
+	</sec:authorize>
 
     <br/>
     <br/>
