@@ -41,6 +41,12 @@
 						<span>Visits</span>
 					</petclinic:menuItem>
 				</sec:authorize>
+
+				<petclinic:menuItem active="${name eq 'beautyContests'}" url="/beauty-contest/list"
+					title="find services">
+					<span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+					<span>Contests</span>
+				</petclinic:menuItem>
 				
 				<sec:authorize access="hasAnyAuthority('admin')">
 					<li class="dropdown"><a href="#" class="dropdown-toggle"
@@ -57,18 +63,6 @@
 						</ul>
 					</li>
 				</sec:authorize>
-
-				<petclinic:menuItem active="${name eq 'vets'}" url="/vets"
-					title="veterinarians">
-					<span class="glyphicon glyphicon-th-list" aria-hidden="true"></span>
-					<span>Veterinarians</span>
-				</petclinic:menuItem>
-
-				<petclinic:menuItem active="${name eq 'error'}" url="/oups"
-					title="trigger a RuntimeException to see how it is handled">
-					<span class="glyphicon glyphicon-warning-sign" aria-hidden="true"></span>
-					<span>Error</span>
-				</petclinic:menuItem>
 
 			</ul>
 

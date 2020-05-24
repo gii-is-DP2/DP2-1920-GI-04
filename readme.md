@@ -198,8 +198,9 @@ Details:
 
 *	The end date needs to be after the start date, and neither of them can be past dates
 *	The percentage of discount can’t be neither higher than 100 nor lower than 0
-*	Percentage of discount, end date, start date and beuty service are all mandatory values
+*	Percentage of discount, end date and start date are all mandatory values
 *	The promotion isn’t applied to already booked visits, even if the booked date is during the promotion
+*	No promotions can be set on the same period and service
 
 Use Cases:
 
@@ -207,6 +208,7 @@ Use Cases:
 * As an owner, book a service visit for a certain date. It's successful. As an administrator, create a promotion with proper dates that fall into the previously booked date and 15% discount. It's successful. The price before creating the promotion and after creating the promotion can't be different. - :x:
 * As an administrator, create a promotion with past dates and 15% discount. It's not successful. - :x:
 * As an administrator, create a promotion with proper dates and 101% discount. It's not successful. - :x:
+* As an administrator, create a promotion with proper dates and 15% discount. It's successful. Create another promotion that coincides in period but doesn't have the exact same one, and with the same service. It's not successful. - :x:
 
 ### US12 - Create Beauty Contests Automatically
 As an administrator  

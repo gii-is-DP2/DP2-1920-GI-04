@@ -20,25 +20,25 @@ import org.springframework.util.Assert;
 public class BeautyServiceVisitService {
 
 	private BeautyServiceVisitRepository beautyServiceVisitRepository;
-
-	@Autowired
-	public BeautyServiceVisitService(BeautyServiceVisitRepository beautyServiceVisitRepository) {
-		this.beautyServiceVisitRepository = beautyServiceVisitRepository;
-	}
 	
 	// AUXILIAR SERVICES 
 	
-	@Autowired
 	private BeautyServiceService beautyServiceService;
 	
-	@Autowired
 	private OwnerService ownerService;
 	
-	@Autowired
 	private PromotionService promotionService;
 	
-	@Autowired
 	private DiscountVoucherService discountVoucherService;
+
+	@Autowired
+	public BeautyServiceVisitService(BeautyServiceVisitRepository beautyServiceVisitRepository, BeautyServiceService beautyServiceService, OwnerService ownerService, PromotionService promotionService, DiscountVoucherService discountVoucherService) {
+		this.beautyServiceVisitRepository = beautyServiceVisitRepository;
+		this.beautyServiceService = beautyServiceService;
+		this.ownerService = ownerService;
+		this.promotionService = promotionService;
+		this.discountVoucherService = discountVoucherService;
+	}
 	
 	// MAIN METHODS
 	
@@ -76,8 +76,11 @@ public class BeautyServiceVisitService {
 		return this.beautyServiceVisitRepository.findActiveByOwner(owner.getId());
 	}
 	
+	@Transactional
 	public BeautyServiceVisit bookBeautyServiceVisit(BeautyServiceVisit visit, DiscountVoucher voucher) {
 		//TODO check vet availability
+		Assert.isTrue(!visit.getDate().isBefore(LocalDateTime.now().plusDays(1).truncatedTo(ChronoUnit.DAYS)), "beautyservicevisit.error.earlybookdate");
+		
 		Owner principal = this.ownerService.findPrincipal();
 		Assert.isTrue(principal.getId() == visit.getPet().getOwner().getId(), "beautyservicevisit.error.notauthorized");
 		Assert.isTrue(visit.getBeautyService().getType().equals(visit.getPet().getType()), "beautyservicevisit.error.wrongpettype");
@@ -94,11 +97,14 @@ public class BeautyServiceVisitService {
 			Assert.isTrue(voucher != null && voucher.getOwner().getId() == principal.getId(), "discountvoucher.error.notfound");
 			Assert.isNull(voucher.getRedeemedBeautyServiceVisit(), "discountvoucher.error.alreadyused");
 			visit.setFinalPrice(visit.getBeautyService().getPrice() * effectivePercentage(voucher.getDiscount()));
+			visit = save(visit);
+			voucher.setRedeemedBeautyServiceVisit(visit);
+			this.discountVoucherService.save(voucher, false);
+			return visit;
+		} else {
+			return save(visit);
 		}
 		
-		Assert.isTrue(!visit.getDate().isBefore(LocalDateTime.now().plusDays(1).truncatedTo(ChronoUnit.DAYS)), "beautyservicevisit.error.earlybookdate");
-		
-		return save(visit);
 	}
 	
 	public void cancelVisit(Integer beautyServiceVisitId) {

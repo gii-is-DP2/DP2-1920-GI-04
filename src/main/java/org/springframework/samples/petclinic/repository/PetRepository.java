@@ -38,6 +38,7 @@ public interface PetRepository extends CrudRepository<Pet, Integer> {
 
 	@Query("SELECT ptype FROM PetType ptype ORDER BY ptype.name")
 	List<PetType> findPetTypes();
+	
 	@Query("SELECT ptype FROM PetType ptype WHERE ptype.id = ?1")
 	PetType findPetType(Integer id);
 

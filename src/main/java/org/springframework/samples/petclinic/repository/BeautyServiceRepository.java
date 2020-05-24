@@ -9,7 +9,7 @@ import org.springframework.samples.petclinic.model.BeautyService;
 
 
 public interface BeautyServiceRepository extends CrudRepository<BeautyService, Integer>{
-
+	
 	@Query("select a from BeautyService a where (enabled = true) or (enabled = ?1)")
 	Collection<BeautyService> findAllServices(Boolean enabled);
 	

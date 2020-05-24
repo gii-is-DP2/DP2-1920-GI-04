@@ -6,6 +6,7 @@ import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.validation.Valid;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
@@ -34,6 +35,7 @@ public class DiscountVoucher extends NamedEntity {
 	@DateTimeFormat(pattern = "yyyy/MM/dd HH:mm:ss")
 	private LocalDateTime created;
 
+	@Valid
 	@OneToOne(optional = true)
 	private BeautyServiceVisit redeemedBeautyServiceVisit;
 

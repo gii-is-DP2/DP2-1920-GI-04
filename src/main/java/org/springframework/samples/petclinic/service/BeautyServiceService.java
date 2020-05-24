@@ -13,13 +13,17 @@ import org.springframework.util.Assert;
 @Service
 public class BeautyServiceService {
 
-	@Autowired
 	private BeautyServiceRepository beautyServiceRepository;
 	
 	// AUXILIAR SERVICES 
 	
-	@Autowired
 	private AuthoritiesService authService;
+	
+	@Autowired
+	public BeautyServiceService(AuthoritiesService authoritiesService, BeautyServiceRepository beautyServiceRepository) {
+		this.authService = authoritiesService;
+		this.beautyServiceRepository = beautyServiceRepository;
+	}
 	
 	// MAIN METHODS
 

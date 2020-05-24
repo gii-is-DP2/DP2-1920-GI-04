@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.samples.petclinic.model.BeautyServiceVisit;
 import org.springframework.samples.petclinic.model.DiscountVoucher;
 import org.springframework.samples.petclinic.model.Owner;
+import org.springframework.samples.petclinic.repository.BeautyServiceVisitRepository;
 import org.springframework.samples.petclinic.repository.DiscountVoucherRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -18,17 +19,18 @@ import org.springframework.util.Assert;
 public class DiscountVoucherService {
 
 	private DiscountVoucherRepository discountVoucherRepository;
-
-	@Autowired
-	public DiscountVoucherService(DiscountVoucherRepository discountVoucherRepository) {
-		this.discountVoucherRepository = discountVoucherRepository;
-	}
 	
-	@Autowired
+	// Auxiliar services
 	private OwnerService ownerService;
 	
+	private BeautyServiceVisitRepository beautyServiceVisitRepository;
+
 	@Autowired
-	private BeautyServiceVisitService beautyServiceVisitService;
+	public DiscountVoucherService(DiscountVoucherRepository discountVoucherRepository, BeautyServiceVisitRepository beautyServiceVisitRepository, OwnerService ownerService) {
+		this.discountVoucherRepository = discountVoucherRepository;
+		this.beautyServiceVisitRepository = beautyServiceVisitRepository;
+		this.ownerService = ownerService;
+	}
 	
 	// MAIN METHODS
 
@@ -79,7 +81,7 @@ public class DiscountVoucherService {
 			DiscountVoucher voucher = this.initializeVisitVoucher(this.create(visit.getPet().getOwner().getId()), visit);
 			voucher = this.save(voucher, false);
 			visit.setAwardedDiscountVoucher(voucher);
-			this.beautyServiceVisitService.save(visit);
+			//this.beautyServiceVisitRepository.save(visit);
 		}
 		// TODO this.discountVoucherRepository.awardPendingContestVouchers();
 	}
@@ -99,6 +101,7 @@ public class DiscountVoucherService {
 	
 	public Collection<DiscountVoucher> listOwnerAvailableVouchers(Integer ownerId) {
 		this.awardPendingVouchers();
+		Collection<DiscountVoucher> nigga = this.discountVoucherRepository.listByOwnerId(ownerId);
 		return this.discountVoucherRepository.listAvailableByOwnerId(ownerId);
 	}
 

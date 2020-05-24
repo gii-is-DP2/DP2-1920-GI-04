@@ -13,6 +13,8 @@
             <input type="hidden" name="beautyServiceVisit.finalPrice" value="${beautyServiceVisitForm.beautyServiceVisit.finalPrice}"/>
             <input type="hidden" name="beautyServiceVisit.cancelled" value="${beautyServiceVisitForm.beautyServiceVisit.cancelled}"/>
             <input type="hidden" name="beautyServiceVisit.awardedDiscountVoucher" value="${beautyServiceVisitForm.beautyServiceVisit.awardedDiscountVoucher.id}"/>
+            <input type="hidden" name="beautyServiceVisit.cancelled" value="${beautyServiceVisitForm.beautyServiceVisit.participationPhoto}"/>
+            <input type="hidden" name="beautyServiceVisit.cancelled" value="${beautyServiceVisitForm.beautyServiceVisit.paticipationDate}"/>
             <div class="form-group has-feedback">
                 <petclinic:inputField label="Date" name="beautyServiceVisit.date"/>
                 <div class="control-group">

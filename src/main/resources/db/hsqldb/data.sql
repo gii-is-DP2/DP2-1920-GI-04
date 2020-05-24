@@ -78,3 +78,5 @@ INSERT INTO beauty_services(id,title,type_id,vet_id,enabled,price) VALUES (4, 'N
 INSERT INTO beauty_services(id,title,type_id,vet_id,enabled,price) VALUES (5, 'Nail clipping', 3, 1, true, 0.0);
 INSERT INTO beauty_services(id,title,type_id,vet_id,enabled,price) VALUES (6, 'Nail clipping', 4, 1, false, 99999.0);
 
+INSERT INTO beauty_service_visits(id,beauty_service_id,pet_id,date,final_price,cancelled) VALUES (1, 1, 1, '2013-01-01 22:00:00', 10.0, false);
+
