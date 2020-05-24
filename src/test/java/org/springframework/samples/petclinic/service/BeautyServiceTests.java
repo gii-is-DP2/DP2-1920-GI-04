@@ -126,8 +126,7 @@ class BeautyServiceTests {
 		service2.setPrice(55.5); /* Different value */
 		service2.setVet(vetService.find(2)); /* Different value */
 		Throwable e = assertThrows(Throwable.class, () -> this.beautyServiceService.save(service2));
-		System.out.println(e.getCause().getCause().getMessage());
-		assertThat(e.getCause() != null && e.getCause().getCause() != null && e.getCause().getCause().getMessage() != null && e.getCause().getCause().getMessage().contains("Unique index")).isTrue();
+		assertThat(e.getCause() != null && e.getCause().getCause() != null && e.getCause().getCause().getMessage() != null && (e.getCause().getCause().getMessage().contains("Unique index") || e.getCause().getCause().getMessage().contains("Duplicate entry"))).isTrue();
 	}
 	
 	@Test
