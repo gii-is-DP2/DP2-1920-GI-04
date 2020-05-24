@@ -37,7 +37,7 @@ public class PromotionService {
 	
 	@Transactional
 	public Promotion save(Promotion promotion) {
-		if(promotion.getId() == 0) {
+		if(promotion.getId() == null || promotion.getId() == 0) {
 			Collection<Promotion> sameDatePromotions = this.findAllServicePromotionsByDate(promotion.getBeautyService().getId(), promotion.getStartDate(), promotion.getEndDate());
 			Assert.isTrue(sameDatePromotions.size() == 0, "promotion.error.overlappeddate");
 		}

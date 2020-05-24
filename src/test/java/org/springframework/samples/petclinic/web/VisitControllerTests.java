@@ -1,12 +1,13 @@
 package org.springframework.samples.petclinic.web;
 
 import static org.mockito.BDDMockito.given;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
-import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +17,10 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.FilterType;
 import org.springframework.samples.petclinic.configuration.SecurityConfiguration;
 import org.springframework.samples.petclinic.model.Pet;
+import org.springframework.samples.petclinic.service.BeautyServiceService;
+import org.springframework.samples.petclinic.service.BeautyServiceVisitService;
+import org.springframework.samples.petclinic.service.DiscountVoucherService;
+import org.springframework.samples.petclinic.service.OwnerService;
 import org.springframework.samples.petclinic.service.PetService;
 import org.springframework.samples.petclinic.service.VetService;
 import org.springframework.security.config.annotation.web.WebSecurityConfigurer;
@@ -39,6 +44,18 @@ class VisitControllerTests {
 
 	@MockBean
 	private PetService clinicService;
+    
+    // Converters application context
+	@MockBean
+	private BeautyServiceService notused1;
+	@MockBean
+	private BeautyServiceVisitService notused2;
+	@MockBean
+	private DiscountVoucherService notused3;
+	@MockBean
+	private OwnerService notused4;
+	@MockBean
+	private VetService notused5;
 
 	@Autowired
 	private MockMvc mockMvc;

@@ -36,6 +36,9 @@ import org.springframework.samples.petclinic.configuration.SecurityConfiguration
 import org.springframework.samples.petclinic.model.Owner;
 import org.springframework.samples.petclinic.model.Pet;
 import org.springframework.samples.petclinic.model.PetType;
+import org.springframework.samples.petclinic.service.BeautyServiceService;
+import org.springframework.samples.petclinic.service.BeautyServiceVisitService;
+import org.springframework.samples.petclinic.service.DiscountVoucherService;
 import org.springframework.samples.petclinic.service.OwnerService;
 import org.springframework.samples.petclinic.service.PetService;
 import org.springframework.samples.petclinic.service.VetService;
@@ -67,6 +70,16 @@ class PetControllerTests {
         
         @MockBean
 	private OwnerService ownerService;
+        
+    // Converters application context
+	@MockBean
+	private BeautyServiceService notused1;
+	@MockBean
+	private BeautyServiceVisitService notused2;
+	@MockBean
+	private DiscountVoucherService notused3;
+	@MockBean
+	private VetService notused4;
 
 	@Autowired
 	private MockMvc mockMvc;
