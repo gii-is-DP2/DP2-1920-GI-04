@@ -11,23 +11,23 @@
 	function filterByPetType(){
 		var type = $('#filterText').val();
 		if(type == 0){
-			window.location.href = '/beauty-service/list';			
+			window.location.href = '/beauty-solution/list';			
 		} else {
-			window.location.href = '/beauty-service/list?petType=' + type;
+			window.location.href = '/beauty-solution/list?petType=' + type;
 		}
 	}
 </script>
 
-<petclinic:layout pageName="beautyServices">
-    <h2>Beauty Services</h2>
+<petclinic:layout pageName="beautySolutions">
+    <h2>Beauty Solutions</h2>
 
 	<div class="filter-box">
 		<select id="filterText">
             <c:if test="${selectedType == null}">
-				<option value="0"><fmt:message key="beautyservice.filter.placeholder"/></option>
+				<option value="0"><fmt:message key="beautysolution.filter.placeholder"/></option>
             </c:if>
             <c:if test="${selectedType != null}">
-				<option value="0" selected><fmt:message key="beautyservice.filter.placeholder"/></option>
+				<option value="0" selected><fmt:message key="beautysolution.filter.placeholder"/></option>
             </c:if>
 	        <c:forEach items="${petTypes}" var="petType">
                 <c:if test="${selectedType != petType.id}">
@@ -38,10 +38,10 @@
                 </c:if>
 	        </c:forEach>
 		</select>
-		<button onclick="filterByPetType()"><fmt:message key="beautyservice.filter.button"/></button>
+		<button onclick="filterByPetType()"><fmt:message key="beautysolution.filter.button"/></button>
 	</div>
 
-    <table id="beautyServicesTable" class="table table-striped">
+    <table id="beautySolutionsTable" class="table table-striped">
         <thead>
         <tr>
             <th style="width: 150px;">Title</th>
@@ -51,22 +51,22 @@
         </tr>
         </thead>
         <tbody>
-        <c:forEach items="${beautyServices}" var="service">
+        <c:forEach items="${beautySolutions}" var="solution">
             <tr>
                 <td>
-                    <spring:url value="/beauty-service/{serviceId}" var="detailsUrl">
-                        <spring:param name="serviceId" value="${service.id}"/>
+                    <spring:url value="/beauty-solution/{solutionId}" var="detailsUrl">
+                        <spring:param name="solutionId" value="${solution.id}"/>
                     </spring:url>
-                    <a href="${fn:escapeXml(detailsUrl)}"><c:out value="${service.title}"/></a>
+                    <a href="${fn:escapeXml(detailsUrl)}"><c:out value="${solution.title}"/></a>
                 </td>
                 <td>
-                    <c:out value="${service.type}"/>
+                    <c:out value="${solution.type}"/>
                 </td>
                 <td>
-                    <c:out value="${service.vet.firstName} ${service.vet.lastName}"/>
+                    <c:out value="${solution.vet.firstName} ${solution.vet.lastName}"/>
                 </td>
                 <td>
-                    <c:out value="${service.price}"/>
+                    <c:out value="${solution.price}"/>
                 </td>
             </tr>
         </c:forEach>
@@ -74,6 +74,6 @@
     </table>
 	
 	<sec:authorize access="hasAnyAuthority('admin')">
-	    <p><a href="/beauty-service/admin/create">Create new service</a></p>
+	    <p><a href="/beauty-solution/admin/create">Create new solution</a></p>
 	</sec:authorize>
 </petclinic:layout>

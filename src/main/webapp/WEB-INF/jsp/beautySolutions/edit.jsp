@@ -4,22 +4,22 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="petclinic" tagdir="/WEB-INF/tags" %>
 
-<petclinic:layout pageName="beautyService">
+<petclinic:layout pageName="beautySolution">
     <jsp:body>
         <h2>
-            <c:if test="${beautyService['new']}">New </c:if> Beauty Service
+            <c:if test="${beautySolution['new']}">New </c:if> Beauty Solution
         </h2>
-        <form:form modelAttribute="beautyService" action="/beauty-service/admin/save" class="form-horizontal">
-            <input type="hidden" name="id" value="${beautyService.id}"/>
+        <form:form modelAttribute="beautySolution" action="/beauty-solution/admin/save" class="form-horizontal">
+            <input type="hidden" name="id" value="${beautySolution.id}"/>
             <div class="form-group has-feedback">
                 <petclinic:inputField label="Title" name="title"/>
-                <c:if test="${beautyService['new']}">
+                <c:if test="${beautySolution['new']}">
 	                <div class="control-group">
 	                    <petclinic:selectField name="type" label="Type" names="${types}" size="${types.size()}"/>
 	                </div>
                 </c:if>
-                <c:if test="${!beautyService['new']}">
-                	<input type="hidden" name="type" value="${beautyService.type}"/>
+                <c:if test="${!beautySolution['new']}">
+                	<input type="hidden" name="type" value="${beautySolution.type}"/>
                 </c:if>
                 <div class="control-group">
                     <petclinic:selectField name="vet" label="Vet" itemLabel="firstName" names="${vets}" size="${vets.size()}"/>
@@ -30,11 +30,11 @@
             <div class="form-group">
                 <div class="col-sm-offset-2 col-sm-10">
                     <c:choose>
-                        <c:when test="${beautyService['new']}">
-                            <button class="btn btn-default" type="submit">Create Beauty Service</button>
+                        <c:when test="${beautySolution['new']}">
+                            <button class="btn btn-default" type="submit">Create Beauty Solution</button>
                         </c:when>
                         <c:otherwise>
-                            <button class="btn btn-default" type="submit">Update Beauty Service</button>
+                            <button class="btn btn-default" type="submit">Update Beauty Solution</button>
                         </c:otherwise>
                     </c:choose>
                 </div>
