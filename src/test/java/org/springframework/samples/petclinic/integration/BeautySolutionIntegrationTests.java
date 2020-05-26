@@ -19,65 +19,65 @@ import org.springframework.test.web.servlet.MockMvc;
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(webEnvironment=SpringBootTest.WebEnvironment.MOCK)
 @AutoConfigureMockMvc
-class BeautyServiceIntegrationTests {
+class BeautySolutionIntegrationTests {
 
 	@Autowired
 	private MockMvc mockMvc;
 	
     @Test
-	void testShowBeautyServiceList() throws Exception {
-		mockMvc.perform(get("/beauty-service/list"))
+	void testShowBeautySolutionList() throws Exception {
+		mockMvc.perform(get("/beauty-solution/list"))
 				.andExpect(status().isOk())
-				.andExpect(view().name("beautyServices/list"))
-				.andExpect(model().attributeExists("beautyServices"))
+				.andExpect(view().name("beautySolutions/list"))
+				.andExpect(model().attributeExists("beautySolutions"))
 				.andExpect(model().attributeExists("petTypes"))
 				.andExpect(model().attributeDoesNotExist("selectedType"));
 	}
 	
     @Test
-	void testFilterBeautyServiceList() throws Exception {
-		mockMvc.perform(get("/beauty-service/list").param("petType", "1"))
+	void testFilterBeautySolutionList() throws Exception {
+		mockMvc.perform(get("/beauty-solution/list").param("petType", "1"))
 				.andExpect(status().isOk())
-				.andExpect(view().name("beautyServices/list"))
-				.andExpect(model().attributeExists("beautyServices"))
+				.andExpect(view().name("beautySolutions/list"))
+				.andExpect(model().attributeExists("beautySolutions"))
 				.andExpect(model().attributeExists("petTypes"))
 				.andExpect(model().attributeExists("selectedType"));
 	}
 	
     @Test
-	void testViewBeautyService() throws Exception {
-		mockMvc.perform(get("/beauty-service/{beautyServiceId}", 1))
+	void testViewBeautySolution() throws Exception {
+		mockMvc.perform(get("/beauty-solution/{beautySolutionId}", 1))
 				.andExpect(status().isOk())
-				.andExpect(view().name("beautyServices/view"))
-				.andExpect(model().attributeExists("beautyService"));
+				.andExpect(view().name("beautySolutions/view"))
+				.andExpect(model().attributeExists("beautySolution"));
 	}
 	
     @WithMockUser(username = "admin1", authorities = {"admin"})
     @Test
-	void testInitCreateBeautyService() throws Exception {
-		mockMvc.perform(get("/beauty-service/admin/create"))
+	void testInitCreateBeautySolution() throws Exception {
+		mockMvc.perform(get("/beauty-solution/admin/create"))
 				.andExpect(status().isOk())
-				.andExpect(view().name("beautyServices/edit"))
-				.andExpect(model().attributeExists("beautyService"))
+				.andExpect(view().name("beautySolutions/edit"))
+				.andExpect(model().attributeExists("beautySolution"))
 				.andExpect(model().attributeExists("vets"))
 				.andExpect(model().attributeExists("types"));
 	}
 
     @WithMockUser(username = "admin1", authorities = {"admin"})
     @Test
-	void testEditBeautyService() throws Exception {
-		mockMvc.perform(get("/beauty-service/admin/{beautyServiceId}/edit", 1))
+	void testEditBeautySolution() throws Exception {
+		mockMvc.perform(get("/beauty-solution/admin/{beautySolutionId}/edit", 1))
 				.andExpect(status().isOk())
-				.andExpect(view().name("beautyServices/edit"))
-				.andExpect(model().attributeExists("beautyService"))
+				.andExpect(view().name("beautySolutions/edit"))
+				.andExpect(model().attributeExists("beautySolution"))
 				.andExpect(model().attributeExists("vets"))
 				.andExpect(model().attributeExists("types"));
 	}
 
     @WithMockUser(username = "admin1", authorities = {"admin"})
     @Test
-	void testSaveBeautyService() throws Exception {
-		mockMvc.perform(post("/beauty-service/admin/save")
+	void testSaveBeautySolution() throws Exception {
+		mockMvc.perform(post("/beauty-solution/admin/save")
 				.param("title", "Controller test")    
 				.param("type", "cat")
 				.param("vet", "1")
@@ -85,14 +85,14 @@ class BeautyServiceIntegrationTests {
 				.param("enabled", "true")    
 				.with(csrf()))                    
                 .andExpect(status().is3xxRedirection())
-				.andExpect(view().name("redirect:/beauty-service/7"));
+				.andExpect(view().name("redirect:/beauty-solution/7"));
 	}
 
 
     @WithMockUser(username = "admin1", authorities = {"admin"})
     @Test
-	void testSaveBeautyServiceError() throws Exception {
-		mockMvc.perform(post("/beauty-service/admin/save")
+	void testSaveBeautySolutionError() throws Exception {
+		mockMvc.perform(post("/beauty-solution/admin/save")
 				.param("title", "")    
 				.param("type", "cat")
 				.param("vet", "1")
@@ -100,11 +100,11 @@ class BeautyServiceIntegrationTests {
 				.param("enabled", "true")    
 				.with(csrf()))
 				.andExpect(status().isOk())
-				.andExpect(view().name("beautyServices/edit"))
-				.andExpect(model().attributeExists("beautyService"))
+				.andExpect(view().name("beautySolutions/edit"))
+				.andExpect(model().attributeExists("beautySolution"))
 				.andExpect(model().attributeExists("vets"))
 				.andExpect(model().attributeExists("types"))
-				.andExpect(model().attributeHasErrors("beautyService"));
+				.andExpect(model().attributeHasErrors("beautySolution"));
 	}
 
 

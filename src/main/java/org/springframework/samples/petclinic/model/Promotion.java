@@ -25,11 +25,10 @@ public class Promotion extends NamedEntity {
 	private Integer discount;
 
 	@Valid
-	@ManyToOne(optional = false)
-	private BeautyService beautyService;
+	@ManyToOne(optional = true)
+	private BeautySolution beautySolution;
 	
 	@NotNull
-	@Future
 	@DateTimeFormat(pattern = "yyyy/MM/dd HH:mm:ss")
 	private LocalDateTime startDate;
 	

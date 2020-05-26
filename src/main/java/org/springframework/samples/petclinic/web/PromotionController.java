@@ -23,8 +23,8 @@ public class PromotionController {
 	private PromotionService promotionService;
 	
 	@GetMapping("/admin/create")
-	public String createPromotion(@RequestParam("beautyServiceId") int beautyServiceId, ModelMap model) {
-		model.addAttribute("promotion", this.promotionService.create(beautyServiceId));
+	public String createPromotion(@RequestParam("beautySolutionId") int beautySolutionId, ModelMap model) {
+		model.addAttribute("promotion", this.promotionService.create(beautySolutionId));
 		model = this.prepareEditModel(model);
 		return "promotions/edit";
 	}
@@ -38,7 +38,7 @@ public class PromotionController {
 		} else {
 			try {
 				promotion = this.promotionService.save(promotion);
-				return "redirect:/beauty-service/" + promotion.getBeautyService().getId();
+				return "redirect:/beauty-solution/" + promotion.getBeautySolution().getId();
 			} catch (Throwable e) {
 				model.addAttribute("promotion", promotion);
 				model = this.prepareEditModel(model);

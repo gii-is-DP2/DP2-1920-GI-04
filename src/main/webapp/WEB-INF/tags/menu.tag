@@ -28,14 +28,14 @@
 					<span>Home</span>
 				</petclinic:menuItem>
 
-				<petclinic:menuItem active="${name eq 'beautyServices'}" url="/beauty-service/list"
-					title="find services">
+				<petclinic:menuItem active="${name eq 'beautySolutions'}" url="/beauty-solution/list"
+					title="find solutions">
 					<span class="glyphicon glyphicon-search" aria-hidden="true"></span>
-					<span>Beauty Services</span>
+					<span>Beauty Solutions</span>
 				</petclinic:menuItem>
 				
 				<sec:authorize access="hasAnyAuthority('owner')">
-					<petclinic:menuItem active="${name eq 'beautyServiceVisits'}" url="/beauty-service/visit/owner/list"
+					<petclinic:menuItem active="${name eq 'beautySolutionVisits'}" url="/beauty-solution/visit/owner/list"
 						title="check your visits">
 						<span class="glyphicon glyphicon-search" aria-hidden="true"></span>
 						<span>Visits</span>
@@ -43,7 +43,7 @@
 				</sec:authorize>
 
 				<petclinic:menuItem active="${name eq 'beautyContests'}" url="/beauty-contest/list"
-					title="find services">
+					title="find solutions">
 					<span class="glyphicon glyphicon-search" aria-hidden="true"></span>
 					<span>Contests</span>
 				</petclinic:menuItem>

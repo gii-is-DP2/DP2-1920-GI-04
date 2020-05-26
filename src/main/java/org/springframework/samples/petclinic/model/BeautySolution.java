@@ -14,10 +14,10 @@ import lombok.Data;
 
 @Data
 @Entity
-@Table(name = "beautyServices", uniqueConstraints={
+@Table(name = "beautySolutions", uniqueConstraints={
 	    @UniqueConstraint(columnNames = {"title", "type_id"})
 	})
-public class BeautyService extends NamedEntity {
+public class BeautySolution extends NamedEntity {
      
 	@NotBlank
 	private String title;

@@ -14,7 +14,7 @@
 	            <input type="hidden" name="id" value="${discountVoucher.id}"/>
 	            <input type="hidden" name="owner" value="${discountVoucher.owner.id}"/>
 	            <input type="hidden" name="created" value='${createdDate}'/>
-	            <input type="hidden" name="redeemedBeautyServiceVisit" value="${null}"/>
+	            <input type="hidden" name="redeemedBeautySolutionVisit" value="${null}"/>
                 <petclinic:inputField label="Discount" name="discount"/>
                 <petclinic:inputField label="Description" name="description"/>
             </div>

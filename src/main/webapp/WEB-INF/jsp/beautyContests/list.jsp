@@ -24,7 +24,7 @@
                     <spring:url value="/beauty-contest/{contestId}" var="detailsUrl">
                         <spring:param name="contestId" value="${contest.id}"/>
                     </spring:url>
-                    <a href="${fn:escapeXml(detailsUrl)}"><c:out value="${contest.month}"/> <c:out value="${contest.year}"/></a>
+                    <a href="${fn:escapeXml(detailsUrl)}"><c:out value="${contest.getLabel()}"/></a>
                 </td>
                 <td>
 	                <c:if test="${contest.winner != null}">

@@ -1,10 +1,11 @@
 package org.springframework.samples.petclinic.model;
 
+import java.text.DateFormatSymbols;
+
 import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.persistence.UniqueConstraint;
 import javax.validation.Valid;
 import javax.validation.constraints.Min;
@@ -31,5 +32,12 @@ public class BeautyContest extends NamedEntity {
 
 	@Valid
 	@OneToOne(optional = true)
-	private BeautyServiceVisit winner;
+	private BeautySolutionVisit winner;
+	
+
+	
+	@Transient
+	public String getLabel() {
+		return new DateFormatSymbols().getMonths()[this.getMonth()-1] + " " + this.getYear();
+	}
 }

@@ -21,7 +21,7 @@ import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabas
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase.Replace;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.ComponentScan;
-import org.springframework.samples.petclinic.model.BeautyService;
+import org.springframework.samples.petclinic.model.BeautySolution;
 import org.springframework.samples.petclinic.model.Promotion;
 import org.springframework.samples.petclinic.repository.PromotionRepository;
 import org.springframework.stereotype.Service;
@@ -36,7 +36,7 @@ class PromotionServiceTests {
 	
 	// Auxiliar services
 	@Mock
-	protected BeautyServiceService beautyServiceService;
+	protected BeautySolutionService beautySolutionService;
 
 	// Main service mock parameters
 	@Autowired
@@ -45,11 +45,11 @@ class PromotionServiceTests {
 	// Mock setup
 	@BeforeEach
 	void setup() {
-		this.promotionService = new PromotionService(promotionRepository, beautyServiceService);
+		this.promotionService = new PromotionService(promotionRepository, beautySolutionService);
 		
-		BeautyService service = new BeautyService();
-		service.setId(1);
-		when(this.beautyServiceService.find(1)).thenReturn(service);
+		BeautySolution solution = new BeautySolution();
+		solution.setId(1);
+		when(this.beautySolutionService.find(1)).thenReturn(solution);
 	}
 
 	@Test
@@ -69,8 +69,8 @@ class PromotionServiceTests {
 	}
 
 	@Test
-	@DisplayName("Forbid create promotion on same service and date")
-	void testForbidCreatePromotionOnSameServiceAndDate() {
+	@DisplayName("Forbid create promotion on same solution and date")
+	void testForbidCreatePromotionOnSameSolutionAndDate() {
 		
 		LocalDateTime start = LocalDateTime.now().plus(1, ChronoUnit.DAYS);
 		LocalDateTime end = LocalDateTime.now().plus(8, ChronoUnit.DAYS);
@@ -82,7 +82,7 @@ class PromotionServiceTests {
 		promotion.setEndDate(end);
 		promotion = this.promotionService.save(promotion);
 		
-		// Create promotion with same date and service
+		// Create promotion with same date and solution
 		Promotion promotion2 = this.promotionService.create(1);
 		promotion2.setDiscount(39);
 		promotion2.setStartDate(start);
@@ -94,8 +94,8 @@ class PromotionServiceTests {
 	}
 
 	@Test
-	@DisplayName("Forbide create promotion on same service and similar date")
-	void testForbidCreatePromotionOnSameServiceAndSimilarDate() {
+	@DisplayName("Forbid create promotion on same solution and similar date")
+	void testForbidCreatePromotionOnSameSolutionAndSimilarDate() {
 		
 		// Create promotion
 		Promotion promotion = this.promotionService.create(1);
@@ -104,7 +104,7 @@ class PromotionServiceTests {
 		promotion.setEndDate(LocalDateTime.now().plus(8, ChronoUnit.DAYS));
 		promotion = this.promotionService.save(promotion);
 		
-		// Create promotion with similar date and service
+		// Create promotion with similar date and solution
 		Promotion promotion2 = this.promotionService.create(1);
 		promotion2.setDiscount(39);
 		promotion2.setStartDate(LocalDateTime.now().plus(3, ChronoUnit.DAYS));
@@ -116,8 +116,8 @@ class PromotionServiceTests {
 	}
 
 	@Test
-	@DisplayName("Forbide create promotion on same service and similar date 2")
-	void testForbidCreatePromotionOnSameServiceAndSimilarDate2() {
+	@DisplayName("Forbid create promotion on same solution and similar date 2")
+	void testForbidCreatePromotionOnSameSolutionAndSimilarDate2() {
 		
 		// Create promotion
 		Promotion promotion = this.promotionService.create(1);
@@ -126,7 +126,7 @@ class PromotionServiceTests {
 		promotion.setEndDate(LocalDateTime.now().plus(8, ChronoUnit.DAYS));
 		promotion = this.promotionService.save(promotion);
 		
-		// Create promotion with similar date and service
+		// Create promotion with similar date and solution
 		Promotion promotion2 = this.promotionService.create(1);
 		promotion2.setDiscount(39);
 		promotion.setStartDate(LocalDateTime.now().plus(12, ChronoUnit.HOURS));
@@ -144,7 +144,7 @@ class PromotionServiceTests {
 	void testFindPromotion() {
 		
 		// Store previous number of promotions
-		Collection<Promotion> foundPromotions = this.promotionService.findAllServicePromotions(1);
+		Collection<Promotion> foundPromotions = this.promotionService.findAllSolutionPromotions(1);
 		Integer previousNumber = foundPromotions.size();
 		
 		// Create promotion
@@ -154,9 +154,9 @@ class PromotionServiceTests {
 		promotion.setEndDate(LocalDateTime.now().plus(8, ChronoUnit.DAYS));
 		promotion = this.promotionService.save(promotion);
 		
-		Promotion foundPromotion = this.promotionService.findServiceCurrentPromotion(1, LocalDateTime.now().plus(3, ChronoUnit.DAYS));
+		Promotion foundPromotion = this.promotionService.findSolutionCurrentPromotion(1, LocalDateTime.now().plus(3, ChronoUnit.DAYS));
 		assertThat(foundPromotion).isEqualTo(promotion);
-		foundPromotions = this.promotionService.findAllServicePromotions(1);
+		foundPromotions = this.promotionService.findAllSolutionPromotions(1);
 		assertThat(foundPromotions.size() - previousNumber).isEqualTo(1);
 		assertThat(foundPromotions).contains(promotion);
 		
@@ -167,7 +167,7 @@ class PromotionServiceTests {
 	void testPromotionNotFound() {
 		
 		// Store previous number of promotions
-		Collection<Promotion> foundPromotions = this.promotionService.findAllServicePromotions(1);
+		Collection<Promotion> foundPromotions = this.promotionService.findAllSolutionPromotions(1);
 		Integer previousNumber = foundPromotions.size();
 		
 		// Create promotion
@@ -177,9 +177,9 @@ class PromotionServiceTests {
 		promotion.setEndDate(LocalDateTime.now().plus(8, ChronoUnit.DAYS));
 		promotion = this.promotionService.save(promotion);
 		
-		Promotion foundPromotion = this.promotionService.findServiceCurrentPromotion(1, LocalDateTime.now().plus(20, ChronoUnit.DAYS));
+		Promotion foundPromotion = this.promotionService.findSolutionCurrentPromotion(1, LocalDateTime.now().plus(20, ChronoUnit.DAYS));
 		assertThat(foundPromotion).isNotEqualTo(promotion);
-		foundPromotions = this.promotionService.findAllServicePromotions(1);
+		foundPromotions = this.promotionService.findAllSolutionPromotions(1);
 		assertThat(foundPromotions.size() - previousNumber).isEqualTo(1);
 		assertThat(foundPromotions).contains(promotion);
 		

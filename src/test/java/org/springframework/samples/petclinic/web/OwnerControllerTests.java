@@ -21,8 +21,8 @@ import org.springframework.context.annotation.FilterType;
 import org.springframework.samples.petclinic.configuration.SecurityConfiguration;
 import org.springframework.samples.petclinic.model.Owner;
 import org.springframework.samples.petclinic.service.AuthoritiesService;
-import org.springframework.samples.petclinic.service.BeautyServiceService;
-import org.springframework.samples.petclinic.service.BeautyServiceVisitService;
+import org.springframework.samples.petclinic.service.BeautySolutionService;
+import org.springframework.samples.petclinic.service.BeautySolutionVisitService;
 import org.springframework.samples.petclinic.service.DiscountVoucherService;
 import org.springframework.samples.petclinic.service.OwnerService;
 import org.springframework.samples.petclinic.service.PetService;
@@ -59,9 +59,9 @@ class OwnerControllerTests {
     
     // Converters application context
 	@MockBean
-	private BeautyServiceService notused1;
+	private BeautySolutionService notused1;
 	@MockBean
-	private BeautyServiceVisitService notused2;
+	private BeautySolutionVisitService notused2;
 	@MockBean
 	private DiscountVoucherService notused3;
 	@MockBean

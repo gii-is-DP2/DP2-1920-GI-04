@@ -10,7 +10,7 @@
 <petclinic:layout pageName="beautyContests">
     <h2>Beauty Contest</h2>
     
-    <h4><c:out value="${beautyContest.month} ${beautyContest.year}"/></h4>
+    <h4><c:out value="${beautyContest.getLabel()}"/></h4>
     
     <c:if test="${beautyContest.winner != null}">
     	<h4>Winner</h4>
@@ -22,7 +22,7 @@
         <tr>
             <th>Pet</th>
             <th>Owner</th>
-            <th>Service</th>
+            <th>Solution</th>
             <th>Photo</th>
         </tr>
         </thead>
@@ -35,7 +35,7 @@
 					<sec:authorize access="hasAnyAuthority('owner')">
 				        <c:if test="${!ended && principalId == participation.pet.owner.id}">
 		                    <spring:url value="/beauty-contest/owner/withdraw" var="withdrawUrl">
-		                        <spring:param name="beautyServiceVisitId" value="${participation.id}"/>
+		                        <spring:param name="beautySolutionVisitId" value="${participation.id}"/>
 		                    </spring:url>
 		                    (<a href="${fn:escapeXml(withdrawUrl)}">Withdraw</a>)
 				        </c:if>
@@ -45,7 +45,7 @@
 	            	<c:out value="${participation.pet.owner.user.username}"/>
 	            </td>
 	            <td>
-	            	<c:out value="${participation.beautyService.title}"/>
+	            	<c:out value="${participation.beautySolution.title}"/>
 	            </td>
 	            <td>
 	            	<img src="${participation.participationPhoto}" class="participation-image"/>
@@ -66,7 +66,7 @@
 	
 	<sec:authorize access="hasAnyAuthority('admin')">
 	    <spring:url value="/beauty-contest/admin/create" var="promotionUrl">
-	        <spring:param name="beautyServiceId" value="${beautyService.id}"/>
+	        <spring:param name="beautySolutionId" value="${beautySolution.id}"/>
 	    </spring:url>
 	    <p><a href="${fn:escapeXml(promotionUrl)}">Create a promotion</a></p>
 	</sec:authorize>

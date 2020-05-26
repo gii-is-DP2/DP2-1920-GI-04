@@ -20,10 +20,10 @@ import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabas
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase.Replace;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.ComponentScan;
-import org.springframework.samples.petclinic.model.BeautyServiceVisit;
+import org.springframework.samples.petclinic.model.BeautySolutionVisit;
 import org.springframework.samples.petclinic.model.DiscountVoucher;
 import org.springframework.samples.petclinic.model.Owner;
-import org.springframework.samples.petclinic.repository.BeautyServiceVisitRepository;
+import org.springframework.samples.petclinic.repository.BeautySolutionVisitRepository;
 import org.springframework.samples.petclinic.repository.DiscountVoucherRepository;
 import org.springframework.stereotype.Service;
 
@@ -31,13 +31,13 @@ import org.springframework.stereotype.Service;
 @AutoConfigureTestDatabase(replace=Replace.NONE)
 @ExtendWith(MockitoExtension.class)
 @MockitoSettings(strictness = Strictness.LENIENT)
-class DiscountVoucherTests {
+class DiscountVoucherServiceTests {
 	
 	protected DiscountVoucherService discountVoucherService;
 	
 	// Auxiliar services
 	@Mock
-	protected BeautyServiceVisitService beautyServiceVisitService;
+	protected BeautySolutionVisitService beautySolutionVisitService;
 
 	// Main service mock parameters
 	@Autowired
@@ -47,7 +47,7 @@ class DiscountVoucherTests {
 	protected OwnerService ownerService;
 	
 	@Mock
-	protected BeautyServiceVisitRepository beautyServiceVisitRepository;
+	protected BeautySolutionVisitRepository beautySolutionVisitRepository;
 	
 	// Auxiliar variables
 	
@@ -57,11 +57,11 @@ class DiscountVoucherTests {
 	@BeforeEach
 	void setup() {
 		
-		this.discountVoucherService = new DiscountVoucherService(discountVoucherRepository, beautyServiceVisitRepository, ownerService);
+		this.discountVoucherService = new DiscountVoucherService(discountVoucherRepository, beautySolutionVisitRepository, ownerService);
 		
-		BeautyServiceVisit visit = new BeautyServiceVisit();
+		BeautySolutionVisit visit = new BeautySolutionVisit();
 		visit.setId(1);
-		when(this.beautyServiceVisitService.find(1)).thenReturn(visit);
+		when(this.beautySolutionVisitService.find(1)).thenReturn(visit);
 		
 		owner1 = new Owner();
 		owner1.setId(1);
@@ -119,8 +119,8 @@ class DiscountVoucherTests {
 		voucher.setCreated(now);
 		voucher.setDescription("Test voucher");
 		voucher.setDiscount(15);
-		BeautyServiceVisit visit = this.beautyServiceVisitService.find(1);
-		voucher.setRedeemedBeautyServiceVisit(visit);
+		BeautySolutionVisit visit = this.beautySolutionVisitService.find(1);
+		voucher.setRedeemedBeautySolutionVisit(visit);
 		voucher = this.discountVoucherService.save(voucher, false);
 
 		// Log in as owner1
@@ -158,8 +158,8 @@ class DiscountVoucherTests {
 		voucher.setCreated(now);
 		voucher.setDescription("Test voucher");
 		voucher.setDiscount(15);
-		BeautyServiceVisit visit = this.beautyServiceVisitService.find(1);
-		voucher.setRedeemedBeautyServiceVisit(visit);
+		BeautySolutionVisit visit = this.beautySolutionVisitService.find(1);
+		voucher.setRedeemedBeautySolutionVisit(visit);
 		voucher = this.discountVoucherService.save(voucher, false);
 		
 		// Check if they appear

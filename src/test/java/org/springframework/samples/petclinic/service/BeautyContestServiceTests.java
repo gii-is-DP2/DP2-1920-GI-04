@@ -22,7 +22,7 @@ import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabas
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.samples.petclinic.model.BeautyContest;
-import org.springframework.samples.petclinic.model.BeautyServiceVisit;
+import org.springframework.samples.petclinic.model.BeautySolutionVisit;
 import org.springframework.samples.petclinic.model.Owner;
 import org.springframework.samples.petclinic.repository.BeautyContestRepository;
 import org.springframework.stereotype.Service;
@@ -31,7 +31,7 @@ import org.springframework.stereotype.Service;
 @AutoConfigureTestDatabase(replace=Replace.NONE)
 @ExtendWith(MockitoExtension.class)
 @MockitoSettings(strictness = Strictness.LENIENT)
-class BeautyContestTests {
+class BeautyContestServiceTests {
 	
 	protected BeautyContestService beautyContestService;
 
@@ -46,7 +46,7 @@ class BeautyContestTests {
 	protected OwnerService ownerService;
 	
 	@Mock
-	protected BeautyServiceVisitService beautyServiceVisitService;
+	protected BeautySolutionVisitService beautySolutionVisitService;
 	
 	// Auxiliar variables
 	
@@ -56,11 +56,11 @@ class BeautyContestTests {
 	@BeforeEach
 	void setup() {
 		
-		this.beautyContestService = new BeautyContestService(beautyContestRepository, authoritiesService, ownerService, beautyServiceVisitService);
+		this.beautyContestService = new BeautyContestService(beautyContestRepository, authoritiesService, ownerService, beautySolutionVisitService);
 		
-		BeautyServiceVisit visit = new BeautyServiceVisit();
+		BeautySolutionVisit visit = new BeautySolutionVisit();
 		visit.setId(1);
-		when(this.beautyServiceVisitService.find(1)).thenReturn(visit);
+		when(this.beautySolutionVisitService.find(1)).thenReturn(visit);
 		
 		owner1 = new Owner();
 		owner1.setId(1);

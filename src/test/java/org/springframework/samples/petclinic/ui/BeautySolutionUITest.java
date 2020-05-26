@@ -18,7 +18,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.support.ui.Select;
 
-public class BeautyServiceUITest {
+public class BeautySolutionUITest {
   private WebDriver driver;
   private String baseUrl;
   private boolean acceptNextAlert = true;
@@ -36,17 +36,17 @@ public class BeautyServiceUITest {
   }
 
   @Test
-  public void testCreateBeautyServiceUI() throws Exception {
+  public void testCreateBeautySolutionUI() throws Exception {
 	driver.get("http://localhost:8080/");
 	loginAsAdmin();
-	driver.findElement(By.linkText("BEAUTY SERVICES")).click();
+	driver.findElement(By.linkText("BEAUTY SOLUTIONS")).click();
 	
-	Integer previousNumber = countBeautyServices();
-	String serviceName = "ui test check " + previousNumber;
+	Integer previousNumber = countBeautySolutions();
+	String solutionName = "ui test check " + previousNumber;
 	
-	driver.findElement(By.linkText("Create new service")).click();
+	driver.findElement(By.linkText("Create new solution")).click();
 	driver.findElement(By.id("title")).clear();
-	driver.findElement(By.id("title")).sendKeys(serviceName);
+	driver.findElement(By.id("title")).sendKeys(solutionName);
 	new Select(driver.findElement(By.id("type"))).selectByVisibleText("hamster");
 	driver.findElement(By.xpath("//option[@value='hamster']")).click();
 	new Select(driver.findElement(By.id("vet"))).selectByVisibleText("Rafael");
@@ -54,31 +54,31 @@ public class BeautyServiceUITest {
 	driver.findElement(By.id("price")).clear();
 	driver.findElement(By.id("price")).sendKeys("9898");
 	driver.findElement(By.xpath("//button[@type='submit']")).click();
-	assertEquals(serviceName, driver.findElement(By.xpath("//h2")).getText());
+	assertEquals(solutionName, driver.findElement(By.xpath("//h2")).getText());
 	
-	driver.findElement(By.linkText("BEAUTY SERVICES")).click();
-	Integer newNumber = countBeautyServices();
+	driver.findElement(By.linkText("BEAUTY SOLUTIONS")).click();
+	Integer newNumber = countBeautySolutions();
 	assertThat(newNumber).isEqualTo(previousNumber + 1);
 	
-	assertEquals(serviceName, getListedBeautyService(previousNumber).findElement(By.tagName("a")).getText());
+	assertEquals(solutionName, getListedBeautySolution(previousNumber).findElement(By.tagName("a")).getText());
   }
 
   @Test
-  public void testCreateNonEnabledBeautyServiceUI() throws Exception {
+  public void testCreateNonEnabledBeautySolutionUI() throws Exception {
 	driver.get("http://localhost:8080/");
-	driver.findElement(By.linkText("BEAUTY SERVICES")).click();
+	driver.findElement(By.linkText("BEAUTY SOLUTIONS")).click();
 	
-	Integer ownerPreviousNumber = countBeautyServices();
+	Integer ownerPreviousNumber = countBeautySolutions();
 	
 	loginAsAdmin();
 
-	driver.findElement(By.linkText("BEAUTY SERVICES")).click();
-	Integer previousNumber = countBeautyServices();
-	String serviceName = "ui test check " + previousNumber;
+	driver.findElement(By.linkText("BEAUTY SOLUTIONS")).click();
+	Integer previousNumber = countBeautySolutions();
+	String solutionName = "ui test check " + previousNumber;
 	
-	driver.findElement(By.linkText("Create new service")).click();
+	driver.findElement(By.linkText("Create new solution")).click();
 	driver.findElement(By.id("title")).clear();
-	driver.findElement(By.id("title")).sendKeys(serviceName);
+	driver.findElement(By.id("title")).sendKeys(solutionName);
 	new Select(driver.findElement(By.id("type"))).selectByVisibleText("hamster");
 	driver.findElement(By.xpath("//option[@value='hamster']")).click();
 	new Select(driver.findElement(By.id("vet"))).selectByVisibleText("Rafael");
@@ -87,41 +87,41 @@ public class BeautyServiceUITest {
 	driver.findElement(By.id("price")).sendKeys("9898");
 	driver.findElement(By.name("enabled")).click();
 	driver.findElement(By.xpath("//button[@type='submit']")).click();
-	assertEquals(serviceName, driver.findElement(By.xpath("//h2")).getText());
+	assertEquals(solutionName, driver.findElement(By.xpath("//h2")).getText());
 	
 	logout();
 	loginAsOwner("owner1");
 	
-	driver.findElement(By.linkText("BEAUTY SERVICES")).click();
-	Integer newNumber = countBeautyServices();
+	driver.findElement(By.linkText("BEAUTY SOLUTIONS")).click();
+	Integer newNumber = countBeautySolutions();
 	assertThat(newNumber).isEqualTo(ownerPreviousNumber);
   }
 
 
   @Test
-  public void testListBeautyServicesUI() throws Exception {
+  public void testListBeautySolutionsUI() throws Exception {
 	driver.get("http://localhost:8080/");
 	
-	// Check that user sees some services listed
-	driver.findElement(By.linkText("BEAUTY SERVICES")).click();
-	Integer ownerNumber = countBeautyServices();
+	// Check that user sees some solutions listed
+	driver.findElement(By.linkText("BEAUTY SOLUTIONS")).click();
+	Integer ownerNumber = countBeautySolutions();
 	assertThat(ownerNumber).isGreaterThan(0);
 	
 	loginAsAdmin();
 	
-	// Check that an admin sees more than the standard user (sees not enabled services)
-	driver.findElement(By.linkText("BEAUTY SERVICES")).click();
-	Integer adminNumber = countBeautyServices();
+	// Check that an admin sees more than the standard user (sees not enabled solutions)
+	driver.findElement(By.linkText("BEAUTY SOLUTIONS")).click();
+	Integer adminNumber = countBeautySolutions();
 	assertThat(adminNumber).isGreaterThan(ownerNumber);
   }
 
   
   @Test
-  public void testFilterBeautyServicesUI() throws Exception {
+  public void testFilterBeautySolutionsUI() throws Exception {
 	driver.get("http://localhost:8080/");
 	
-	driver.findElement(By.linkText("BEAUTY SERVICES")).click();
-	Integer standardNumber = countBeautyServices();
+	driver.findElement(By.linkText("BEAUTY SOLUTIONS")).click();
+	Integer standardNumber = countBeautySolutions();
 
 	List<WebElement> typeFilters = driver.findElement(By.id("filterText")).findElements(By.tagName("option"));
 	
@@ -139,30 +139,30 @@ public class BeautyServiceUITest {
     ).allMatch(x ->  x.findElements(By.tagName("td")).get(1).getText().equals(filter));
     
     // Check that it's not bigger than the unfiltered results
-    assertThat(countBeautyServices()).isLessThanOrEqualTo(standardNumber);
+    assertThat(countBeautySolutions()).isLessThanOrEqualTo(standardNumber);
 	
   }
   
   @Test
-  public void testEditBeautyServiceUI() throws Exception {
+  public void testEditBeautySolutionUI() throws Exception {
 	driver.get("http://localhost:8080/");
 	loginAsAdmin();
-	driver.findElement(By.linkText("BEAUTY SERVICES")).click();
+	driver.findElement(By.linkText("BEAUTY SOLUTIONS")).click();
 
-    WebElement editedService = driver.findElement(By.linkText("Modern haircut")).findElement(By.xpath("./..")).findElement(By.xpath("./.."));
-    Double oldPrice = Double.valueOf(editedService.findElements(By.tagName("td")).get(3).getText());
-    editedService.findElement(By.tagName("a")).click();
-    driver.findElement(By.linkText("Edit service")).click();
+    WebElement editedSolution = driver.findElement(By.linkText("Modern haircut")).findElement(By.xpath("./..")).findElement(By.xpath("./.."));
+    Double oldPrice = Double.valueOf(editedSolution.findElements(By.tagName("td")).get(3).getText());
+    editedSolution.findElement(By.tagName("a")).click();
+    driver.findElement(By.linkText("Edit solution")).click();
     new Select(driver.findElement(By.id("vet"))).selectByVisibleText("Rafael");
     //driver.findElement(By.id("price")).click();
     driver.findElement(By.id("price")).clear();
     driver.findElement(By.id("price")).sendKeys(String.valueOf(oldPrice + 1.0));
     driver.findElement(By.xpath("//button[@type='submit']")).click();
-	driver.findElement(By.linkText("BEAUTY SERVICES")).click();
+	driver.findElement(By.linkText("BEAUTY SOLUTIONS")).click();
 
-    editedService = driver.findElement(By.linkText("Modern haircut")).findElement(By.xpath("./..")).findElement(By.xpath("./.."));
-    assertThat(editedService.findElements(By.tagName("td")).get(2).getText().equals("Rafael Ortega"));
-	assertThat(Double.valueOf(editedService.findElements(By.tagName("td")).get(3).getText()))
+    editedSolution = driver.findElement(By.linkText("Modern haircut")).findElement(By.xpath("./..")).findElement(By.xpath("./.."));
+    assertThat(editedSolution.findElements(By.tagName("td")).get(2).getText().equals("Rafael Ortega"));
+	assertThat(Double.valueOf(editedSolution.findElements(By.tagName("td")).get(3).getText()))
 	.isEqualTo(oldPrice + 1.0);
   }
   
@@ -192,11 +192,11 @@ public class BeautyServiceUITest {
     driver.findElement(By.xpath("//button[@type='submit']")).click();	  
   }
   
-  public Integer countBeautyServices() {
+  public Integer countBeautySolutions() {
 	  return driver.findElement(By.tagName("tbody")).findElements(By.tagName("tr")).size();
   }
   
-  public WebElement getListedBeautyService(Integer index) {
+  public WebElement getListedBeautySolution(Integer index) {
 	  return driver.findElement(By.tagName("tbody")).findElements(By.tagName("tr")).get(index);
   }
   

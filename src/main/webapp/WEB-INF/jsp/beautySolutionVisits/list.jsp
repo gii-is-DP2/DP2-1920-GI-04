@@ -5,13 +5,13 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="petclinic" tagdir="/WEB-INF/tags" %>
 
-<petclinic:layout pageName="beautyServiceVisits">
-    <h2>Beauty Services</h2>
+<petclinic:layout pageName="beautySolutionVisits">
+    <h2>Beauty Solutions</h2>
 
-    <table id="beautyServiceVisitsTable" class="table table-striped">
+    <table id="beautySolutionVisitsTable" class="table table-striped">
         <thead>
         <tr>
-            <th>BeautyService</th>
+            <th>BeautySolution</th>
             <th>Pet</th>
             <th>Date</th>
             <th>Price</th>
@@ -19,13 +19,13 @@
         </tr>
         </thead>
         <tbody>
-        <c:forEach items="${beautyServiceVisits}" var="visit">
+        <c:forEach items="${beautySolutionVisits}" var="visit">
             <tr>
                 <td>
-                    <spring:url value="/beauty-service/{serviceId}" var="detailsUrl">
-                        <spring:param name="serviceId" value="${visit.beautyService.id}"/>
+                    <spring:url value="/beauty-solution/{solutionId}" var="detailsUrl">
+                        <spring:param name="solutionId" value="${visit.beautySolution.id}"/>
                     </spring:url>
-                    <a href="${fn:escapeXml(detailsUrl)}"><c:out value="${visit.beautyService.title}"/></a>
+                    <a href="${fn:escapeXml(detailsUrl)}"><c:out value="${visit.beautySolution.title}"/></a>
                 </td>
                 <td>
                     <c:out value="${visit.pet.name}"/>
@@ -38,8 +38,8 @@
                 </td>
                 <td>
 	                <c:if test="${visit.date > now}">
-	                    <spring:url value="/beauty-service/visit/owner/{beautyServiceId}/cancel" var="cancelUrl">
-	                        <spring:param name="beautyServiceId" value="${visit.id}"/>
+	                    <spring:url value="/beauty-solution/visit/owner/{beautySolutionId}/cancel" var="cancelUrl">
+	                        <spring:param name="beautySolutionId" value="${visit.id}"/>
 	                    </spring:url>
 	                    <a href="${fn:escapeXml(cancelUrl)}">Cancel</a>
 	                </c:if>

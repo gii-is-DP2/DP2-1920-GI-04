@@ -73,8 +73,8 @@ public class OwnerService {
 	public Owner findPrincipal() {
 		Owner principal = null;
 		Authentication logged = SecurityContextHolder.getContext().getAuthentication();
-		User user = (User) logged.getPrincipal();
-		if(logged != null) {
+		if(!logged.getAuthorities().iterator().next().getAuthority().equals("ROLE_ANONYMOUS")) {
+			User user = (User) logged.getPrincipal();
 			principal = this.ownerRepository.findOwnerByUsername(user.getUsername());
 		}
 		return principal;

@@ -11,7 +11,7 @@
         </h2>
         <form:form modelAttribute="promotion" action="/promotion/admin/save" class="form-horizontal">
             <input type="hidden" name="id" value="${promotion.id}"/>
-            <input type="hidden" name="beautyService" value="${promotion.beautyService.id}"/>
+            <input type="hidden" name="beautySolution" value="${promotion.beautySolution.id}"/>
             <div class="form-group has-feedback">
                 <petclinic:inputField label="Discount" name="discount"/>
                 <petclinic:inputField label="Start date" name="startDate"/>

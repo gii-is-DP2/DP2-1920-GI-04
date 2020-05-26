@@ -5,7 +5,7 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="petclinic" tagdir="/WEB-INF/tags" %>
 
-<petclinic:layout pageName="beautyServices">
+<petclinic:layout pageName="beautySolutions">
     <h2>${ownerUserName}'s Discount Vouchers</h2>
 
     <table id="discountVouchersTable" class="table table-striped">
@@ -30,10 +30,10 @@
                     <c:out value="${voucher.created}"/>
                 </td>
                 <td>
-	                <c:if test="${voucher.redeemedBeautyServiceVisit != null}">
-                    	<c:out value="${voucher.redeemedBeautyServiceVisit.title}"/>
+	                <c:if test="${voucher.redeemedBeautySolutionVisit != null}">
+                    	<c:out value="${voucher.redeemedBeautySolutionVisit.title}"/>
 	                </c:if>
-	                <c:if test="${voucher.redeemedBeautyServiceVisit == null || voucher.redeemedBeautyServiceVisit.date < now}">
+	                <c:if test="${voucher.redeemedBeautySolutionVisit == null || voucher.redeemedBeautySolutionVisit.date < now}">
 		                No
 	                </c:if>
                 </td>

@@ -60,7 +60,7 @@ public class DiscountVoucherController {
 	}
 	
 	@PostMapping("/admin/save")
-	public String saveBeautyService(@Valid DiscountVoucher discountVoucher, BindingResult bindingResult, ModelMap model) {
+	public String saveDiscountVoucher(@Valid DiscountVoucher discountVoucher, BindingResult bindingResult, ModelMap model) {
 		if(bindingResult.hasErrors()) {
 			model.addAttribute("discountVoucher", discountVoucher);
 			model = this.prepareEditModel(model, discountVoucher);

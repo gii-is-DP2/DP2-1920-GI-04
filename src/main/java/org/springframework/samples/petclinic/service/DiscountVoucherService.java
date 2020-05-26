@@ -6,10 +6,11 @@ import java.util.Collection;
 import java.util.Iterator;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.samples.petclinic.model.BeautyServiceVisit;
+import org.springframework.samples.petclinic.model.BeautyContest;
+import org.springframework.samples.petclinic.model.BeautySolutionVisit;
 import org.springframework.samples.petclinic.model.DiscountVoucher;
 import org.springframework.samples.petclinic.model.Owner;
-import org.springframework.samples.petclinic.repository.BeautyServiceVisitRepository;
+import org.springframework.samples.petclinic.repository.BeautySolutionVisitRepository;
 import org.springframework.samples.petclinic.repository.DiscountVoucherRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,12 +24,12 @@ public class DiscountVoucherService {
 	// Auxiliar services
 	private OwnerService ownerService;
 	
-	private BeautyServiceVisitRepository beautyServiceVisitRepository;
+	private BeautySolutionVisitRepository beautySolutionVisitRepository;
 
 	@Autowired
-	public DiscountVoucherService(DiscountVoucherRepository discountVoucherRepository, BeautyServiceVisitRepository beautyServiceVisitRepository, OwnerService ownerService) {
+	public DiscountVoucherService(DiscountVoucherRepository discountVoucherRepository, BeautySolutionVisitRepository beautySolutionVisitRepository, OwnerService ownerService) {
 		this.discountVoucherRepository = discountVoucherRepository;
-		this.beautyServiceVisitRepository = beautyServiceVisitRepository;
+		this.beautySolutionVisitRepository = beautySolutionVisitRepository;
 		this.ownerService = ownerService;
 	}
 	
@@ -74,19 +75,29 @@ public class DiscountVoucherService {
 	
 	@Transactional
 	public void awardPendingVouchers() {
-		Collection<BeautyServiceVisit> visits = this.discountVoucherRepository.awardPendingVisitVouchers(LocalDateTime.now());
-		Iterator<BeautyServiceVisit> iterator = visits.iterator();
+		Collection<BeautySolutionVisit> visits = this.discountVoucherRepository.awardPendingVisitVouchers(LocalDateTime.now());
+		Iterator<BeautySolutionVisit> iterator = visits.iterator();
 		while(iterator.hasNext()) {
-			BeautyServiceVisit visit = iterator.next();
-			DiscountVoucher voucher = this.initializeVisitVoucher(this.create(visit.getPet().getOwner().getId()), visit);
-			voucher = this.save(voucher, false);
-			visit.setAwardedDiscountVoucher(voucher);
-			//this.beautyServiceVisitRepository.save(visit);
+			BeautySolutionVisit visit = iterator.next();
+			if(visit.getFinalPrice() >= 10.0) {
+				DiscountVoucher voucher = this.initializeVisitVoucher(this.create(visit.getPet().getOwner().getId()), visit);
+				voucher = this.save(voucher, false);
+				visit.setAwardedDiscountVoucher(voucher);
+				this.beautySolutionVisitRepository.save(visit);
+			}
 		}
-		// TODO this.discountVoucherRepository.awardPendingContestVouchers();
 	}
 	
-	public DiscountVoucher initializeVisitVoucher(DiscountVoucher voucher, BeautyServiceVisit visit) {
+	@Transactional
+	public void awardContestVoucher(BeautyContest contest) {
+		DiscountVoucher voucher = this.create(contest.getWinner().getPet().getOwner().getId());
+		voucher.setCreated(LocalDateTime.now());
+		voucher.setDescription("Contest winner Voucher (" + contest.getLabel() + ")");
+		voucher.setDiscount(50);
+		voucher = this.save(voucher, false);		
+	}
+	
+	public DiscountVoucher initializeVisitVoucher(DiscountVoucher voucher, BeautySolutionVisit visit) {
 		voucher.setCreated(visit.getDate());
 		voucher.setDescription("Visit Voucher");
 		voucher.setDiscount(5);
@@ -101,7 +112,6 @@ public class DiscountVoucherService {
 	
 	public Collection<DiscountVoucher> listOwnerAvailableVouchers(Integer ownerId) {
 		this.awardPendingVouchers();
-		Collection<DiscountVoucher> nigga = this.discountVoucherRepository.listByOwnerId(ownerId);
 		return this.discountVoucherRepository.listAvailableByOwnerId(ownerId);
 	}
 

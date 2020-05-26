@@ -37,7 +37,7 @@ public class DiscountVoucher extends NamedEntity {
 
 	@Valid
 	@OneToOne(optional = true)
-	private BeautyServiceVisit redeemedBeautyServiceVisit;
+	private BeautySolutionVisit redeemedBeautySolutionVisit;
 
 	@NotBlank
 	private String description;

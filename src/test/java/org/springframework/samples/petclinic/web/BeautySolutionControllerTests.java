@@ -20,34 +20,38 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.FilterType;
 import org.springframework.samples.petclinic.configuration.SecurityConfiguration;
-import org.springframework.samples.petclinic.model.BeautyService;
+import org.springframework.samples.petclinic.model.BeautySolution;
 import org.springframework.samples.petclinic.model.Pet;
 import org.springframework.samples.petclinic.model.PetType;
+import org.springframework.samples.petclinic.model.Promotion;
 import org.springframework.samples.petclinic.model.Vet;
-import org.springframework.samples.petclinic.service.BeautyServiceService;
-import org.springframework.samples.petclinic.service.BeautyServiceVisitService;
+import org.springframework.samples.petclinic.service.BeautySolutionService;
+import org.springframework.samples.petclinic.service.BeautySolutionVisitService;
 import org.springframework.samples.petclinic.service.DiscountVoucherService;
 import org.springframework.samples.petclinic.service.OwnerService;
 import org.springframework.samples.petclinic.service.PetService;
+import org.springframework.samples.petclinic.service.PromotionService;
 import org.springframework.samples.petclinic.service.VetService;
 import org.springframework.security.config.annotation.web.WebSecurityConfigurer;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 
-@WebMvcTest(controllers = BeautyServiceController.class,
+@WebMvcTest(controllers = BeautySolutionController.class,
 			includeFilters = @ComponentScan.Filter(value = PetTypeFormatter.class, type = FilterType.ASSIGNABLE_TYPE),
 			excludeFilters = @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, classes = WebSecurityConfigurer.class),
 			excludeAutoConfiguration= SecurityConfiguration.class)
-class BeautyServiceControllerTests {
+class BeautySolutionControllerTests {
 
 	@Autowired
-	private BeautyServiceController beautyServiceController;
+	private BeautySolutionController beautySolutionController;
 	
 	@MockBean
-	private BeautyServiceService beautyServiceService;
+	private BeautySolutionService beautySolutionService;
+	@MockBean
+	private PromotionService promotionService;
 	
 	@MockBean
-	private BeautyServiceVisitService notused1;
+	private BeautySolutionVisitService notused1;
 	@MockBean
 	private DiscountVoucherService notused2;
 	@MockBean
@@ -64,10 +68,10 @@ class BeautyServiceControllerTests {
 
 	@BeforeEach
 	void setup() {
-		BeautyService service = new BeautyService();
-		given(this.beautyServiceService.create()).willReturn(service);
-		service.setId(7);
-		given(this.beautyServiceService.edit(any(BeautyService.class))).willReturn(service);
+		BeautySolution solution = new BeautySolution();
+		given(this.beautySolutionService.create()).willReturn(solution);
+		solution.setId(7);
+		given(this.beautySolutionService.edit(any(BeautySolution.class))).willReturn(solution);
 		
 		Vet vet = new Vet();
 		vet.setFirstName("Controller");
@@ -80,69 +84,71 @@ class BeautyServiceControllerTests {
 		given(this.petService.findPetTypes()).willReturn(Lists.newArrayList(cat));
 		given(this.petService.findPetById(1)).willReturn(new Pet());
 
-		given(this.beautyServiceService.showBeautyServiceList(any(Integer.class))).willReturn(new HashSet<BeautyService>());
-		given(this.beautyServiceService.viewBeautyService(1)).willReturn(new BeautyService());
-		given(this.beautyServiceService.find(1)).willReturn(new BeautyService());
+		given(this.beautySolutionService.showBeautySolutionList(any(Integer.class))).willReturn(new HashSet<BeautySolution>());
+		given(this.beautySolutionService.viewBeautySolution(1)).willReturn(new BeautySolution());
+		given(this.beautySolutionService.find(1)).willReturn(new BeautySolution());
+		
+		given(this.promotionService.findAllSolutionPromotions(1)).willReturn(new HashSet<Promotion>());
 		
 	}
 	
 	@WithMockUser(value = "spring")
     @Test
-	void testShowBeautyServiceList() throws Exception {
-		mockMvc.perform(get("/beauty-service/list"))
+	void testShowBeautySolutionList() throws Exception {
+		mockMvc.perform(get("/beauty-solution/list"))
 				.andExpect(status().isOk())
-				.andExpect(view().name("beautyServices/list"))
-				.andExpect(model().attributeExists("beautyServices"))
+				.andExpect(view().name("beautySolutions/list"))
+				.andExpect(model().attributeExists("beautySolutions"))
 				.andExpect(model().attributeExists("petTypes"))
 				.andExpect(model().attributeDoesNotExist("selectedType"));
 	}
 	
 	@WithMockUser(value = "spring")
     @Test
-	void testFilterBeautyServiceList() throws Exception {
-		mockMvc.perform(get("/beauty-service/list").param("petType", "1"))
+	void testFilterBeautySolutionList() throws Exception {
+		mockMvc.perform(get("/beauty-solution/list").param("petType", "1"))
 				.andExpect(status().isOk())
-				.andExpect(view().name("beautyServices/list"))
-				.andExpect(model().attributeExists("beautyServices"))
+				.andExpect(view().name("beautySolutions/list"))
+				.andExpect(model().attributeExists("beautySolutions"))
 				.andExpect(model().attributeExists("petTypes"))
 				.andExpect(model().attributeExists("selectedType"));
 	}
 	
 	@WithMockUser(value = "spring")
     @Test
-	void testViewBeautyService() throws Exception {
-		mockMvc.perform(get("/beauty-service/{beautyServiceId}", 1))
+	void testViewBeautySolution() throws Exception {
+		mockMvc.perform(get("/beauty-solution/{beautySolutionId}", 1))
 				.andExpect(status().isOk())
-				.andExpect(view().name("beautyServices/view"))
-				.andExpect(model().attributeExists("beautyService"));
+				.andExpect(view().name("beautySolutions/view"))
+				.andExpect(model().attributeExists("beautySolution"));
 	}
 	
     @WithMockUser(value = "admin1")
     @Test
-	void testInitCreateBeautyService() throws Exception {
-		mockMvc.perform(get("/beauty-service/admin/create"))
+	void testInitCreateBeautySolution() throws Exception {
+		mockMvc.perform(get("/beauty-solution/admin/create"))
 				.andExpect(status().isOk())
-				.andExpect(view().name("beautyServices/edit"))
-				.andExpect(model().attributeExists("beautyService"))
+				.andExpect(view().name("beautySolutions/edit"))
+				.andExpect(model().attributeExists("beautySolution"))
 				.andExpect(model().attributeExists("vets"))
 				.andExpect(model().attributeExists("types"));
 	}
 	
 	@WithMockUser(value = "admin1")
     @Test
-	void testEditBeautyService() throws Exception {
-		mockMvc.perform(get("/beauty-service/admin/{beautyServiceId}/edit", 1))
+	void testEditBeautySolution() throws Exception {
+		mockMvc.perform(get("/beauty-solution/admin/{beautySolutionId}/edit", 1))
 				.andExpect(status().isOk())
-				.andExpect(view().name("beautyServices/edit"))
-				.andExpect(model().attributeExists("beautyService"))
+				.andExpect(view().name("beautySolutions/edit"))
+				.andExpect(model().attributeExists("beautySolution"))
 				.andExpect(model().attributeExists("vets"))
 				.andExpect(model().attributeExists("types"));
 	}
 
 	@WithMockUser(value = "admin1")
     @Test
-	void testSaveBeautyService() throws Exception {
-		mockMvc.perform(post("/beauty-service/admin/save")
+	void testSaveBeautySolution() throws Exception {
+		mockMvc.perform(post("/beauty-solution/admin/save")
 				.param("title", "Controller test")    
 				.param("type", "cat")
 				.param("vet", "1")
@@ -150,14 +156,14 @@ class BeautyServiceControllerTests {
 				.param("enabled", "true")    
 				.with(csrf()))                    
                 .andExpect(status().is3xxRedirection())
-				.andExpect(view().name("redirect:/beauty-service/7"));
+				.andExpect(view().name("redirect:/beauty-solution/7"));
 	}
 
 
 	@WithMockUser(value = "admin1")
     @Test
-	void testSaveBeautyServiceError() throws Exception {
-		mockMvc.perform(post("/beauty-service/admin/save")
+	void testSaveBeautySolutionError() throws Exception {
+		mockMvc.perform(post("/beauty-solution/admin/save")
 				.param("title", "")    
 				.param("type", "cat")
 				.param("vet", "1")
@@ -165,11 +171,11 @@ class BeautyServiceControllerTests {
 				.param("enabled", "true")    
 				.with(csrf()))
 				.andExpect(status().isOk())
-				.andExpect(view().name("beautyServices/edit"))
-				.andExpect(model().attributeExists("beautyService"))
+				.andExpect(view().name("beautySolutions/edit"))
+				.andExpect(model().attributeExists("beautySolution"))
 				.andExpect(model().attributeExists("vets"))
 				.andExpect(model().attributeExists("types"))
-				.andExpect(model().attributeHasErrors("beautyService"));
+				.andExpect(model().attributeHasErrors("beautySolution"));
 	}
 
 

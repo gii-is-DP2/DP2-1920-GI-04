@@ -20,12 +20,12 @@ import lombok.Data;
 
 @Data
 @Entity
-@Table(name = "beautyServiceVisits")
-public class BeautyServiceVisit extends NamedEntity {
+@Table(name = "beautySolutionVisits")
+public class BeautySolutionVisit extends NamedEntity {
 
 	@Valid
 	@ManyToOne(optional = false)
-	private BeautyService beautyService;
+	private BeautySolution beautySolution;
 
 	@Valid
 	@ManyToOne(optional = false)
@@ -54,7 +54,7 @@ public class BeautyServiceVisit extends NamedEntity {
 	
 	@Transient
 	public String getVisitLabel() {
-		return this.getPet().getName() + " - " + this.getBeautyService().getTitle() + 
+		return this.getPet().getName() + " - " + this.getBeautySolution().getTitle() + 
 				" (" + this.getDate().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")) + ")";
 	}
 

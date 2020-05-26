@@ -71,12 +71,12 @@ INSERT INTO visits(id,pet_id,visit_date,description) VALUES (2, 8, '2013-01-02',
 INSERT INTO visits(id,pet_id,visit_date,description) VALUES (3, 8, '2013-01-03', 'neutered');
 INSERT INTO visits(id,pet_id,visit_date,description) VALUES (4, 7, '2013-01-04', 'spayed');
 
-INSERT INTO beauty_services(id,title,type_id,vet_id,enabled,price) VALUES (1, 'Nail clipping', 1, 1, true, 10.0);
-INSERT INTO beauty_services(id,title,type_id,vet_id,enabled,price) VALUES (2, 'Full haircut', 1, 1, true, 10.0);
-INSERT INTO beauty_services(id,title,type_id,vet_id,enabled,price) VALUES (3, 'Modern haircut', 1, 1, true, 10.0);
-INSERT INTO beauty_services(id,title,type_id,vet_id,enabled,price) VALUES (4, 'Nail clipping', 2, 2, true, 30.0);
-INSERT INTO beauty_services(id,title,type_id,vet_id,enabled,price) VALUES (5, 'Nail clipping', 3, 1, true, 0.0);
-INSERT INTO beauty_services(id,title,type_id,vet_id,enabled,price) VALUES (6, 'Nail clipping', 4, 1, false, 99999.0);
+INSERT INTO beauty_solutions(id,title,type_id,vet_id,enabled,price) VALUES (1, 'Nail clipping', 1, 1, true, 10.0);
+INSERT INTO beauty_solutions(id,title,type_id,vet_id,enabled,price) VALUES (2, 'Full haircut', 1, 1, true, 10.0);
+INSERT INTO beauty_solutions(id,title,type_id,vet_id,enabled,price) VALUES (3, 'Modern haircut', 1, 1, true, 10.0);
+INSERT INTO beauty_solutions(id,title,type_id,vet_id,enabled,price) VALUES (4, 'Nail clipping', 2, 2, true, 30.0);
+INSERT INTO beauty_solutions(id,title,type_id,vet_id,enabled,price) VALUES (5, 'Nail clipping', 3, 1, true, 0.0);
+INSERT INTO beauty_solutions(id,title,type_id,vet_id,enabled,price) VALUES (6, 'Nail clipping', 4, 1, false, 99999.0);
 
-INSERT INTO beauty_service_visits(id,beauty_service_id,pet_id,date,final_price,cancelled) VALUES (1, 1, 1, '2013-01-01 22:00:00', 10.0, false);
+INSERT INTO beauty_solution_visits(id,beauty_solution_id,pet_id,date,final_price,cancelled) VALUES (1, 1, 1, '2013-01-01 22:00:00', 10.0, false);
 
