@@ -34,25 +34,33 @@ Beauty contest that lasts a month (one is held every month), and where a winner 
 
 ## User Stories
 
-### US01 - Creating Beauty Service
+### US01 - Creating Beauty Solution
 As an administrator  
-So that owners can have a catalogue of services to pay for  
-I want to add new beauty services to the system.
+So that owners can have a catalogue of solutions to pay for  
+I want to add new beauty solutions to the system.
 
 Details:
 
-*	No two BeautyServices can have the same title and be of the same PetType
-*	No BeautyService can have a negative price
-*	All BeautyServices need to be assigned to a PetType 
-*	No Beauty Service can have a blank title
-* Beauty services can be "enabled" or not, being shown in the page to owners and guests only if set as such
+*	No two BeautySolutions can have the same title and be of the same PetType
+*	No BeautySolution can have a negative price
+*	All BeautySolutions need to be assigned to a PetType 
+*	No Beauty Solution can have a blank title
+* Beauty solutions can be "enabled" or not, being shown in the page to owners and guests only if set as such
 
 Use cases:
 
-* Creating a beauty service with the title 'Grooming' and PetType 'Cat', and it is created successfully. - :heavy_check_mark:
-* Creating a beauty service with the title 'Grooming' and PetType 'Dog', and it is created successfully. - :heavy_check_mark:
-* Creating a beauty service with the title 'Grooming' and PetType 'Dog', and it is not created since a beauty service with that title and type was just created before. - :x:
-* Creating a beauty service with a blank title and any no PetType selected, and it is not created successfully. - :x:
+Creation order | Title | PetType | Successfully created
+-------------- | ----- | ------- | --------------------
+1st | Grooming | Cat | :heavy_check_mark:
+2nd | Grooming | Dog | :heavy_check_mark:
+**3rd (after 2nd!)** | **Grooming** | **Dog** | :x:
+4th |***blank**  | Cat | :x:
+5th | Grooming | **Null** | :x:
+
+* Creating a beauty solution with the title 'Grooming' and PetType 'Cat', and it is created successfully. - :heavy_check_mark:
+* Creating a beauty solution with the title 'Grooming' and PetType 'Dog', and it is created successfully. - :heavy_check_mark:
+* Creating a beauty solution with the title 'Grooming' and PetType 'Dog', and it is not created since a beauty solution with that title and type was just created before. - :x:
+* Creating a beauty solution with a blank title or no PetType selected, and it is not created successfully. - :x:
 
 ### US02 - Listing Beauty Services
 As an user of the system or a guest  
