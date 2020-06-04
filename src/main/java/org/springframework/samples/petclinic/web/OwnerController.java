@@ -141,4 +141,11 @@ public class OwnerController {
 		return mav;
 	}
 
+	@GetMapping("/owners/principal")
+	public ModelAndView showPrincipal() {
+		ModelAndView mav = new ModelAndView("owners/ownerDetails");
+		mav.addObject(this.ownerService.findPrincipal());
+		return mav;
+	}
+
 }

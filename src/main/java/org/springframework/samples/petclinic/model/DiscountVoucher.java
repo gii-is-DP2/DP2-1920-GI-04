@@ -1,11 +1,13 @@
 package org.springframework.samples.petclinic.model;
 
+import java.text.DateFormatSymbols;
 import java.time.LocalDateTime;
 
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.validation.Valid;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
@@ -42,4 +44,9 @@ public class DiscountVoucher extends NamedEntity {
 	@NotBlank
 	private String description;
 
+	
+	@Transient
+	public String getLabel() {
+		return this.discount + "% discount (" + this.description + ")";
+	}
 }

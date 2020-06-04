@@ -84,8 +84,8 @@ class PetServiceTests {
 	@Test
 	void shouldFindPetWithCorrectId() {
 		Pet pet7 = this.petService.findPetById(7);
-		assertThat(pet7.getName()).startsWith("Samantha");
-		assertThat(pet7.getOwner().getFirstName()).isEqualTo("Jean");
+		assertThat(pet7.getName()).startsWith("Pet1name7");
+		assertThat(pet7.getOwner().getFirstName()).isEqualTo("Mock1");
 
 	}
 

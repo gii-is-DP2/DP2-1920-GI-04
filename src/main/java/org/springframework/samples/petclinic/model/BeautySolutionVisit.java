@@ -36,7 +36,6 @@ public class BeautySolutionVisit extends NamedEntity {
 	private DiscountVoucher awardedDiscountVoucher;
 
 	@NotNull
-	@Future
 	@DateTimeFormat(pattern = "yyyy/MM/dd HH:mm:ss")
 	private LocalDateTime date;
 
@@ -49,7 +48,7 @@ public class BeautySolutionVisit extends NamedEntity {
 	private String participationPhoto;
 
 	@DateTimeFormat(pattern = "yyyy/MM/dd HH:mm:ss")
-	private LocalDateTime paticipationDate;
+	private LocalDateTime participationDate;
 
 	
 	@Transient

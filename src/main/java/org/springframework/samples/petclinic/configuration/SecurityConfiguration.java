@@ -48,6 +48,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 				.antMatchers("/beauty-contest/{beautyContestId}").permitAll()
 				.antMatchers("/beauty-contest/owner/**").hasAnyAuthority("owner")
 				.antMatchers("/beauty-contest/admin/**").hasAnyAuthority("admin")
+				.antMatchers("/promotion/admin/**").hasAnyAuthority("admin")
 				.anyRequest().denyAll()
 				.and()
 				 	.formLogin()

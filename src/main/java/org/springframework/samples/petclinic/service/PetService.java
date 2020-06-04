@@ -87,5 +87,9 @@ public class PetService {
 	public Collection<Pet> findPetsByOwner(Integer ownerId){
 		return petRepository.findPetsByOwner(ownerId);
 	}
+	
+	public Collection<Pet> findPetsByOwnerAndType(Integer ownerId, Integer type){
+		return petRepository.findPetsByOwnerAndType(ownerId, type);
+	}
 
 }

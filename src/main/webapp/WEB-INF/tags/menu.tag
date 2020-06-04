@@ -30,23 +30,31 @@
 
 				<petclinic:menuItem active="${name eq 'beautySolutions'}" url="/beauty-solution/list"
 					title="find solutions">
-					<span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+					<span class="glyphicon glyphicon-heart" aria-hidden="true"></span>
 					<span>Beauty Solutions</span>
 				</petclinic:menuItem>
 				
 				<sec:authorize access="hasAnyAuthority('owner')">
 					<petclinic:menuItem active="${name eq 'beautySolutionVisits'}" url="/beauty-solution/visit/owner/list"
 						title="check your visits">
-						<span class="glyphicon glyphicon-search" aria-hidden="true"></span>
-						<span>Visits</span>
+						<span class="glyphicon glyphicon-tags" aria-hidden="true"></span>
+						<span>Beauty visits</span>
 					</petclinic:menuItem>
 				</sec:authorize>
 
 				<petclinic:menuItem active="${name eq 'beautyContests'}" url="/beauty-contest/list"
 					title="find solutions">
-					<span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+					<span class="glyphicon glyphicon-star" aria-hidden="true"></span>
 					<span>Contests</span>
 				</petclinic:menuItem>
+				
+				<sec:authorize access="hasAnyAuthority('owner')">
+					<petclinic:menuItem active="${name eq 'owners'}" url="/owners/principal"
+						title="find solutions">
+						<span class="glyphicon glyphicon-user" aria-hidden="true"></span>
+						<span>Profile</span>
+					</petclinic:menuItem>
+				</sec:authorize>
 				
 				<sec:authorize access="hasAnyAuthority('admin')">
 					<li class="dropdown"><a href="#" class="dropdown-toggle"
@@ -57,7 +65,7 @@
 						<ul class="dropdown-menu">
 							<petclinic:menuItem active="${name eq 'owners'}"
 								title="List owners" url="/owners">
-								<span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+								<span class="glyphicon glyphicon-user" aria-hidden="true"></span>
 								<span>List owners</span>
 							</petclinic:menuItem>
 						</ul>
@@ -74,7 +82,7 @@
 				</sec:authorize>
 				<sec:authorize access="isAuthenticated()">
 					<li class="dropdown"><a href="#" class="dropdown-toggle"
-						data-toggle="dropdown"> <span class="glyphicon glyphicon-user"></span> 
+						data-toggle="dropdown"> <span class="glyphicon glyphicon-cog"></span> 
 							<strong><sec:authentication property="name" /></strong> <span
 							class="glyphicon glyphicon-chevron-down"></span>
 					</a>

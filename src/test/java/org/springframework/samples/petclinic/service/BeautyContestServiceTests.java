@@ -2,6 +2,7 @@ package org.springframework.samples.petclinic.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 import java.time.LocalDateTime;
@@ -13,6 +14,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
+import static org.mockito.Mockito.verify;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.mockito.junit.jupiter.MockitoSettings;
 import org.mockito.quality.Strictness;
@@ -23,7 +25,6 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.samples.petclinic.model.BeautyContest;
 import org.springframework.samples.petclinic.model.BeautySolutionVisit;
-import org.springframework.samples.petclinic.model.Owner;
 import org.springframework.samples.petclinic.repository.BeautyContestRepository;
 import org.springframework.stereotype.Service;
 
@@ -41,30 +42,23 @@ class BeautyContestServiceTests {
 
 	@Mock
 	protected AuthoritiesService authoritiesService;
-
-	@Mock
-	protected OwnerService ownerService;
 	
 	@Mock
 	protected BeautySolutionVisitService beautySolutionVisitService;
 	
-	// Auxiliar variables
-	
-	Owner owner1;
+	@Mock
+	protected DiscountVoucherService discountVoucherService;
 	
 	// Mock setup
 	@BeforeEach
 	void setup() {
 		
-		this.beautyContestService = new BeautyContestService(beautyContestRepository, authoritiesService, ownerService, beautySolutionVisitService);
+		this.beautyContestService = new BeautyContestService(beautyContestRepository, authoritiesService, beautySolutionVisitService, discountVoucherService);
 		
 		BeautySolutionVisit visit = new BeautySolutionVisit();
 		visit.setId(1);
+		visit.setDate(LocalDateTime.of(2014, 1, 1, 22, 0));
 		when(this.beautySolutionVisitService.find(1)).thenReturn(visit);
-		
-		owner1 = new Owner();
-		owner1.setId(1);
-		when(this.ownerService.findOwnerById(1)).thenReturn(owner1);
 
 		when(this.authoritiesService.checkAdminAuth()).thenReturn(false);
 	}
@@ -198,6 +192,72 @@ class BeautyContestServiceTests {
 		Throwable e = assertThrows(Throwable.class, () -> this.beautyContestService.viewBeautyContest(99999));
 		assertThat(e.getMessage()).isEqualTo("beautycontest.error.notfound");
 		
+	}
+
+	@Test
+	@DisplayName("Assert can participate on contest")
+	void testAssertCanParticipateOnContest() {
+		LocalDateTime now = LocalDateTime.now();
+		this.beautyContestService.checkCurrentContest(now);
+		BeautyContest contest = this.beautyContestService.findByDate(now.getYear(), now.getMonthValue());
+
+		this.beautyContestService.assertCanParticipate(contest.getId(), now);
+	
+	}
+
+	@Test
+	@DisplayName("Throw assertion can participate on contest")
+	void testThrowCanParticipateOnContest() {
+		LocalDateTime now = LocalDateTime.now();
+		this.beautyContestService.checkCurrentContest(now);
+		BeautyContest contest = this.beautyContestService.findByDate(now.getYear(), now.getMonthValue());
+		
+		Throwable e = assertThrows(Throwable.class, () -> this.beautyContestService.assertCanParticipate(contest.getId(), now.plus(1, ChronoUnit.MONTHS)));
+		assertThat(e.getMessage()).isEqualTo("beautycontest.error.notfound");
+		
+	}
+
+	@Test
+	@DisplayName("Select a winner of a contest")
+	void testSelectWinner() {
+		this.beautyContestService.selectWinner(1, LocalDateTime.now());
+		BeautyContest contest = this.beautyContestService.findByDate(2014, 1);
+		assertThat(contest.getWinner().getId()).isEqualTo(1);
+	}
+
+	@Test
+	@DisplayName("Forbid selecting a winner of a non elapsed contest")
+	void testForbidSelectWinnerNotElapsedContest() {
+		Throwable e = assertThrows(Throwable.class, () -> this.beautyContestService.selectWinner(1, LocalDateTime.of(2014, 1, 5, 0, 0)));
+		assertThat(e.getMessage()).isEqualTo("beautycontest.error.notelapsed");
+	}
+
+	@Test
+	@DisplayName("Forbid selecting a winner of a contest for a second time")
+	void testForbidSelectWinnerTwice() {
+		this.beautyContestService.selectWinner(1, LocalDateTime.now());
+		Throwable e = assertThrows(Throwable.class, () -> this.beautyContestService.selectWinner(1, LocalDateTime.now()));
+		assertThat(e.getMessage()).isEqualTo("beautycontest.error.winnerselected");
+	}
+
+	@Test
+	@DisplayName("Forbid selecting a winner of non existing contest")
+	void testForbidSelectWinnerOfANonExistingContest() {
+		// Mock visit to a previous, non prepared, month
+		BeautySolutionVisit visit = new BeautySolutionVisit();
+		visit.setId(1);
+		visit.setDate(LocalDateTime.of(2009, 1, 1, 22, 0));
+		when(this.beautySolutionVisitService.find(1)).thenReturn(visit);
+		
+		Throwable e = assertThrows(Throwable.class, () -> this.beautyContestService.selectWinner(1, LocalDateTime.now()));
+		assertThat(e.getMessage()).isEqualTo("beautycontest.error.notfound");
+	}
+
+	@Test
+	@DisplayName("Check giving voucher on winner selection is called")
+	void testCheckWinnerVoucherCall() {
+		this.beautyContestService.selectWinner(1, LocalDateTime.now());
+	    verify(this.discountVoucherService).awardContestVoucher(any(BeautyContest.class));
 	}
 	
 	

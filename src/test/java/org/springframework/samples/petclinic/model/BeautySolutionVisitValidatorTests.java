@@ -64,12 +64,11 @@ class BeautySolutionVisitValidatorTests {
 		visit.setFinalPrice(-0.1);
 		visit.setDate(LocalDateTime.now().minus(1, ChronoUnit.SECONDS));
 
-		// Negative price and past date
+		// Negative price
 		Validator validator = createValidator();
 		Set<ConstraintViolation<BeautySolutionVisit>> constraintViolations = validator.validate(visit);
 
-		assertThat(constraintViolations.size()).isEqualTo(2);
-		assertThat(constraintViolations.stream().filter(x -> x.getPropertyPath().toString().equals("date")).findFirst().orElse(null).getMessage()).isEqualTo("must be a future date");
+		assertThat(constraintViolations.size()).isEqualTo(1);
 		assertThat(constraintViolations.stream().filter(x -> x.getPropertyPath().toString().equals("finalPrice")).findFirst().orElse(null).getMessage()).isEqualTo("must be greater than or equal to 0");
 
 	}

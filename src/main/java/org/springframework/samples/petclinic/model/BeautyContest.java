@@ -23,7 +23,7 @@ import lombok.Data;
 public class BeautyContest extends NamedEntity {
     
 	@NotNull
-	@Min(2020)
+	@Min(2000)
 	private Integer year;
     
 	@NotNull

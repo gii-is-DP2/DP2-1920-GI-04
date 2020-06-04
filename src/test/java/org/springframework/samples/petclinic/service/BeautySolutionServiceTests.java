@@ -133,7 +133,7 @@ class BeautySolutionServiceTests {
 	@DisplayName("List enabled Beauty Solutions")
 	void testListAllEnabledBeautySolutions() {
 		Collection<BeautySolution> beautySolutions = this.beautySolutionService.showBeautySolutionList(null);
-		assertThat(beautySolutions.size()).isEqualTo(5);
+		assertThat(beautySolutions.size()).isEqualTo(57);
 		Iterator<BeautySolution> iterator = beautySolutions.iterator();
 		while(iterator.hasNext()) {
 			BeautySolution solution = iterator.next();
@@ -177,15 +177,17 @@ class BeautySolutionServiceTests {
 	void testListAllBeautySolutions() {
 		when(this.authService.checkAdminAuth()).thenReturn(true);
 		Collection<BeautySolution> beautySolutions = this.beautySolutionService.showBeautySolutionList(null);
-		assertThat(beautySolutions.size()).isEqualTo(6);
+		assertThat(beautySolutions.size()).isEqualTo(60);
 	}
 
 	@ParameterizedTest
 	@CsvSource({
-		"1,3",
-		"2,1",
-		"3,1",
-		"4,0"
+		"1,12",
+		"2,12",
+		"3,12",
+		"4,10",
+		"5,11",
+		"6,0"
 	})
 	@DisplayName("Filter Beauty Solutions by pet type")
 	void testFilterBeautySolutions(Integer petTypeId, Integer expectedResults) {

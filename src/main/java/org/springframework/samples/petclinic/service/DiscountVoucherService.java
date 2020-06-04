@@ -2,6 +2,7 @@ package org.springframework.samples.petclinic.service;
 
 
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.Collection;
 import java.util.Iterator;
 
@@ -46,7 +47,7 @@ public class DiscountVoucherService {
 	@Transactional
 	public DiscountVoucher save(DiscountVoucher discountVoucher, Boolean resetHour) {
 		if(resetHour) {
-			discountVoucher.setCreated(LocalDateTime.now());			
+			discountVoucher.setCreated(LocalDateTime.now().minus(1, ChronoUnit.SECONDS));			
 		}
 		return discountVoucherRepository.save(discountVoucher);
 	}
@@ -61,40 +62,44 @@ public class DiscountVoucherService {
 	}
 	
 	public Collection<DiscountVoucher> listOwnerDiscountVouchers(Integer ownerId) {
-		this.awardPendingVouchers();
+		this.awardPendingVouchers(LocalDateTime.now());
 		return this.discountVoucherRepository.listByOwnerId(ownerId);
 	}
 	
 	public DiscountVoucher find(Integer voucherId) {
-		this.awardPendingVouchers();
+		this.awardPendingVouchers(LocalDateTime.now());
 		return this.discountVoucherRepository.findById(voucherId).orElse(null);
 	}
 
 	
 	// AUXILIARY METHODS
 	
-	@Transactional
-	public void awardPendingVouchers() {
-		Collection<BeautySolutionVisit> visits = this.discountVoucherRepository.awardPendingVisitVouchers(LocalDateTime.now());
+	public void awardPendingVouchers(LocalDateTime now) {
+		Collection<BeautySolutionVisit> visits = this.discountVoucherRepository.awardPendingVisitVouchers(now);
 		Iterator<BeautySolutionVisit> iterator = visits.iterator();
 		while(iterator.hasNext()) {
 			BeautySolutionVisit visit = iterator.next();
 			if(visit.getFinalPrice() >= 10.0) {
-				DiscountVoucher voucher = this.initializeVisitVoucher(this.create(visit.getPet().getOwner().getId()), visit);
-				voucher = this.save(voucher, false);
-				visit.setAwardedDiscountVoucher(voucher);
-				this.beautySolutionVisitRepository.save(visit);
+				this.awardPendingVoucher(visit);
 			}
 		}
 	}
 	
 	@Transactional
-	public void awardContestVoucher(BeautyContest contest) {
+	public void awardPendingVoucher(BeautySolutionVisit visit) {
+		DiscountVoucher voucher = this.initializeVisitVoucher(this.create(visit.getPet().getOwner().getId()), visit);
+		voucher = this.save(voucher, false);
+		visit.setAwardedDiscountVoucher(voucher);
+		this.beautySolutionVisitRepository.save(visit);	
+	}
+	
+	@Transactional
+	public DiscountVoucher awardContestVoucher(BeautyContest contest) {
 		DiscountVoucher voucher = this.create(contest.getWinner().getPet().getOwner().getId());
-		voucher.setCreated(LocalDateTime.now());
+		voucher.setCreated(LocalDateTime.now().minus(1, ChronoUnit.SECONDS));
 		voucher.setDescription("Contest winner Voucher (" + contest.getLabel() + ")");
 		voucher.setDiscount(50);
-		voucher = this.save(voucher, false);		
+		return this.save(voucher, false);		
 	}
 	
 	public DiscountVoucher initializeVisitVoucher(DiscountVoucher voucher, BeautySolutionVisit visit) {
@@ -111,7 +116,7 @@ public class DiscountVoucherService {
 	}
 	
 	public Collection<DiscountVoucher> listOwnerAvailableVouchers(Integer ownerId) {
-		this.awardPendingVouchers();
+		this.awardPendingVouchers(LocalDateTime.now());
 		return this.discountVoucherRepository.listAvailableByOwnerId(ownerId);
 	}
 

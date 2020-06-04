@@ -2,6 +2,7 @@ package org.springframework.samples.petclinic.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
+import static org.mockito.ArgumentMatchers.any;
 
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
@@ -20,9 +21,11 @@ import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabas
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase.Replace;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.samples.petclinic.model.BeautyContest;
 import org.springframework.samples.petclinic.model.BeautySolutionVisit;
 import org.springframework.samples.petclinic.model.DiscountVoucher;
 import org.springframework.samples.petclinic.model.Owner;
+import org.springframework.samples.petclinic.model.Pet;
 import org.springframework.samples.petclinic.repository.BeautySolutionVisitRepository;
 import org.springframework.samples.petclinic.repository.DiscountVoucherRepository;
 import org.springframework.stereotype.Service;
@@ -63,6 +66,10 @@ class DiscountVoucherServiceTests {
 		visit.setId(1);
 		when(this.beautySolutionVisitService.find(1)).thenReturn(visit);
 		
+		Owner ownerAnyOther = new Owner();
+		ownerAnyOther.setId(2);
+		when(this.ownerService.findOwnerById(any(Integer.class))).thenReturn(ownerAnyOther);
+
 		owner1 = new Owner();
 		owner1.setId(1);
 		when(this.ownerService.findOwnerById(1)).thenReturn(owner1);
@@ -165,6 +172,27 @@ class DiscountVoucherServiceTests {
 		// Check if they appear
 		Collection<DiscountVoucher> discountVouchers = this.discountVoucherService.listOwnerDiscountVouchers(1);
 		assertThat(discountVouchers).contains(voucher);
+	}
+
+	
+	@Test
+	@DisplayName("Reward contest winner voucher")
+	void testRewardContestVoucher() {
+		BeautySolutionVisit visit = this.beautySolutionVisitService.find(1);
+		visit.setDate(LocalDateTime.now());
+		Pet pet = new Pet();
+		pet.setOwner(owner1);
+		visit.setPet(pet);
+		BeautyContest contest = new BeautyContest();
+		contest.setId(2);
+		contest.setWinner(visit);
+		contest.setMonth(LocalDateTime.now().getMonthValue());
+		contest.setYear(LocalDateTime.now().getYear());
+		DiscountVoucher voucher = this.discountVoucherService.awardContestVoucher(contest);
+
+		assertThat(voucher.getDiscount()).isEqualTo(50);
+		assertThat(voucher.getCreated()).isEqualToIgnoringSeconds(visit.getDate());
+		assertThat(voucher.getDescription()).isEqualTo("Contest winner Voucher (" + contest.getLabel() + ")");
 	}
 	
 }

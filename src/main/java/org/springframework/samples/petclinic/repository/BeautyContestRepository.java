@@ -11,10 +11,10 @@ import org.springframework.samples.petclinic.model.BeautySolutionVisit;
 
 
 public interface BeautyContestRepository extends CrudRepository<BeautyContest, Integer>{
-	@Query("select a from BeautyContest a order by a.year, a.month desc")
+	@Query("select a from BeautyContest a order by a.year desc, a.month desc")
 	Collection<BeautyContest> findContests();
 	
-	@Query("select a from BeautyContest a where (year <= ?1) and (month <= ?2) order by a.year, a.month desc")
+	@Query("select a from BeautyContest a where (year <= ?1) and (month <= ?2) order by a.year desc, a.month desc")
 	Collection<BeautyContest> findContests(Integer year, Integer month);
 	
 	@Query("select a from BeautySolutionVisit a where a.participationPhoto is not null and a.date >= ?1 and a.date < ?2")

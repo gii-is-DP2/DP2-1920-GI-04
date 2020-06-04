@@ -13,6 +13,7 @@ import org.springframework.samples.petclinic.model.BeautyContest;
 import org.springframework.samples.petclinic.model.BeautySolutionVisit;
 import org.springframework.samples.petclinic.model.Owner;
 import org.springframework.samples.petclinic.service.BeautyContestService;
+import org.springframework.samples.petclinic.service.BeautySolutionVisitService;
 import org.springframework.samples.petclinic.service.OwnerService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -31,6 +32,9 @@ public class BeautyContestController {
 
 	@Autowired
 	private BeautyContestService beautyContestService;
+
+	@Autowired
+	private BeautySolutionVisitService beautySolutionVisitService;
 
 	@Autowired
 	private OwnerService ownerService;
@@ -67,7 +71,7 @@ public class BeautyContestController {
 	@GetMapping("/owner/{beautyContestId}/participate")
 	public String createParticipation(@PathVariable("beautyContestId") int beautyContestId, ModelMap model, RedirectAttributes redirectAttributes) {
 		try {
-			this.beautyContestService.assertCanParticipate(beautyContestId);
+			this.beautyContestService.assertCanParticipate(beautyContestId, LocalDateTime.now());
 			BeautyContestParticipationForm participationForm = new BeautyContestParticipationForm();
 			participationForm.setBeautyContestId(beautyContestId);
 			model.addAttribute("participationForm", participationForm);
@@ -90,7 +94,8 @@ public class BeautyContestController {
 			return "beautyContests/participate";
 		} else {
 			try {
-				this.beautyContestService.saveParticipation(form.getBeautyContestId(), form.getVisitId(), form.getParticipationPhoto(), LocalDateTime.now());
+				this.beautyContestService.assertCanParticipate(form.getBeautyContestId(), LocalDateTime.now());
+				this.beautySolutionVisitService.saveParticipation(form.getVisitId(), form.getParticipationPhoto(), LocalDateTime.now());
 				return "redirect:/beauty-contest/" + form.getBeautyContestId();
 			} catch (Throwable e) {
 				model.addAttribute("participationForm", form);
@@ -106,7 +111,7 @@ public class BeautyContestController {
 	@GetMapping("/owner/withdraw")
 	public String withdrawParticipation(@RequestParam("beautySolutionVisitId") int beautySolutionVisitId, ModelMap model, RedirectAttributes redirectAttributes) {
 		try {
-			this.beautyContestService.withdrawParticipation(beautySolutionVisitId);
+			this.beautySolutionVisitService.withdrawParticipation(beautySolutionVisitId, LocalDateTime.now());
 			return "redirect:/beauty-contest/" + this.beautyContestService.findCurrent(LocalDateTime.now()).getId();
 		} catch(Throwable e) {
 			if(e.getMessage() != null && e.getMessage().contains(".error.")) {
@@ -120,13 +125,13 @@ public class BeautyContestController {
 	@GetMapping("/admin/participation/{beautySolutionVisitId}/award")
 	public String selectWinner(@PathVariable("beautySolutionVisitId") int beautySolutionVisitId, ModelMap model, RedirectAttributes redirectAttributes) {
 		try {
-			this.beautyContestService.selectWinner(beautySolutionVisitId);
-			return "redirect:/beauty-contest/" + beautySolutionVisitId;
+			this.beautyContestService.selectWinner(beautySolutionVisitId, LocalDateTime.now());
+			return "redirect:/beauty-contest/" + this.beautyContestService.findCurrent(LocalDateTime.now()).getId();
 		} catch(Throwable e) {
 			if(e.getMessage() != null && e.getMessage().contains(".error.")) {
 				redirectAttributes.addFlashAttribute("errorMessage", e.getMessage());
 			}
-			return "redirect:/beauty-contest/" + beautySolutionVisitId;
+			return "redirect:/beauty-contest/" + this.beautyContestService.findCurrent(LocalDateTime.now()).getId();
 			
 		}
 	}

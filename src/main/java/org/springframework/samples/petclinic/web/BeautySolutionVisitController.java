@@ -57,7 +57,7 @@ public class BeautySolutionVisitController {
 		BeautySolutionVisitForm beautySolutionVisitForm = new BeautySolutionVisitForm();
 		beautySolutionVisitForm.setBeautySolutionVisit(visit);
 		model.addAttribute("beautySolutionVisitForm", beautySolutionVisitForm);
-		model = this.prepareEditModel(model, beautySolutionId);
+		model = this.prepareEditModel(model, beautySolutionId, visit.getBeautySolution().getType().getId());
 		return "beautySolutionVisits/edit";
 	}
 
@@ -79,7 +79,7 @@ public class BeautySolutionVisitController {
 	public String saveBeautySolutionVisit(@Valid BeautySolutionVisitForm beautySolutionVisitForm, BindingResult bindingResult, ModelMap model) {
 		if(bindingResult.hasErrors()) {
 			model.addAttribute("beautySolutionVisitForm", beautySolutionVisitForm);
-			model = this.prepareEditModel(model, beautySolutionVisitForm.getBeautySolutionVisit().getBeautySolution().getId());
+			model = this.prepareEditModel(model, beautySolutionVisitForm.getBeautySolutionVisit().getBeautySolution().getId(), beautySolutionVisitForm.getBeautySolutionVisit().getBeautySolution().getType().getId());
 			return "beautySolutionVisits/edit";
 		} else {
 			try {
@@ -87,7 +87,7 @@ public class BeautySolutionVisitController {
 				return "redirect:/beauty-solution/visit/owner/list";
 			} catch (Throwable e) {
 				model.addAttribute("beautySolutionVisitForm", beautySolutionVisitForm);
-				model = this.prepareEditModel(model, beautySolutionVisitForm.getBeautySolutionVisit().getBeautySolution().getId());
+				model = this.prepareEditModel(model, beautySolutionVisitForm.getBeautySolutionVisit().getBeautySolution().getId(), beautySolutionVisitForm.getBeautySolutionVisit().getBeautySolution().getType().getId());
 				if(e.getMessage() != null && e.getMessage().contains(".error.")) {
 					model.addAttribute("errorMessage", e.getMessage());
 				}
@@ -98,8 +98,8 @@ public class BeautySolutionVisitController {
 	
 	// Auxiliary Methods
 	
-	private ModelMap prepareEditModel(ModelMap model, Integer solutionId) {
-		model.addAttribute("pets", this.petService.findPetsByOwner(this.ownerService.findPrincipal().getId()));
+	private ModelMap prepareEditModel(ModelMap model, Integer solutionId, Integer type) {
+		model.addAttribute("pets", this.petService.findPetsByOwnerAndType(this.ownerService.findPrincipal().getId(), type));
 		model.addAttribute("availableVouchers", this.discountVoucherService.listPrincipalAvailableVouchers());
 		model.addAttribute("promotions", this.promotionService.findAllSolutionPromotions(solutionId));
 		return model;

@@ -8,7 +8,6 @@ import java.util.Collection;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.samples.petclinic.model.BeautyContest;
 import org.springframework.samples.petclinic.model.BeautySolutionVisit;
-import org.springframework.samples.petclinic.model.Owner;
 import org.springframework.samples.petclinic.repository.BeautyContestRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,18 +23,16 @@ public class BeautyContestService {
 	
 	private AuthoritiesService authService;
 	
-	private OwnerService ownerService;
-	
-	private BeautySolutionVisitService beautyServiceVisitService;
+	private BeautySolutionVisitService beautySolutionVisitService;
 	
 	private DiscountVoucherService discountVoucherService;
 
 	@Autowired
-	public BeautyContestService(BeautyContestRepository beautyContestRepository, AuthoritiesService authService, OwnerService ownerService, BeautySolutionVisitService beautyServiceVisitService) {
+	public BeautyContestService(BeautyContestRepository beautyContestRepository, AuthoritiesService authService, BeautySolutionVisitService beautyServiceVisitService, DiscountVoucherService discountVoucherService) {
 		this.beautyContestRepository = beautyContestRepository;
 		this.authService = authService;
-		this.ownerService = ownerService;
-		this.beautyServiceVisitService = beautyServiceVisitService;
+		this.beautySolutionVisitService = beautyServiceVisitService;
+		this.discountVoucherService = discountVoucherService;
 	}
 	
 	// MAIN METHODS
@@ -95,29 +92,10 @@ public class BeautyContestService {
 		return this.beautyContestRepository.listPossibleParticipations(startDate, endDate);
 	}
 	
-	public void saveParticipation(Integer contestId, Integer visitId, String photo, LocalDateTime date) {
-		this.assertCanParticipate(contestId);
-		this.assertValidVisit(visitId);
-		BeautySolutionVisit visit = this.beautyServiceVisitService.find(visitId);
-		visit.setParticipationPhoto(photo);
-		visit.setPaticipationDate(date);
-		this.beautyServiceVisitService.save(visit);
-	}
-
-	
-	public void withdrawParticipation(Integer visitId) {
-		this.assertValidWithdrawVisit(visitId);
-		BeautySolutionVisit visit = this.beautyServiceVisitService.find(visitId);
-		visit.setParticipationPhoto(null);
-		visit.setPaticipationDate(null);
-		this.beautyServiceVisitService.save(visit);
-	}
-
-	
-	public void selectWinner(Integer visitId) {
-		BeautySolutionVisit visit = this.beautyServiceVisitService.find(visitId);
+	public void selectWinner(Integer visitId, LocalDateTime now) {
+		BeautySolutionVisit visit = this.beautySolutionVisitService.find(visitId);
 		BeautyContest contest = this.findByDate(visit.getDate().getYear(), visit.getDate().getMonthValue());
-		this.assertValidSelectWinner(contest);
+		this.assertValidSelectWinner(contest, now);
 		contest.setWinner(visit);
 		contest = this.save(contest);
 		this.discountVoucherService.awardContestVoucher(contest);
@@ -140,31 +118,15 @@ public class BeautyContestService {
 		return this.beautyContestRepository.existsById(beautyContestId);
 	}
 	
-	public void assertCanParticipate(Integer beautyContestId){
+	public void assertCanParticipate(Integer beautyContestId, LocalDateTime now){
 		BeautyContest contest = this.find(beautyContestId);
-		Assert.isTrue(LocalDateTime.now().getYear() == contest.getYear() || LocalDateTime.now().getMonthValue() == contest.getMonth(), "beautycontest.error.notfound");
+		Assert.isTrue(now.getYear() == contest.getYear() && now.getMonthValue() == contest.getMonth(), "beautycontest.error.notfound");
 	}
 	
-	public void assertValidVisit(Integer visitId){
-		BeautySolutionVisit visit = this.beautyServiceVisitService.find(visitId);
-		Assert.isTrue(visit.getPaticipationDate() == null, "beautycontest.error.notvalidparticipation");
-		Assert.isTrue(LocalDateTime.now().getYear() == visit.getDate().getYear() && LocalDateTime.now().getMonthValue() == visit.getDate().getMonthValue(), "beautycontest.error.elapseddate");
-		Owner principal = this.ownerService.findPrincipal();
-		Assert.isTrue(principal.equals(visit.getPet().getOwner()), "beautycontest.error.notvalidparticipation");
-	}
-	
-	public void assertValidWithdrawVisit(Integer visitId){
-		BeautySolutionVisit visit = this.beautyServiceVisitService.find(visitId);
-		Assert.isTrue(visit.getPaticipationDate() != null, "beautycontest.error.notvalidparticipation");
-		Assert.isTrue(LocalDateTime.now().getYear() == visit.getDate().getYear() && LocalDateTime.now().getMonthValue() == visit.getDate().getMonthValue(), "beautycontest.error.elapseddate");
-		Owner principal = this.ownerService.findPrincipal();
-		Assert.isTrue(principal.equals(visit.getPet().getOwner()), "beautycontest.error.notvalidparticipation");
-	}
-	
-	public void assertValidSelectWinner(BeautyContest contest) {
+	public void assertValidSelectWinner(BeautyContest contest, LocalDateTime now) {
 		Assert.notNull(contest, "beautycontest.error.notfound");
 		Assert.isNull(contest.getWinner(), "beautycontest.error.winnerselected");
-		Assert.isTrue(LocalDateTime.now().getYear() > contest.getYear() || LocalDateTime.now().getMonthValue() > contest.getMonth(), "beautycontest.error.notelapsed");
+		Assert.isTrue(now.getYear() > contest.getYear() || now.getMonthValue() > contest.getMonth(), "beautycontest.error.notelapsed");
 	}
 	
 	public BeautyContest findByDate(Integer year, Integer month) {

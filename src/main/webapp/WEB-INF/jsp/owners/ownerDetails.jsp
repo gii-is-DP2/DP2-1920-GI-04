@@ -44,11 +44,16 @@
 	    <spring:url value="/discount-voucher/admin/list" var="vouchersUrl">
 	        <spring:param name="ownerId" value="${owner.id}"/>
 	    </spring:url>
-	    <a href="${fn:escapeXml(vouchersUrl)}" class="btn btn-default">List discount voucher</a>
+	    <a href="${fn:escapeXml(vouchersUrl)}" class="btn btn-default">List discount vouchers</a>
 	    <spring:url value="/discount-voucher/admin/create" var="voucherUrl">
 	        <spring:param name="ownerId" value="${owner.id}"/>
 	    </spring:url>
 	    <a href="${fn:escapeXml(voucherUrl)}" class="btn btn-default">Create discount voucher</a>
+	</sec:authorize>
+	<sec:authorize access="hasAnyAuthority('owner')">
+	    <spring:url value="/discount-voucher/owner/list" var="vouchersUrl">
+	    </spring:url>
+	    <a href="${fn:escapeXml(vouchersUrl)}" class="btn btn-default">List discount vouchers</a>
 	</sec:authorize>
 
     <br/>

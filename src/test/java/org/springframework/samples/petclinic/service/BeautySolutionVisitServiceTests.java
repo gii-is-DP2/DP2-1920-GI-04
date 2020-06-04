@@ -218,6 +218,73 @@ class BeautySolutionVisitServiceTests {
 	
 
 	@Test
+	@DisplayName("Forbid booking visit on similar time 2")
+	void testForbidVisitOnSimilarTime() {
+		// Log as user 1
+		when(this.ownerService.findPrincipal()).thenReturn(owner1);
+		Collection<Pet> pets = this.petService.findPetsByOwner(1);
+		Pet pet = pets.iterator().next();
+		
+		// Create visit
+		BeautySolutionVisit visit = this.beautySolutionVisitService.create(1);
+		visit.setDate(LocalDateTime.now().plus(3, ChronoUnit.DAYS));
+		visit.setPet(pet);
+		visit = this.beautySolutionVisitService.bookBeautySolutionVisit(visit, null);
+		
+		// Create second visit 4 minutes later
+		BeautySolutionVisit visit2 = this.beautySolutionVisitService.create(1);
+		visit2.setDate(LocalDateTime.now().plus(3, ChronoUnit.DAYS).plus(4, ChronoUnit.MINUTES));
+		visit2.setPet(pet);
+		Throwable e = assertThrows(Throwable.class, () -> this.beautySolutionVisitService.bookBeautySolutionVisit(visit2, null));
+		assertThat(e.getMessage()).isEqualTo("beautysolutionvisit.error.collidingvisits");
+	}
+
+	@Test
+	@DisplayName("Forbid booking visit on similar time 2")
+	void testForbidVisitOnSimilarTime2() {
+		// Log as user 1
+		when(this.ownerService.findPrincipal()).thenReturn(owner1);
+		Collection<Pet> pets = this.petService.findPetsByOwner(1);
+		Pet pet = pets.iterator().next();
+		
+		// Create visit
+		BeautySolutionVisit visit = this.beautySolutionVisitService.create(1);
+		visit.setDate(LocalDateTime.now().plus(3, ChronoUnit.DAYS));
+		visit.setPet(pet);
+		visit = this.beautySolutionVisitService.bookBeautySolutionVisit(visit, null);
+		
+		// Create second visit 4 minutes earlier
+		BeautySolutionVisit visit2 = this.beautySolutionVisitService.create(1);
+		visit2.setDate(LocalDateTime.now().plus(3, ChronoUnit.DAYS).minus(4, ChronoUnit.MINUTES));
+		visit2.setPet(pet);
+		Throwable e = assertThrows(Throwable.class, () -> this.beautySolutionVisitService.bookBeautySolutionVisit(visit2, null));
+		assertThat(e.getMessage()).isEqualTo("beautysolutionvisit.error.collidingvisits");
+	}
+	
+
+	@Test
+	@DisplayName("Book Beauty Solution Visit on not similar time")
+	void testAllowVisitOnNotSimilarTime() {
+		// Log as user 1
+		when(this.ownerService.findPrincipal()).thenReturn(owner1);
+		Collection<Pet> pets = this.petService.findPetsByOwner(1);
+		Pet pet = pets.iterator().next();
+		
+		// Create visit
+		BeautySolutionVisit visit = this.beautySolutionVisitService.create(1);
+		visit.setDate(LocalDateTime.now().plus(3, ChronoUnit.DAYS));
+		visit.setPet(pet);
+		visit = this.beautySolutionVisitService.bookBeautySolutionVisit(visit, null);
+		
+		// Create second visit 5 minutes later
+		BeautySolutionVisit visit2 = this.beautySolutionVisitService.create(1);
+		visit2.setDate(LocalDateTime.now().plus(3, ChronoUnit.DAYS).plus(5, ChronoUnit.MINUTES).plus(1, ChronoUnit.SECONDS));
+		visit2.setPet(pet);
+		this.beautySolutionVisitService.bookBeautySolutionVisit(visit2, null);
+	}	
+	
+
+	@Test
 	@DisplayName("Cancel Beauty Solution booking")
 	void testCancelBeautySolutionVisit() {
 		// Log as user 1
@@ -263,7 +330,6 @@ class BeautySolutionVisitServiceTests {
 		Throwable e = assertThrows(Throwable.class, () -> this.beautySolutionVisitService.cancelVisit(visitId));
 		assertThat(e.getMessage()).isEqualTo("beautysolutionvisit.error.latecancel");
 	}
-	
 
 	@Test
 	@DisplayName("Forbid cancelling a Beauty Solution booking of another owner's pet")
@@ -356,9 +422,11 @@ class BeautySolutionVisitServiceTests {
 		this.beautySolutionVisitService.bookBeautySolutionVisit(visit, voucher);
 
 		// Change again and save to create a second visit
-		visit.setDate(LocalDateTime.now().plus(4, ChronoUnit.DAYS));
+		BeautySolutionVisit visit2 = this.beautySolutionVisitService.create(1);
+		visit2.setPet(pets.iterator().next());
+		visit2.setDate(LocalDateTime.now().plus(4, ChronoUnit.DAYS));
 
-		Throwable e = assertThrows(Throwable.class, () -> this.beautySolutionVisitService.bookBeautySolutionVisit(visit, voucher));
+		Throwable e = assertThrows(Throwable.class, () -> this.beautySolutionVisitService.bookBeautySolutionVisit(visit2, voucher));
 		assertThat(e.getMessage()).isEqualTo("discountvoucher.error.alreadyused");
 	}
 
@@ -389,6 +457,210 @@ class BeautySolutionVisitServiceTests {
 
 		Throwable e = assertThrows(Throwable.class, () -> this.beautySolutionVisitService.bookBeautySolutionVisit(visit, voucher));
 		assertThat(e.getMessage()).isEqualTo("beautysolutionvisit.error.voucheronpromotion");
+	}
+
+	
+	// Use visits as beauty contest participations
+
+	@Test
+	@DisplayName("Participate on beauty contest")
+	void testParticipateOnBeautyContest() {
+		// Log as user 1
+		when(this.ownerService.findPrincipal()).thenReturn(owner1);
+		
+		// Create visit
+		BeautySolutionVisit visit = this.beautySolutionVisitService.create(1);
+		visit.setDate(LocalDateTime.now().plus(3, ChronoUnit.DAYS));
+		Collection<Pet> pets = this.petService.findPetsByOwner(1);
+		visit.setPet(pets.iterator().next());
+		visit = this.beautySolutionVisitService.bookBeautySolutionVisit(visit, null);
+
+		// Participate with that visit
+		BeautySolutionVisit participation = this.beautySolutionVisitService.saveParticipation(visit.getId(), "https://specials-images.forbesimg.com/imageserve/5db4c7b464b49a0007e9dfac/960x0.jpg", LocalDateTime.now().plus(3, ChronoUnit.DAYS).plus(1, ChronoUnit.SECONDS));
+
+		assertThat(participation.getId()).isEqualTo(visit.getId());
+		assertThat(participation.getParticipationPhoto()).isEqualTo("https://specials-images.forbesimg.com/imageserve/5db4c7b464b49a0007e9dfac/960x0.jpg");
+		
+	}
+
+	@Test
+	@DisplayName("Forbid participating on a contest twice with the same visit")
+	void testForbidParticipateWithAlreadyUsedVisit() {
+		// Log as user 1
+		when(this.ownerService.findPrincipal()).thenReturn(owner1);
+		
+		// Create visit
+		BeautySolutionVisit visit = this.beautySolutionVisitService.create(1);
+		visit.setDate(LocalDateTime.now().plus(3, ChronoUnit.DAYS));
+		Collection<Pet> pets = this.petService.findPetsByOwner(1);
+		visit.setPet(pets.iterator().next());
+		visit = this.beautySolutionVisitService.bookBeautySolutionVisit(visit, null);
+		Integer visitId = visit.getId();
+
+		// Participate with that visit
+		this.beautySolutionVisitService.saveParticipation(visitId, "https://specials-images.forbesimg.com/imageserve/5db4c7b464b49a0007e9dfac/960x0.jpg", LocalDateTime.now().plus(3, ChronoUnit.DAYS).plus(1, ChronoUnit.SECONDS));
+
+		// Participate again
+		Throwable e = assertThrows(Throwable.class, () -> this.beautySolutionVisitService.saveParticipation(visitId, "https://specials-images.forbesimg.com/imageserve/5db4c7b464b49a0007e9dfac/960x0.jpg", LocalDateTime.now().plus(3, ChronoUnit.DAYS).plus(1, ChronoUnit.SECONDS)));
+		assertThat(e.getMessage()).isEqualTo("beautysolutionvisit.error.notvalidparticipation");
+		
+	}
+
+	@Test
+	@DisplayName("Forbid participating on a contest before the visit takes place")
+	void testForbidParticipateWithNotElapsedVisit() {
+		// Log as user 1
+		when(this.ownerService.findPrincipal()).thenReturn(owner1);
+		
+		// Create visit
+		BeautySolutionVisit visit = this.beautySolutionVisitService.create(1);
+		visit.setDate(LocalDateTime.now().plus(3, ChronoUnit.DAYS));
+		Collection<Pet> pets = this.petService.findPetsByOwner(1);
+		visit.setPet(pets.iterator().next());
+		visit = this.beautySolutionVisitService.bookBeautySolutionVisit(visit, null);
+		Integer visitId = visit.getId();
+
+		// Participate with that visit
+		Throwable e = assertThrows(Throwable.class, () -> this.beautySolutionVisitService.saveParticipation(visitId, "https://specials-images.forbesimg.com/imageserve/5db4c7b464b49a0007e9dfac/960x0.jpg", LocalDateTime.now().plus(3, ChronoUnit.DAYS).minus(1, ChronoUnit.SECONDS)));
+		assertThat(e.getMessage()).isEqualTo("beautysolutionvisit.error.earlyparticipation");
+		
+	}
+
+	@Test
+	@DisplayName("Forbid participating on a contest with another owner's visit")
+	void testForbidParticipateWithAnotherOwnersVisit() {
+		// Log as user 1
+		when(this.ownerService.findPrincipal()).thenReturn(owner1);
+		
+		// Create visit
+		BeautySolutionVisit visit = this.beautySolutionVisitService.create(1);
+		visit.setDate(LocalDateTime.now().plus(3, ChronoUnit.DAYS));
+		Collection<Pet> pets = this.petService.findPetsByOwner(1);
+		visit.setPet(pets.iterator().next());
+		visit = this.beautySolutionVisitService.bookBeautySolutionVisit(visit, null);
+		Integer visitId = visit.getId();
+		
+		// Log as user 2
+		when(this.ownerService.findPrincipal()).thenReturn(owner2);
+
+		// Participate with that visit
+		Throwable e = assertThrows(Throwable.class, () -> this.beautySolutionVisitService.saveParticipation(visitId, "https://specials-images.forbesimg.com/imageserve/5db4c7b464b49a0007e9dfac/960x0.jpg", LocalDateTime.now().plus(3, ChronoUnit.DAYS).plus(1, ChronoUnit.SECONDS)));
+		assertThat(e.getMessage()).isEqualTo("beautysolutionvisit.error.notvalidparticipation");
+		
+	}
+
+	@Test
+	@DisplayName("Forbid participating on a contest when it's not that month")
+	void testForbidParticipateOnAnotherMonth() {
+		// Log as user 1
+		when(this.ownerService.findPrincipal()).thenReturn(owner1);
+		
+		// Create visit
+		BeautySolutionVisit visit = this.beautySolutionVisitService.create(1);
+		visit.setDate(LocalDateTime.now().plus(3, ChronoUnit.DAYS));
+		Collection<Pet> pets = this.petService.findPetsByOwner(1);
+		visit.setPet(pets.iterator().next());
+		visit = this.beautySolutionVisitService.bookBeautySolutionVisit(visit, null);
+		Integer visitId = visit.getId();
+
+		// Participate with that visit
+		Throwable e = assertThrows(Throwable.class, () -> this.beautySolutionVisitService.saveParticipation(visitId, "https://specials-images.forbesimg.com/imageserve/5db4c7b464b49a0007e9dfac/960x0.jpg", LocalDateTime.now().plus(3, ChronoUnit.DAYS).plus(1, ChronoUnit.MONTHS)));
+		assertThat(e.getMessage()).isEqualTo("beautysolutionvisit.error.elapseddate");
+		
+	}
+	
+	
+	@Test
+	@DisplayName("Withdraw participation on beauty contest")
+	void testWithdrawParticipationOnBeautyContest() {
+		// Log as user 1
+		when(this.ownerService.findPrincipal()).thenReturn(owner1);
+		
+		// Create visit
+		BeautySolutionVisit visit = this.beautySolutionVisitService.create(1);
+		visit.setDate(LocalDateTime.now().plus(3, ChronoUnit.DAYS));
+		Collection<Pet> pets = this.petService.findPetsByOwner(1);
+		visit.setPet(pets.iterator().next());
+		visit = this.beautySolutionVisitService.bookBeautySolutionVisit(visit, null);
+
+		// Participate with that visit
+		this.beautySolutionVisitService.saveParticipation(visit.getId(), "https://specials-images.forbesimg.com/imageserve/5db4c7b464b49a0007e9dfac/960x0.jpg", LocalDateTime.now().plus(3, ChronoUnit.DAYS).plus(1, ChronoUnit.SECONDS));
+		// Withdraw that participation
+		BeautySolutionVisit participation = this.beautySolutionVisitService.withdrawParticipation(visit.getId(), LocalDateTime.now().plus(3, ChronoUnit.DAYS).plus(2, ChronoUnit.SECONDS));
+
+		assertThat(participation.getId()).isEqualTo(visit.getId());
+		assertThat(participation.getParticipationPhoto()).isEqualTo(null);
+		assertThat(participation.getParticipationDate() == null).isTrue();
+		
+	}
+
+	@Test
+	@DisplayName("Forbid withdrawing a visit that has not been used in a participation")
+	void testForbidWithdrawingNonParticipatedVisit() {
+		// Log as user 1
+		when(this.ownerService.findPrincipal()).thenReturn(owner1);
+		
+		// Create visit
+		BeautySolutionVisit visit = this.beautySolutionVisitService.create(1);
+		visit.setDate(LocalDateTime.now().plus(3, ChronoUnit.DAYS));
+		Collection<Pet> pets = this.petService.findPetsByOwner(1);
+		visit.setPet(pets.iterator().next());
+		visit = this.beautySolutionVisitService.bookBeautySolutionVisit(visit, null);
+		Integer visitId = visit.getId();
+
+		// Withdraw visit
+		Throwable e = assertThrows(Throwable.class, () -> this.beautySolutionVisitService.withdrawParticipation(visitId, LocalDateTime.now().plus(3, ChronoUnit.DAYS).plus(1, ChronoUnit.SECONDS)));
+		assertThat(e.getMessage()).isEqualTo("beautysolutionvisit.error.notvalidparticipation");
+		
+	}
+
+	@Test
+	@DisplayName("Forbid withdrawing another owner's participation")
+	void testForbidWithdrawingAnotherOwnersParticipation() {
+		// Log as user 1
+		when(this.ownerService.findPrincipal()).thenReturn(owner1);
+		
+		// Create visit
+		BeautySolutionVisit visit = this.beautySolutionVisitService.create(1);
+		visit.setDate(LocalDateTime.now().plus(3, ChronoUnit.DAYS));
+		Collection<Pet> pets = this.petService.findPetsByOwner(1);
+		visit.setPet(pets.iterator().next());
+		visit = this.beautySolutionVisitService.bookBeautySolutionVisit(visit, null);
+		Integer visitId = visit.getId();
+
+		// Participate with that visit
+		this.beautySolutionVisitService.saveParticipation(visit.getId(), "https://specials-images.forbesimg.com/imageserve/5db4c7b464b49a0007e9dfac/960x0.jpg", LocalDateTime.now().plus(3, ChronoUnit.DAYS).plus(1, ChronoUnit.SECONDS));
+		
+		// Log as user 2
+		when(this.ownerService.findPrincipal()).thenReturn(owner2);
+
+		// Participate with that visit
+		Throwable e = assertThrows(Throwable.class, () -> this.beautySolutionVisitService.withdrawParticipation(visitId, LocalDateTime.now().plus(3, ChronoUnit.DAYS).plus(2, ChronoUnit.SECONDS)));
+		assertThat(e.getMessage()).isEqualTo("beautysolutionvisit.error.notvalidparticipation");
+		
+	}
+
+	@Test
+	@DisplayName("Forbid withdrawing a participation when it's not that month")
+	void testForbidWithdrawingAParticipationMonth() {
+		// Log as user 1
+		when(this.ownerService.findPrincipal()).thenReturn(owner1);
+		
+		// Create visit
+		BeautySolutionVisit visit = this.beautySolutionVisitService.create(1);
+		visit.setDate(LocalDateTime.now().plus(3, ChronoUnit.DAYS));
+		Collection<Pet> pets = this.petService.findPetsByOwner(1);
+		visit.setPet(pets.iterator().next());
+		visit = this.beautySolutionVisitService.bookBeautySolutionVisit(visit, null);
+		Integer visitId = visit.getId();
+
+		// Participate with that visit
+		this.beautySolutionVisitService.saveParticipation(visit.getId(), "https://specials-images.forbesimg.com/imageserve/5db4c7b464b49a0007e9dfac/960x0.jpg", LocalDateTime.now().plus(3, ChronoUnit.DAYS).plus(1, ChronoUnit.SECONDS));
+
+		// Participate with that visit
+		Throwable e = assertThrows(Throwable.class, () -> this.beautySolutionVisitService.withdrawParticipation(visitId, LocalDateTime.now().plus(3, ChronoUnit.DAYS).plus(1, ChronoUnit.MONTHS)));
+		assertThat(e.getMessage()).isEqualTo("beautysolutionvisit.error.elapseddate");
+		
 	}
 	
 }

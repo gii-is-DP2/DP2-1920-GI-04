@@ -63,11 +63,4 @@
 		    <p><a href="${fn:escapeXml(enterUrl)}">Enter the contest</a></p>
         </c:if>
 	</sec:authorize>
-	
-	<sec:authorize access="hasAnyAuthority('admin')">
-	    <spring:url value="/beauty-contest/admin/create" var="promotionUrl">
-	        <spring:param name="beautySolutionId" value="${beautySolution.id}"/>
-	    </spring:url>
-	    <p><a href="${fn:escapeXml(promotionUrl)}">Create a promotion</a></p>
-	</sec:authorize>
 </petclinic:layout>

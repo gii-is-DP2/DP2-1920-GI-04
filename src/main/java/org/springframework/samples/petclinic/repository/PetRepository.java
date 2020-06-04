@@ -45,4 +45,7 @@ public interface PetRepository extends CrudRepository<Pet, Integer> {
 	@Query("SELECT a FROM Pet a WHERE a.owner.id = ?1")
 	Collection<Pet> findPetsByOwner(Integer ownerId);
 
+	@Query("SELECT a FROM Pet a WHERE a.owner.id = ?1 and a.type.id = ?2")
+	Collection<Pet> findPetsByOwnerAndType(Integer ownerId, Integer type);
+
 }

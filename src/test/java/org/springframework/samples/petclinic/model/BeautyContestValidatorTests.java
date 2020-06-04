@@ -71,7 +71,7 @@ class BeautyContestValidatorTests {
 	void notValidateInvalidBeautyContest() {
 		LocaleContextHolder.setLocale(Locale.ENGLISH);
 		BeautyContest contest = new BeautyContest();
-		contest.setYear(2019);
+		contest.setYear(1999);
 		contest.setMonth(0);
 		
 		// Too small year and month
@@ -79,7 +79,7 @@ class BeautyContestValidatorTests {
 		Set<ConstraintViolation<BeautyContest>> constraintViolations = validator.validate(contest);
 
 		assertThat(constraintViolations.size()).isEqualTo(2);
-		assertThat(constraintViolations.stream().filter(x -> x.getPropertyPath().toString().equals("year")).findFirst().orElse(null).getMessage()).isEqualTo("must be greater than or equal to 2020");
+		assertThat(constraintViolations.stream().filter(x -> x.getPropertyPath().toString().equals("year")).findFirst().orElse(null).getMessage()).isEqualTo("must be greater than or equal to 2000");
 		assertThat(constraintViolations.stream().filter(x -> x.getPropertyPath().toString().equals("month")).findFirst().orElse(null).getMessage()).isEqualTo("must be between 1 and 12");
 	}
 

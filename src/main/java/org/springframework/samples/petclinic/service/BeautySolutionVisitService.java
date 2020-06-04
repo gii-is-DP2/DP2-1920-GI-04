@@ -78,8 +78,10 @@ public class BeautySolutionVisitService {
 	
 	@Transactional
 	public BeautySolutionVisit bookBeautySolutionVisit(BeautySolutionVisit visit, DiscountVoucher voucher) {
-		//TODO check vet availability
 		Assert.isTrue(!visit.getDate().isBefore(LocalDateTime.now().plusDays(1).truncatedTo(ChronoUnit.DAYS)), "beautysolutionvisit.error.earlybookdate");
+		
+		Collection<BeautySolutionVisit> collidingVisits = this.findCollidingVisitsByVet(visit.getDate(), visit.getBeautySolution().getVet().getId());
+		Assert.isTrue(collidingVisits.size() == 0, "beautysolutionvisit.error.collidingvisits");
 		
 		Owner principal = this.ownerService.findPrincipal();
 		Assert.isTrue(principal.getId() == visit.getPet().getOwner().getId(), "beautysolutionvisit.error.notauthorized");
@@ -118,6 +120,27 @@ public class BeautySolutionVisitService {
 		save(visit);
 	}
 	
+	/* Visits as contest participations*/
+	
+	public BeautySolutionVisit saveParticipation(Integer visitId, String photo, LocalDateTime now) {
+		this.assertValidContestParticipateVisit(visitId, now);
+		BeautySolutionVisit visit = this.find(visitId);
+		visit.setParticipationPhoto(photo);
+		visit.setParticipationDate(now);
+		return this.save(visit);
+	}
+
+	
+	public BeautySolutionVisit withdrawParticipation(Integer visitId, LocalDateTime now) {
+		this.assertValidContestWithdrawVisit(visitId, now);
+		BeautySolutionVisit visit = this.find(visitId);
+		visit.setParticipationPhoto(null);
+		visit.setParticipationDate(null);
+		return this.save(visit);
+	}
+
+	
+	
 	// AUXILIAR METHODS
 	
 	public boolean exists(int beautySolutionVisitId) {
@@ -126,6 +149,29 @@ public class BeautySolutionVisitService {
 	
 	public Double effectivePercentage(Integer discount) {
 		return (100.0-discount)/100.0;
+	}
+	
+	public Collection<BeautySolutionVisit> findCollidingVisitsByVet(LocalDateTime date, Integer vetId){
+		LocalDateTime start = date.minus(5, ChronoUnit.MINUTES);
+		LocalDateTime end = date.plus(5, ChronoUnit.MINUTES);
+		return this.beautySolutionVisitRepository.findCollidingVisitsByVet(start, end, vetId);
+	}
+	
+	public void assertValidContestParticipateVisit(Integer visitId, LocalDateTime now){
+		BeautySolutionVisit visit = this.find(visitId);
+		Assert.isTrue(visit.getParticipationDate() == null, "beautysolutionvisit.error.notvalidparticipation");
+		Assert.isTrue(now.getYear() == visit.getDate().getYear() && now.getMonthValue() == visit.getDate().getMonthValue(), "beautysolutionvisit.error.elapseddate");
+		Assert.isTrue(now.isAfter(visit.getDate()), "beautysolutionvisit.error.earlyparticipation");
+		Owner principal = this.ownerService.findPrincipal();
+		Assert.isTrue(principal.equals(visit.getPet().getOwner()), "beautysolutionvisit.error.notvalidparticipation");
+	}
+	
+	public void assertValidContestWithdrawVisit(Integer visitId, LocalDateTime now){
+		BeautySolutionVisit visit = this.find(visitId);
+		Assert.isTrue(visit.getParticipationDate() != null, "beautysolutionvisit.error.notvalidparticipation");
+		Assert.isTrue(now.getYear() == visit.getDate().getYear() && now.getMonthValue() == visit.getDate().getMonthValue(), "beautysolutionvisit.error.elapseddate");
+		Owner principal = this.ownerService.findPrincipal();
+		Assert.isTrue(principal.equals(visit.getPet().getOwner()), "beautysolutionvisit.error.notvalidparticipation");
 	}
 
 
