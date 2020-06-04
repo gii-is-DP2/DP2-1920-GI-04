@@ -49,7 +49,6 @@ public class BeautySolutionUITest {
 	driver.findElement(By.id("title")).sendKeys(solutionName);
 	new Select(driver.findElement(By.id("type"))).selectByVisibleText("hamster");
 	driver.findElement(By.xpath("//option[@value='hamster']")).click();
-	new Select(driver.findElement(By.id("vet"))).selectByVisibleText("Rafael");
 	driver.findElement(By.xpath("//option[@value='4']")).click();
 	driver.findElement(By.id("price")).clear();
 	driver.findElement(By.id("price")).sendKeys("9898");
@@ -81,7 +80,6 @@ public class BeautySolutionUITest {
 	driver.findElement(By.id("title")).sendKeys(solutionName);
 	new Select(driver.findElement(By.id("type"))).selectByVisibleText("hamster");
 	driver.findElement(By.xpath("//option[@value='hamster']")).click();
-	new Select(driver.findElement(By.id("vet"))).selectByVisibleText("Rafael");
 	driver.findElement(By.xpath("//option[@value='4']")).click();
 	driver.findElement(By.id("price")).clear();
 	driver.findElement(By.id("price")).sendKeys("9898");
@@ -153,15 +151,13 @@ public class BeautySolutionUITest {
     Double oldPrice = Double.valueOf(editedSolution.findElements(By.tagName("td")).get(3).getText());
     editedSolution.findElement(By.tagName("a")).click();
     driver.findElement(By.linkText("Edit solution")).click();
-    new Select(driver.findElement(By.id("vet"))).selectByVisibleText("Rafael");
-    //driver.findElement(By.id("price")).click();
     driver.findElement(By.id("price")).clear();
     driver.findElement(By.id("price")).sendKeys(String.valueOf(oldPrice + 1.0));
     driver.findElement(By.xpath("//button[@type='submit']")).click();
 	driver.findElement(By.linkText("BEAUTY SOLUTIONS")).click();
 
     editedSolution = driver.findElement(By.linkText("Modern haircut")).findElement(By.xpath("./..")).findElement(By.xpath("./.."));
-    assertThat(editedSolution.findElements(By.tagName("td")).get(2).getText().equals("Rafael Ortega"));
+    assertThat(editedSolution.findElements(By.tagName("td")).get(2).getText()).isEqualTo("Mock8 Vet8");
 	assertThat(Double.valueOf(editedSolution.findElements(By.tagName("td")).get(3).getText()))
 	.isEqualTo(oldPrice + 1.0);
   }
