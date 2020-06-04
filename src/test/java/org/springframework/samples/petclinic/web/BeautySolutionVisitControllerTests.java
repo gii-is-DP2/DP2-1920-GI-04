@@ -25,6 +25,7 @@ import org.springframework.samples.petclinic.model.BeautySolutionVisit;
 import org.springframework.samples.petclinic.model.DiscountVoucher;
 import org.springframework.samples.petclinic.model.Owner;
 import org.springframework.samples.petclinic.model.Pet;
+import org.springframework.samples.petclinic.model.PetType;
 import org.springframework.samples.petclinic.model.Promotion;
 import org.springframework.samples.petclinic.model.User;
 import org.springframework.samples.petclinic.service.BeautySolutionService;
@@ -80,6 +81,9 @@ class BeautySolutionVisitControllerTests {
 		solution.setId(1);
 		solution.setPrice(20.0);
 		solution.setTitle("Test solution");
+		PetType type = new PetType();
+		type.setId(1);
+		solution.setType(type);
 		given(this.beautySolutionService.find(1)).willReturn(solution);
 
 
@@ -113,8 +117,12 @@ class BeautySolutionVisitControllerTests {
     @WithMockUser(value = "owner1")
     @Test
 	void testInitCreateBeautySolutionVisit() throws Exception {
-		
+		BeautySolution solution = new BeautySolution();
+		PetType type = new PetType();
+		type.setId(1);
+		solution.setType(type);
 		BeautySolutionVisit visit = new BeautySolutionVisit();
+		visit.setBeautySolution(solution);
 		given(this.beautySolutionVisitService.create(1)).willReturn(visit);
 		
 		mockMvc.perform(get("/beauty-solution/visit/owner/create?beautySolutionId=" + 1))

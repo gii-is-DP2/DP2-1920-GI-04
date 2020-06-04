@@ -19,4 +19,7 @@ public interface BeautySolutionVisitRepository extends  CrudRepository<BeautySol
 
 	@Query("select a from BeautySolutionVisit a where a.beautySolution.vet.id = ?3 and a.date >= ?1 and a.date <= ?2")
 	Collection<BeautySolutionVisit> findCollidingVisitsByVet(LocalDateTime start, LocalDateTime end, Integer vetId);
+
+	@Query("SELECT a FROM BeautySolutionVisit a WHERE a.date < ?1 AND a.cancelled = false AND a.awardedDiscountVoucher IS NULL AND a.beautySolution.price > 10")
+	Collection<BeautySolutionVisit> pendingVisitAwardDiscountVoucher(LocalDateTime now);
 }

@@ -99,8 +99,7 @@ class BeautyContestControllerTests {
 	void testViewBeautyContest() throws Exception {
 		BeautyContest contest = new BeautyContest();
 		contest.setId(1);
-		contest.setMonth(6);
-		contest.setYear(2020);;
+		contest.setDate(LocalDateTime.of(2020, 6, 1, 0, 0));
 		given(this.beautyContestService.viewBeautyContest(1)).willReturn(contest);
 		Collection<BeautySolutionVisit> visits = new HashSet<BeautySolutionVisit>();
 		given(this.beautyContestService.listParticipations(1)).willReturn(visits);

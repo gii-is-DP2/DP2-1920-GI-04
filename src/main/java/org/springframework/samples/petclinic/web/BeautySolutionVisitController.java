@@ -99,8 +99,9 @@ public class BeautySolutionVisitController {
 	// Auxiliary Methods
 	
 	private ModelMap prepareEditModel(ModelMap model, Integer solutionId, Integer type) {
-		model.addAttribute("pets", this.petService.findPetsByOwnerAndType(this.ownerService.findPrincipal().getId(), type));
+		this.beautySolutionVisitService.checkAwardPendingVouchers(LocalDateTime.now());
 		model.addAttribute("availableVouchers", this.discountVoucherService.listPrincipalAvailableVouchers());
+		model.addAttribute("pets", this.petService.findPetsByOwnerAndType(this.ownerService.findPrincipal().getId(), type));
 		model.addAttribute("promotions", this.promotionService.findAllSolutionPromotions(solutionId));
 		return model;
 	}
