@@ -4,6 +4,7 @@ package org.springframework.samples.petclinic.service;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.Collection;
+import java.util.Iterator;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.samples.petclinic.model.BeautySolution;
@@ -160,7 +161,7 @@ public class BeautySolutionVisitService {
 	public void assertValidContestParticipateVisit(Integer visitId, LocalDateTime now){
 		BeautySolutionVisit visit = this.find(visitId);
 		Assert.isTrue(visit.getParticipationDate() == null, "beautysolutionvisit.error.notvalidparticipation");
-		Assert.isTrue(now.getYear() == visit.getDate().getYear() && now.getMonthValue() == visit.getDate().getMonthValue(), "beautysolutionvisit.error.elapseddate");
+		Assert.isTrue(sameMonth(now, visit.getDate()), "beautysolutionvisit.error.elapseddate");
 		Assert.isTrue(now.isAfter(visit.getDate()), "beautysolutionvisit.error.earlyparticipation");
 		Owner principal = this.ownerService.findPrincipal();
 		Assert.isTrue(principal.equals(visit.getPet().getOwner()), "beautysolutionvisit.error.notvalidparticipation");
@@ -169,9 +170,35 @@ public class BeautySolutionVisitService {
 	public void assertValidContestWithdrawVisit(Integer visitId, LocalDateTime now){
 		BeautySolutionVisit visit = this.find(visitId);
 		Assert.isTrue(visit.getParticipationDate() != null, "beautysolutionvisit.error.notvalidparticipation");
-		Assert.isTrue(now.getYear() == visit.getDate().getYear() && now.getMonthValue() == visit.getDate().getMonthValue(), "beautysolutionvisit.error.elapseddate");
+		Assert.isTrue(sameMonth(now, visit.getDate()), "beautysolutionvisit.error.elapseddate");
 		Owner principal = this.ownerService.findPrincipal();
 		Assert.isTrue(principal.equals(visit.getPet().getOwner()), "beautysolutionvisit.error.notvalidparticipation");
+	}
+	
+
+	public void checkAwardPendingVouchers(LocalDateTime now) {
+		Collection<BeautySolutionVisit> visits = this.beautySolutionVisitRepository.pendingVisitAwardDiscountVoucher(now);
+		Iterator<BeautySolutionVisit> iterator = visits.iterator();
+		while(iterator.hasNext()) {
+			BeautySolutionVisit visit = iterator.next();
+			if(visit.getFinalPrice() >= 10.0) {
+				this.awardPendingVoucher(visit);
+			}
+		}
+	}
+	
+	@Transactional
+	public void awardPendingVoucher(BeautySolutionVisit visit) {
+		DiscountVoucher voucher = this.discountVoucherService.initializeVisitVoucher(this.discountVoucherService.create(visit.getPet().getOwner().getId()), visit);
+		voucher = this.discountVoucherService.save(voucher, false);
+		visit.setAwardedDiscountVoucher(voucher);
+		this.save(visit);	
+	}
+
+	
+	private boolean sameMonth(LocalDateTime date1, LocalDateTime date2) {
+		return date1.getYear() == date2.getYear() && 
+				date1.getMonthValue() == date2.getMonthValue();
 	}
 
 

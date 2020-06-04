@@ -10,6 +10,7 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.samples.petclinic.model.DiscountVoucher;
 import org.springframework.samples.petclinic.model.Owner;
+import org.springframework.samples.petclinic.service.BeautySolutionVisitService;
 import org.springframework.samples.petclinic.service.DiscountVoucherService;
 import org.springframework.samples.petclinic.service.OwnerService;
 import org.springframework.stereotype.Controller;
@@ -29,11 +30,15 @@ public class DiscountVoucherController {
 	private DiscountVoucherService discountVoucherService;
 
 	@Autowired
+	private BeautySolutionVisitService beautySolutionVisitService;
+
+	@Autowired
 	private OwnerService ownerService;
 
 	@GetMapping("/owner/list")
 	public String listPrincipalDiscountVouchers(ModelMap model) {
 		Owner principal = this.ownerService.findPrincipal();
+		this.beautySolutionVisitService.checkAwardPendingVouchers(LocalDateTime.now());
 		Collection<DiscountVoucher> discountVouchers = this.discountVoucherService.listPrincipalAvailableVouchers();
 		model.addAttribute("discountVouchers", discountVouchers);
 		model.addAttribute("ownerUserName", principal.getUser().getUsername());
@@ -44,6 +49,7 @@ public class DiscountVoucherController {
 	@GetMapping("/admin/list")
 	public String listOwnerDiscountVouchers(@RequestParam(value = "ownerId", required = false) Integer ownerId, ModelMap model) {
 		Owner owner = this.ownerService.findOwnerById(ownerId);
+		this.beautySolutionVisitService.checkAwardPendingVouchers(LocalDateTime.now());
 		Collection<DiscountVoucher> discountVouchers = this.discountVoucherService.listOwnerDiscountVouchers(ownerId);
 		model.addAttribute("discountVouchers", discountVouchers);
 		model.addAttribute("ownerUserName", owner.getUser().getUsername());

@@ -53,7 +53,7 @@ public class BeautyContestController {
 			Collection<BeautySolutionVisit> participations = this.beautyContestService.listParticipations(beautyContestId);
 			model.addAttribute("beautyContest", beautyContest);
 			model.addAttribute("participations", participations);
-			model.addAttribute("ended", LocalDateTime.now().isAfter(LocalDateTime.of(beautyContest.getYear(), beautyContest.getMonth(), 1, 0, 0).plus(1, ChronoUnit.MONTHS)));
+			model.addAttribute("ended", LocalDateTime.now().isAfter(beautyContest.getDate().plus(1, ChronoUnit.MONTHS)));
 			Owner principal = this.ownerService.findPrincipal();
 			if(principal != null) {
 				model.addAttribute("principalId", principal.getId());

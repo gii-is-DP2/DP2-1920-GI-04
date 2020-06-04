@@ -1,6 +1,7 @@
 package org.springframework.samples.petclinic.model;
 
 import java.text.DateFormatSymbols;
+import java.time.LocalDateTime;
 
 import javax.persistence.Entity;
 import javax.persistence.OneToOne;
@@ -8,27 +9,22 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.persistence.UniqueConstraint;
 import javax.validation.Valid;
-import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 
-import org.hibernate.validator.constraints.Range;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import lombok.Data;
 
 @Data
 @Entity
 @Table(name = "beautyContests", uniqueConstraints={
-	    @UniqueConstraint(columnNames = {"year", "month"})
+	    @UniqueConstraint(columnNames = {"date"})
 	})
 public class BeautyContest extends NamedEntity {
-    
+
 	@NotNull
-	@Min(2000)
-	private Integer year;
-    
-	@NotNull
-	@Range(min = 1, max = 12)
-	private Integer month;
+	@DateTimeFormat(pattern = "yyyy/MM/dd HH:mm:ss")
+	private LocalDateTime date;
 
 	@Valid
 	@OneToOne(optional = true)
@@ -38,6 +34,6 @@ public class BeautyContest extends NamedEntity {
 	
 	@Transient
 	public String getLabel() {
-		return new DateFormatSymbols().getMonths()[this.getMonth()-1] + " " + this.getYear();
+		return new DateFormatSymbols().getMonths()[this.getDate().getMonthValue()-1] + " " + this.getDate().getYear();
 	}
 }

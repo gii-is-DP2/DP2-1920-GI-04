@@ -38,10 +38,10 @@ public class BeautyContestService {
 	// MAIN METHODS
 
 	public BeautyContest create(LocalDateTime date) {
-		Assert.isTrue(!date.isBefore(LocalDateTime.now().minus(30, ChronoUnit.SECONDS)), "beautycontest.error.nopastcontest");
+		LocalDateTime now = roundToMonth(LocalDateTime.now());
+		Assert.isTrue(!date.isBefore(now), "beautycontest.error.nopastcontest");
 		BeautyContest res = new BeautyContest();
-		res.setMonth(date.getMonthValue());
-		res.setYear(date.plus(1, ChronoUnit.MONTHS).getYear());
+		res.setDate(roundToMonth(date));
 		return res;
 	}
 	
@@ -63,13 +63,13 @@ public class BeautyContestService {
 		if(showFuture) {
 			return this.beautyContestRepository.findContests();
 		} else {
-			return this.beautyContestRepository.findContests(LocalDateTime.now().getYear(), LocalDateTime.now().getMonthValue());
+			return this.beautyContestRepository.findContests(roundToMonth(LocalDateTime.now()));
 		}
 	}
 	
 	public BeautyContest viewBeautyContest(Integer beautyContestId) {
 		BeautyContest beautyContest = find(beautyContestId);
-		Boolean isFuture = LocalDateTime.now().getYear() < beautyContest.getYear() || LocalDateTime.now().getMonthValue() < beautyContest.getMonth();
+		Boolean isFuture = LocalDateTime.now().isBefore(beautyContest.getDate()) && !sameMonth(LocalDateTime.now(), beautyContest.getDate());
 		Assert.isTrue(!isFuture || this.authService.checkAdminAuth(), "beautycontest.error.notfound");
 		return beautyContest;
 	}
@@ -77,8 +77,8 @@ public class BeautyContestService {
 	public Collection<BeautySolutionVisit> listParticipations(Integer beautyContestId){
 		BeautyContest contest = this.find(beautyContestId);
 		
-		LocalDateTime startDate = LocalDateTime.of(contest.getYear(), contest.getMonth(), 1, 0, 0);
-		LocalDateTime endDate = LocalDateTime.of(contest.getYear(), contest.getMonth(), 1, 0, 0).plus(1, ChronoUnit.MONTHS);
+		LocalDateTime startDate = contest.getDate();
+		LocalDateTime endDate = contest.getDate().plus(1, ChronoUnit.MONTHS);
 		
 		return this.beautyContestRepository.listParticipations(startDate, endDate);
 	}
@@ -86,15 +86,15 @@ public class BeautyContestService {
 	public Collection<BeautySolutionVisit> listPossibleParticipations(Integer beautyContestId){
 		BeautyContest contest = this.find(beautyContestId);
 		
-		LocalDateTime startDate = LocalDateTime.of(contest.getYear(), contest.getMonth(), 1, 0, 0);
-		LocalDateTime endDate = LocalDateTime.of(contest.getYear(), contest.getMonth(), 1, 0, 0).plus(1, ChronoUnit.MONTHS);
+		LocalDateTime startDate = contest.getDate();
+		LocalDateTime endDate = contest.getDate().plus(1, ChronoUnit.MONTHS);
 		
 		return this.beautyContestRepository.listPossibleParticipations(startDate, endDate);
 	}
 	
 	public void selectWinner(Integer visitId, LocalDateTime now) {
 		BeautySolutionVisit visit = this.beautySolutionVisitService.find(visitId);
-		BeautyContest contest = this.findByDate(visit.getDate().getYear(), visit.getDate().getMonthValue());
+		BeautyContest contest = this.findByDate(roundToMonth(visit.getDate()));
 		this.assertValidSelectWinner(contest, now);
 		contest.setWinner(visit);
 		contest = this.save(contest);
@@ -104,7 +104,8 @@ public class BeautyContestService {
 	// MAINTENANCE METHODS
 	
 	public void checkCurrentContest(LocalDateTime date) {
-		BeautyContest contest = this.findByDate(date.getYear(), date.getMonthValue());
+		date = roundToMonth(date);
+		BeautyContest contest = this.findByDate(date);
 		if(contest == null) {
 			contest = this.create(date);
 			this.save(contest);
@@ -120,22 +121,32 @@ public class BeautyContestService {
 	
 	public void assertCanParticipate(Integer beautyContestId, LocalDateTime now){
 		BeautyContest contest = this.find(beautyContestId);
-		Assert.isTrue(now.getYear() == contest.getYear() && now.getMonthValue() == contest.getMonth(), "beautycontest.error.notfound");
+		Assert.isTrue(sameMonth(now, contest.getDate()), "beautycontest.error.notfound");
 	}
 	
 	public void assertValidSelectWinner(BeautyContest contest, LocalDateTime now) {
 		Assert.notNull(contest, "beautycontest.error.notfound");
 		Assert.isNull(contest.getWinner(), "beautycontest.error.winnerselected");
-		Assert.isTrue(now.getYear() > contest.getYear() || now.getMonthValue() > contest.getMonth(), "beautycontest.error.notelapsed");
+		Assert.isTrue(now.isAfter(contest.getDate()) && !sameMonth(now, contest.getDate()), "beautycontest.error.notelapsed");
 	}
 	
-	public BeautyContest findByDate(Integer year, Integer month) {
-		return this.beautyContestRepository.findByDate(year, month);
+	public BeautyContest findByDate(LocalDateTime date) {
+		date = roundToMonth(date);
+		return this.beautyContestRepository.findByDate(date);
 	}
 	
 	public BeautyContest findCurrent(LocalDateTime date) {
 		checkCurrentContest(date);
-		return this.findByDate(date.getYear(), date.getMonthValue());
+		return this.findByDate(date);
+	}
+	
+	private boolean sameMonth(LocalDateTime date1, LocalDateTime date2) {
+		return date1.getYear() == date2.getYear() && 
+				date1.getMonthValue() == date2.getMonthValue();
+	}
+	
+	private LocalDateTime roundToMonth(LocalDateTime date) {
+		return date.withDayOfMonth(1).withHour(0).withMinute(0).withSecond(0).withNano(0);
 	}
 
 }

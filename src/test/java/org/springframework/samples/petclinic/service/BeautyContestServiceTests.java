@@ -199,7 +199,7 @@ class BeautyContestServiceTests {
 	void testAssertCanParticipateOnContest() {
 		LocalDateTime now = LocalDateTime.now();
 		this.beautyContestService.checkCurrentContest(now);
-		BeautyContest contest = this.beautyContestService.findByDate(now.getYear(), now.getMonthValue());
+		BeautyContest contest = this.beautyContestService.findByDate(now);
 
 		this.beautyContestService.assertCanParticipate(contest.getId(), now);
 	
@@ -210,7 +210,7 @@ class BeautyContestServiceTests {
 	void testThrowCanParticipateOnContest() {
 		LocalDateTime now = LocalDateTime.now();
 		this.beautyContestService.checkCurrentContest(now);
-		BeautyContest contest = this.beautyContestService.findByDate(now.getYear(), now.getMonthValue());
+		BeautyContest contest = this.beautyContestService.findByDate(now);
 		
 		Throwable e = assertThrows(Throwable.class, () -> this.beautyContestService.assertCanParticipate(contest.getId(), now.plus(1, ChronoUnit.MONTHS)));
 		assertThat(e.getMessage()).isEqualTo("beautycontest.error.notfound");
@@ -221,7 +221,7 @@ class BeautyContestServiceTests {
 	@DisplayName("Select a winner of a contest")
 	void testSelectWinner() {
 		this.beautyContestService.selectWinner(1, LocalDateTime.now());
-		BeautyContest contest = this.beautyContestService.findByDate(2014, 1);
+		BeautyContest contest = this.beautyContestService.findByDate(LocalDateTime.of(2014, 1, 1, 0, 0, 0));
 		assertThat(contest.getWinner().getId()).isEqualTo(1);
 	}
 

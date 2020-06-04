@@ -26,7 +26,6 @@ import org.springframework.samples.petclinic.model.BeautySolutionVisit;
 import org.springframework.samples.petclinic.model.DiscountVoucher;
 import org.springframework.samples.petclinic.model.Owner;
 import org.springframework.samples.petclinic.model.Pet;
-import org.springframework.samples.petclinic.repository.BeautySolutionVisitRepository;
 import org.springframework.samples.petclinic.repository.DiscountVoucherRepository;
 import org.springframework.stereotype.Service;
 
@@ -49,9 +48,6 @@ class DiscountVoucherServiceTests {
 	@Mock
 	protected OwnerService ownerService;
 	
-	@Mock
-	protected BeautySolutionVisitRepository beautySolutionVisitRepository;
-	
 	// Auxiliar variables
 	
 	Owner owner1;
@@ -60,7 +56,7 @@ class DiscountVoucherServiceTests {
 	@BeforeEach
 	void setup() {
 		
-		this.discountVoucherService = new DiscountVoucherService(discountVoucherRepository, beautySolutionVisitRepository, ownerService);
+		this.discountVoucherService = new DiscountVoucherService(discountVoucherRepository, ownerService);
 		
 		BeautySolutionVisit visit = new BeautySolutionVisit();
 		visit.setId(1);
@@ -186,8 +182,7 @@ class DiscountVoucherServiceTests {
 		BeautyContest contest = new BeautyContest();
 		contest.setId(2);
 		contest.setWinner(visit);
-		contest.setMonth(LocalDateTime.now().getMonthValue());
-		contest.setYear(LocalDateTime.now().getYear());
+		contest.setDate(LocalDateTime.now().withDayOfMonth(1).withMinute(0).withSecond(0));
 		DiscountVoucher voucher = this.discountVoucherService.awardContestVoucher(contest);
 
 		assertThat(voucher.getDiscount()).isEqualTo(50);
