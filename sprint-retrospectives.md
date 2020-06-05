@@ -138,6 +138,8 @@ Day | Hours | Description | Asignee
 ### Final Thoughts
 
 In spite of the workload delay in previous sprints, the final sprint served for being able to finally finish everything. Properly assessing the time needed for learning how implement the new theory lessons was key to achieving this, taking the lessons before doing any pending task.
+
 However there was a lesson that wasn't properly assessed until the time came to implement it. I did watch and understand the lesson on 'profiling', but didn't put it to test until the last day since it seemed very easy to configure. However, it was impossible to make Glowroot work properly. It would get to be deployed, but it wouldn't capture any of the actions done on the system. This mistake, so late in the sprint, could have been fatal; but rapidly changing the approach to trying out JavaMelody solved the situation.
+
 Even though everything was accomplished, I would have liked to take more care into the code and do more refactorings to make everything more understandable, but the main proble throughtout the whole project was not having enough time to do everything.
 Nonetheless, the final sprint has served to finally catch up to the past two sprints' delays, finishing the project successfully.
