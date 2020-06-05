@@ -132,8 +132,8 @@ Day | Hours | Description | Asignee
 25/05 | 10 | Developing US, developint unit tests, controller tests, trying performance tests | Youssef San José Khamer
 30/05 | 6 | Learning profiling and refactoring lessons | Youssef San José Khamer
 01/06 | 6 | Finishing developments (US/Testing), generating data for performance tests | Youssef San José Khamer
-01/06 | 12 | Performance tests, refactorings, rest of UI tests | Youssef San José Khamer
-01/06 | 12 | Profiling analysis, rest of end-to-end integration tests, UI tests automation, all documentation | Youssef San José Khamer
+04/06 | 12 | Performance tests, refactorings, rest of UI tests | Youssef San José Khamer
+05/06 | 12 | Profiling analysis, rest of end-to-end integration tests, UI tests automation, all documentation | Youssef San José Khamer
 
 ### Final Thoughts
 
