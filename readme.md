@@ -7,30 +7,30 @@ Thus, a new approach to the business was designed by the name of “Charming Whi
 
 ## Entities involved
 
-### Beauty Service
-A beauty Service offered by PetClinic. For example, “dog haircut” or “cat nail clipping”. It has a fixed price and is given by a certain Vet.
+### Beauty Solution
+A Beauty Solution offered by PetClinic. For example, “dog haircut” or “cat nail clipping”. It has a fixed price and is given by a certain Vet.
 * It's related to PetType.
 * It's related to Vet.
 
-### Beauty Service Visit
-A visit that an owner books for a beauty service on a certain date and for a certain Pet. Vouchers can be used. The actual priced is stored on booking. It serves as a participation for the current beauty contest of that month, if wanted (the owner can add a photo of the Pet after the visit in order to participate on the contest).
-*	It’s related to BeautyService.
+### Beauty Solution Visit
+A visit that an owner books for a beauty solution on a certain date and for a certain Pet. Vouchers can be used. The actual priced is stored on booking. It serves as a participation for the current beauty contest of that month, if wanted (the owner can add a photo of the Pet after the visit in order to participate on the contest).
+*	It’s related to BeautySolution.
 *	It’s related to Pet.
 
 ### Discount Voucher
-Discount voucher that can be given to owners for a variety of reasons, either manually or programmatically, and that can be used when booking a new visit for a beauty service. For example, a 5% discount voucher after a visit, 50% discount voucher for winning a contest…
-*	It’s related to BeautyService.
-*	It’s related to BeautyServiceVisit.
+Discount voucher that can be given to owners for a variety of reasons, either manually or programmatically, and that can be used when booking a new visit for a beauty solution. For example, a 5% discount voucher after a visit, 50% discount voucher for winning a contest…
+*	It’s related to BeautySolution.
+*	It’s related to BeautySolutionVisit.
 *	It’s related to WorkshopAttendance.
 *	It’s related to Owner.
 
 ### Promotion
-Discount, during a certain period, on a certain beauty service.
-*	It’s related to BeautyService.
+Discount, during a certain period, on a certain beauty solution.
+*	It’s related to BeautySolution.
 
 ### Beauty Contest
-Beauty contest that lasts a month (one is held every month), and where a winner is chosen after the end of every month. Owners can enter their pets once for every beauty service visit they make during that month.
-*	It’s related to BeautyServiceVisit (winner)
+Beauty contest that lasts a month (one is held every month), and where a winner is chosen after the end of every month. Owners can enter their pets once for every beauty solution visit they make during that month.
+*	It’s related to BeautySolutionVisit (winner)
 
 ## User Stories
 
@@ -62,65 +62,65 @@ Creation order | Title | PetType | Successfully created
 * Creating a beauty solution with the title 'Grooming' and PetType 'Dog', and it is not created since a beauty solution with that title and type was just created before. - :x:
 * Creating a beauty solution with a blank title or no PetType selected, and it is not created successfully. - :x:
 
-### US02 - Listing Beauty Services
+### US02 - Listing Beauty Solutions
 As an user of the system or a guest  
-So that I can look up for information about which beauty services can interest me  
-I want to be able to list all beauty services provided by PetClinic
+So that I can look up for information about which beauty solutions can interest me  
+I want to be able to list all beauty solutions provided by PetClinic
 
 Use cases:
 
-* Creating a beauty service with "enabled" set to true, and it appears on the listing. - :heavy_check_mark:
-* Creating a beauty service with "enabled" set to false, and it doesn't appear on the listing. - :x:
+* Creating a beauty solution with "enabled" set to true, and it appears on the listing. - :heavy_check_mark:
+* Creating a beauty solution with "enabled" set to false, and it doesn't appear on the listing. - :x:
 
-### US03 - Filtering Beauty Services
+### US03 - Filtering Beauty Solutions
 As an user of the system or a guest  
-So that I can search for the services that interest me more efficiently  
-I want to be able to filter beauty services by PetType
+So that I can search for the solutions that interest me more efficiently  
+I want to be able to filter beauty solutions by PetType
 
 Use cases:
 
-* Creating a beauty service with "cat" PetType, and it appears on the filtering set on "cat". - :heavy_check_mark:
-* Creating a beauty service with "dog" PetType, and it doesn't appear on the filtering set on "cat". - :x:
+* Creating a beauty solution with "cat" PetType, and it appears on the filtering set on "cat". - :heavy_check_mark:
+* Creating a beauty solution with "dog" PetType, and it doesn't appear on the filtering set on "cat". - :x:
 
-### US04 - Editing Beauty Services
+### US04 - Editing Beauty Solutions
 As an administrator  
-So that I can keep up to date the information displayed on the web about a service of our clinic  
-I want to be able to update information of the services on the system
+So that I can keep up to date the information displayed on the web about a solution of our clinic  
+I want to be able to update information of the solutions on the system
 
 Details:
 
 *	PetType cannot be changed
 *	All the creating restrictions are also applied on updating
-* If you change the "enabled" property to false, previously booked services remain unaffected even if the date is on the future.
+* If you change the "enabled" property to false, previously booked solutions remain unaffected even if the date is on the future.
 
 Use cases:
 
-* Edit a beauty service with a given name and enabled set to true, and change it to "Test A" and enabled set to false. It's successful. - :heavy_check_mark:
-* Edit a beauty service with a given name, and change it to "Test A" and change the PetType. It's not successful. - :x:
-* Edit a beauty service with a given name, and change it to "". It's not successful. - :x:
+* Edit a beauty solution with a given name and enabled set to true, and change it to "Test A" and enabled set to false. It's successful. - :heavy_check_mark:
+* Edit a beauty solution with a given name, and change it to "Test A" and change the PetType. It's not successful. - :x:
+* Edit a beauty solution with a given name, and change it to "". It's not successful. - :x:
 
-### US05 - Booking Beauty Service Visit
+### US05 - Booking Beauty Solution Visit
 As an owner  
 So that my pet remains beautiful, healthy and happy  
-I want to be able to book a visit for a beauty service I’m interested in
+I want to be able to book a visit for a beauty solution I’m interested in
 
 Details:
 
 *	You can’t book more than one visit at the same time for the same pet.
 *	You can only book visits for tomorrow at the earliest.
-*	Visit hours are divided in X minutes intervals (a different amount of time depending on each service).
-*	You can’t select a time slot for a visit if the vet that provides that service is already booked on it.
+*	Visit hours are divided in X minutes intervals (a different amount of time depending on each solution).
+*	You can’t select a time slot for a visit if the vet that provides that solution is already booked on it.
 
 Use Cases:
 
-* Book a beauty service visit for a free timeslot, for a pet you own, for a service of that PetType. It's successful. - :heavy_check_mark:
-* Book a beauty service visit for a free timeslot, for a pet you own, for a service of other PetType. It's not successful. - :x:
-* Book a beauty service visit for a free timeslot, for a pet you own, for a service of that PetType. It's successful. The, with another owner, do the same for that very same timeslot, and a another service of the same Vet. It's not successful. - :x:
+* Book a beauty solution visit for a free timeslot, for a pet you own, for a solution of that PetType. It's successful. - :heavy_check_mark:
+* Book a beauty solution visit for a free timeslot, for a pet you own, for a solution of other PetType. It's not successful. - :x:
+* Book a beauty solution visit for a free timeslot, for a pet you own, for a solution of that PetType. It's successful. The, with another owner, do the same for that very same timeslot, and a another solution of the same Vet. It's not successful. - :x:
 
-### US06 - Removing Beauty Service Visit
+### US06 - Removing Beauty Solution Visit
 As an owner  
 So that I can change my plans after booking a visit  
-I want to be able to withdraw my booked beauty service visits
+I want to be able to withdraw my booked beauty solution visits
 
 Details:
 
@@ -130,9 +130,9 @@ Details:
 
 Use Cases:
 
-* Book a beauty service visit for a free timeslot for tomorrow, for a pet you own, for a service of that PetType. It's successful. Remove it inmediately after. It's successful. - :heavy_check_mark:
-* Book a beauty service visit for a free timeslot of today, for a pet you own, for a service of that PetType. It's successful. Remove it inmediately after. It's not successful. - :x:
-* Book a beauty service visit for a free timeslot for tomorrow, for a pet you own, for a service of that PetType. It's successful. Remove it inmediately after logged as another user. It's not successful. - :x:
+* Book a beauty solution visit for a free timeslot for tomorrow, for a pet you own, for a solution of that PetType. It's successful. Remove it inmediately after. It's successful. - :heavy_check_mark:
+* Book a beauty solution visit for a free timeslot of today, for a pet you own, for a solution of that PetType. It's successful. Remove it inmediately after. It's not successful. - :x:
+* Book a beauty solution visit for a free timeslot for tomorrow, for a pet you own, for a solution of that PetType. It's successful. Remove it inmediately after logged as another user. It's not successful. - :x:
 
 ### US07 - Creating Discount Vouchers
 As an administrator  
@@ -152,21 +152,21 @@ Use Cases:
 
 ### US08 - Using Discount Vouchers
 As an owner  
-So that I can pay less for a service I’m interested in  
-I want to redeem one of my vouchers while booking a beauty service.
+So that I can pay less for a solution I’m interested in  
+I want to redeem one of my vouchers while booking a beauty solution.
 
 Details:
 
 *	Only non-used vouchers can be redeemed on a new visit, being marked as used immediately after.
 *	No more than one voucher can be used on the same visit.
-*	No voucher can be used if there’s a promotion set up for that service on that date (booked date, not booking date).
+*	No voucher can be used if there’s a promotion set up for that solution on that date (booked date, not booking date).
 *	Voucher redemption is done during visit booking.
 
 Use Cases:
 
-* Book a beauty service visit and while doing it, assign a voucher to be redeemed, being it a non used voucher and being there no promotion set for that service and date. It's successful. - :heavy_check_mark:
-* Book a beauty service visit and while doing it, assign a voucher to be redeemed, being it an used voucher and being there no promotion set for that service and date. It's not successful. - :x:
-* Book a beauty service visit and while doing it, assign a voucher to be redeemed, being it a non used voucher and being there a promotion set for that service and date. It's not successful. - :x:
+* Book a beauty solution visit and while doing it, assign a voucher to be redeemed, being it a non used voucher and being there no promotion set for that solution and date. It's successful. - :heavy_check_mark:
+* Book a beauty solution visit and while doing it, assign a voucher to be redeemed, being it an used voucher and being there no promotion set for that solution and date. It's not successful. - :x:
+* Book a beauty solution visit and while doing it, assign a voucher to be redeemed, being it a non used voucher and being there a promotion set for that solution and date. It's not successful. - :x:
 
 ### US09 - Listing Your Vouchers
 As an owner  
@@ -180,7 +180,7 @@ Details:
 Use Cases:
 
 * As an administrator, create a voucher for an owner. It's successful. As an owner, list your vouchers. It appears listed. - :heavy_check_mark:
-* As an administrator, create a voucher for an owner. It's successful. As an owner, use that voucher on a beauty service visit. Then, list your voucher. It doesn't appear listed. - :x:
+* As an administrator, create a voucher for an owner. It's successful. As an owner, use that voucher on a beauty solution visit. Then, list your voucher. It doesn't appear listed. - :x:
 
 ### US10 - Listing an User's Vouchers
 As an administrator  
@@ -194,13 +194,13 @@ Details:
 Use Cases:
 
 * As an administrator, create a voucher for an owner. It's successful. List that owner's vouchers. It appears listed. - :heavy_check_mark:
-* As an administrator, create a voucher for an owner. It's successful. As an owner, use that voucher on a beauty service visit. Then, as an administrator, list that owner's vouchers. It appears listed. - :heavy_check_mark:
+* As an administrator, create a voucher for an owner. It's successful. As an owner, use that voucher on a beauty solution visit. Then, as an administrator, list that owner's vouchers. It appears listed. - :heavy_check_mark:
 * As an administrator, create a voucher for an owner. It's successful. As another owner, list the first owner's vouchers. It's forbidden. - :x:
 
 ### US11 - Setting up Promotions
 As an administrator  
-So that I can make a service more appealing during a certain time  
-I want to be able to set up promotions for any service
+So that I can make a solution more appealing during a certain time  
+I want to be able to set up promotions for any solution
 
 Details:
 
@@ -208,15 +208,15 @@ Details:
 *	The percentage of discount can’t be neither higher than 100 nor lower than 0
 *	Percentage of discount, end date and start date are all mandatory values
 *	The promotion isn’t applied to already booked visits, even if the booked date is during the promotion
-*	No promotions can be set on the same period and service
+*	No promotions can be set on the same period and solution
 
 Use Cases:
 
-* As an administrator, create a promotion with proper dates and 15% discount. It's successful. As an owner, book a service visit for the same service both during the promotion and not. The difference between prices should be of 15% - :heavy_check_mark:
-* As an owner, book a service visit for a certain date. It's successful. As an administrator, create a promotion with proper dates that fall into the previously booked date and 15% discount. It's successful. The price before creating the promotion and after creating the promotion can't be different. - :x:
+* As an administrator, create a promotion with proper dates and 15% discount. It's successful. As an owner, book a solution visit for the same solution both during the promotion and not. The difference between prices should be of 15% - :heavy_check_mark:
+* As an owner, book a solution visit for a certain date. It's successful. As an administrator, create a promotion with proper dates that fall into the previously booked date and 15% discount. It's successful. The price before creating the promotion and after creating the promotion can't be different. - :x:
 * As an administrator, create a promotion with past dates and 15% discount. It's not successful. - :x:
 * As an administrator, create a promotion with proper dates and 101% discount. It's not successful. - :x:
-* As an administrator, create a promotion with proper dates and 15% discount. It's successful. Create another promotion that coincides in period but doesn't have the exact same one, and with the same service. It's not successful. - :x:
+* As an administrator, create a promotion with proper dates and 15% discount. It's successful. Create another promotion that coincides in period but doesn't have the exact same one, and with the same solution. It's not successful. - :x:
 
 ### US12 - Create Beauty Contests Automatically
 As an administrator  
@@ -227,8 +227,8 @@ Details:
 
 *	Trigger for this action is still undecided, it will depend on the technology
 *	Beauty contests can’t be created for a past month
-*	Beauty contests can’t be created for a month that already has a beauty service created
-*	Even though the trigger for the automation will happen a week before, it’s not a problem if beauty services are created sooner than that for any reason (although the system wont support that kind of action on its UI as of now, it can evolve and change in the future)
+*	Beauty contests can’t be created for a month that already has a beauty solution created
+*	Even though the trigger for the automation will happen a week before, it’s not a problem if beauty solutions are created sooner than that for any reason (although the system wont support that kind of action on its UI as of now, it can evolve and change in the future)
 
 Use Cases:
 
@@ -270,7 +270,7 @@ Use Cases:
 ### US15 - Participating on a Beauty Contest
 As an owner  
 So that me and my pet can have fun participating on a beauty contest  
-I want to be able to register a participation by adding a photo after a beauty service visit
+I want to be able to register a participation by adding a photo after a beauty solution visit
 
 Details:
 
@@ -310,7 +310,7 @@ Details:
 
 *	A winner can’t be chosen if the contest hasn’t ended
 *	A winner can’t be chosen for a contest that already has a winner
-*	A winner can’t be chosen if it hasn’t signed up in that contest (the beauty service visit took place during that month and a visit photo was uploaded)
+*	A winner can’t be chosen if it hasn’t signed up in that contest (the beauty solution visit took place during that month and a visit photo was uploaded)
 *	Only an administrator can choose a winner for a contest
 
 Use Cases:
@@ -320,26 +320,26 @@ Use Cases:
 * Choose a winner of the next month's contest, which has no winner selected yet. It's not successful. :x:
 * Choose a winner of the current month's contest, which already has a winner selected. It's not successful. :x:
 
-### US18 - Give Away a Voucher for each Beauty Service Visit
+### US18 - Give Away a Voucher for each Beauty Solution Visit
 As an administrator  
 So that customers get an incentive to visit our clinic again  
-I want 5% discount vouchers to be given away automatically after every beauty service visit valued at 10€ or more
+I want 5% discount vouchers to be given away automatically after every beauty solution visit valued at 10€ or more
 
 Details:
 
-*	If the beauty service that was booked has a price lower than 10€, no discount voucher is given
+*	If the beauty solution that was booked has a price lower than 10€, no discount voucher is given
 *	The voucher is given at the time of the visit
 *	Trigger for this action is still undecided, it will depend on the technology
 
 Use Cases:
 
-* As an owner, list your vouchers. Book a beauty service visit valued at 15€. Wait for that visit to take place. After that, list your vouchers again. There has to be only one new voucher valued at 5% discount. It's successful. :heavy_check_mark:
-* As an owner, list your vouchers. Book a beauty service visit valued at 9€. Wait for that visit to take place. After that, list your vouchers again. There has to be no new voucher. It's successful(ly not found). :x:
+* As an owner, list your vouchers. Book a beauty solution visit valued at 15€. Wait for that visit to take place. After that, list your vouchers again. There has to be only one new voucher valued at 5% discount. It's successful. :heavy_check_mark:
+* As an owner, list your vouchers. Book a beauty solution visit valued at 9€. Wait for that visit to take place. After that, list your vouchers again. There has to be no new voucher. It's successful(ly not found). :x:
 
 
 ### US19 - Give Away a Voucher for the Winner of a Contest
 As an administrator  
-So that customers get involved in contests and our services are booked more often  
+So that customers get involved in contests and our solutions are booked more often  
 I want the winner of a contest to earn a 50% discount voucher when selected as such
 
 Details:
@@ -354,18 +354,18 @@ Use Cases:
 
 ### US20 - Set Up Contest Final Week Promotion Automatically
 As an administrator  
-So that I can engage owners in the contest and have a final push of service purchase at the end of the month  
+So that I can engage owners in the contest and have a final push of solution purchase at the end of the month  
 I want to automatically set up a promotion of 10% at the final natural week of the month
 
 Details:
 
-* It's not applied to previously booked services
+* It's not applied to previously booked solutions
 *	Trigger for this action is still undecided, it will depend on the technology
 
 Use cases:
 
-* As an owner, book a new beauty service visit the day before the last week of the month. When the last week starts, book that same service again. The second time the price should be 10% less. The promotion is effective. :heavy_check_mark:
-* As an owner, book a new beauty service visit two days before the last week of the month. At the next day, book that same service again. The price should be exactly the same. The promotion is not effective. :x:
+* As an owner, book a new beauty solution visit the day before the last week of the month. When the last week starts, book that same solution again. The second time the price should be 10% less. The promotion is effective. :heavy_check_mark:
+* As an owner, book a new beauty solution visit two days before the last week of the month. At the next day, book that same solution again. The price should be exactly the same. The promotion is not effective. :x:
 
 # Sprint Planning
 Sprint | User Story | Asignee
