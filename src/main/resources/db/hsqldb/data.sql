@@ -627,6 +627,10 @@ INSERT INTO beauty_solution_visits(id,beauty_solution_id,pet_id,date,final_price
 INSERT INTO beauty_solution_visits(id,beauty_solution_id,pet_id,date,final_price,cancelled) VALUES (298, 32, 12, '2014-04-07 11:00:00', 10.0, false);
 INSERT INTO beauty_solution_visits(id,beauty_solution_id,pet_id,date,final_price,cancelled) VALUES (299, 29, 12, '2014-04-07 12:00:00', 10.0, false);
 INSERT INTO beauty_solution_visits(id,beauty_solution_id,pet_id,date,final_price,cancelled) VALUES (300, 32, 12, '2014-04-07 13:00:00', 10.0, false);
+INSERT INTO beauty_solution_visits(id,beauty_solution_id,pet_id,date,final_price,cancelled,participation_photo,participation_date) VALUES (301, 21, 1, '2020-06-01 00:00:00', 10.0, false, 'https://www.affinity-petcare.com/advance/sites/default/files/styles/article-list/public/field/image/16-bosque_noruega.jpeg', '2014-01-30 12:00:00');
+INSERT INTO beauty_solution_visits(id,beauty_solution_id,pet_id,date,final_price,cancelled) VALUES (302, 21, 1, '2020-06-01 00:00:00', 10.0, false);
+INSERT INTO beauty_solution_visits(id,beauty_solution_id,pet_id,date,final_price,cancelled,participation_photo,participation_date) VALUES (303, 21, 1, '2020-07-01 00:00:00', 10.0, false, 'https://www.affinity-petcare.com/advance/sites/default/files/styles/article-list/public/field/image/16-bosque_noruega.jpeg', '2014-01-30 12:00:00');
+INSERT INTO beauty_solution_visits(id,beauty_solution_id,pet_id,date,final_price,cancelled) VALUES (304, 21, 1, '2020-07-01 00:00:00', 10.0, false);
 
 -- BEAUTY CONTESTS
 

@@ -7,6 +7,11 @@
 	margin: 12px 0;
 }
 
+.participation-winner-image {
+	max-width: 400px;
+	margin: 10px;
+}
+
 .participation-image {
 	max-width: 400px;
     float: right;

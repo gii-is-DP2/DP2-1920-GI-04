@@ -28,7 +28,7 @@
         </c:if>
         
         <c:if test="${visits.size() == 0}">
-        	You don't have any visit suitable for a participation on this month. Remember you need to wait for the visit to take place.
+        	<div class="no-creation-resources">You don't have any visit suitable for a participation on this month. Remember you need to wait for the visit to take place.</div>
             <spring:url value="/beauty-contest/{contestId}" var="backUrl">
                 <spring:param name="contestId" value="${participationForm.beautyContestId}"/>
             </spring:url>

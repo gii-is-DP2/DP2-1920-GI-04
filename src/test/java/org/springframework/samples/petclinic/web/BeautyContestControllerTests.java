@@ -160,7 +160,7 @@ class BeautyContestControllerTests {
 	@WithMockUser(value = "admin1")
     @Test
 	void testSelectWinner() throws Exception {
-		mockMvc.perform(get("/beauty-contest/admin/participation/1/award"))
+		mockMvc.perform(get("/beauty-contest/admin/1/1/award"))
         		.andExpect(status().is3xxRedirection())
 				.andExpect(view().name("redirect:/beauty-contest/1"));
 	}

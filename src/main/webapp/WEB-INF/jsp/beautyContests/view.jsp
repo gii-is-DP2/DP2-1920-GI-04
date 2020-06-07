@@ -14,7 +14,8 @@
     
     <c:if test="${beautyContest.winner != null}">
     	<h4>Winner</h4>
-        <c:out value="${beautyContest.winner.pet.name}"/> - <c:out value="${beautyContest.winner.pet.owner.name}"/>
+        <c:out value="${beautyContest.winner.pet.name}"/> - <c:out value="${beautyContest.winner.pet.owner.firstName}"/> <c:out value="${beautyContest.winner.pet.owner.lastName}"/>
+	    <img src="${beautyContest.winner.participationPhoto}" class="participation-winner-image"/>
     </c:if>
     
     <table id="beautyContestParticipationsTable" class="table table-striped">
@@ -24,6 +25,11 @@
             <th>Owner</th>
             <th>Solution</th>
             <th>Photo</th>
+			<sec:authorize access="hasAnyAuthority('admin')">
+		        <c:if test="${ended && beautyContest.winner == null}">
+          			<th></th>
+		        </c:if>
+			</sec:authorize>
         </tr>
         </thead>
         <tbody>
@@ -50,6 +56,17 @@
 	            <td>
 	            	<img src="${participation.participationPhoto}" class="participation-image"/>
 	            </td>
+				<sec:authorize access="hasAnyAuthority('admin')">
+			        <c:if test="${ended && beautyContest.winner == null}">
+			            <td>
+		                    <spring:url value="/beauty-contest/admin/{contestId}/{participationId}/award" var="awardUrl">
+		                        <spring:param name="participationId" value="${participation.id}"/>
+		                        <spring:param name="contestId" value="${beautyContest.id}"/>
+		                    </spring:url>
+		                    <a href="${fn:escapeXml(awardUrl)}">Select as winner</a>
+			            </td>
+			        </c:if>
+				</sec:authorize>
             </tr>
         </c:forEach>
         </tbody>

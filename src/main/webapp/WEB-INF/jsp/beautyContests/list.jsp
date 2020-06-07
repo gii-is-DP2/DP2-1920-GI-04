@@ -28,7 +28,7 @@
                 </td>
                 <td>
 	                <c:if test="${contest.winner != null}">
-	                    <c:out value="${contest.winner.pet.owner.name}"/>
+	                    <c:out value="${contest.winner.pet.name}"/> (<c:out value="${contest.winner.pet.owner.firstName}"/>)
 	                </c:if>
 	                <c:if test="${contest.winner == null}">
 	                    Not decided yet

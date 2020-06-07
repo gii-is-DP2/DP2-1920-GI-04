@@ -122,16 +122,16 @@ public class BeautyContestController {
 		}
 	}
 
-	@GetMapping("/admin/participation/{beautySolutionVisitId}/award")
-	public String selectWinner(@PathVariable("beautySolutionVisitId") int beautySolutionVisitId, ModelMap model, RedirectAttributes redirectAttributes) {
+	@GetMapping("/admin/{contestId}/{beautySolutionVisitId}/award")
+	public String selectWinner(@PathVariable("contestId") int contestId, @PathVariable("beautySolutionVisitId") int beautySolutionVisitId, ModelMap model, RedirectAttributes redirectAttributes) {
 		try {
 			this.beautyContestService.selectWinner(beautySolutionVisitId, LocalDateTime.now());
-			return "redirect:/beauty-contest/" + this.beautyContestService.findCurrent(LocalDateTime.now()).getId();
+			return "redirect:/beauty-contest/" + contestId;
 		} catch(Throwable e) {
 			if(e.getMessage() != null && e.getMessage().contains(".error.")) {
 				redirectAttributes.addFlashAttribute("errorMessage", e.getMessage());
 			}
-			return "redirect:/beauty-contest/" + this.beautyContestService.findCurrent(LocalDateTime.now()).getId();
+			return "redirect:/beauty-contest/" + contestId;
 			
 		}
 	}

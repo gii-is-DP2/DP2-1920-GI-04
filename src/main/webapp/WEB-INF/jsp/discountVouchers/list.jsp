@@ -31,7 +31,7 @@
                 </td>
                 <td>
 	                <c:if test="${voucher.redeemedBeautySolutionVisit != null}">
-                    	<c:out value="${voucher.redeemedBeautySolutionVisit.title}"/>
+                    	<c:out value="${voucher.redeemedBeautySolutionVisit.visitLabel}"/>
 	                </c:if>
 	                <c:if test="${voucher.redeemedBeautySolutionVisit == null || voucher.redeemedBeautySolutionVisit.date < now}">
 		                No

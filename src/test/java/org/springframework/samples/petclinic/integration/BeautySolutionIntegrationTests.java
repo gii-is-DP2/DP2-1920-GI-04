@@ -51,7 +51,7 @@ class BeautySolutionIntegrationTests {
 				.andExpect(view().name("beautySolutions/view"))
 				.andExpect(model().attributeExists("beautySolution"));
 	}
-	
+
     @WithMockUser(username = "admin1", authorities = {"admin"})
     @Test
 	void testInitCreateBeautySolution() throws Exception {
@@ -85,7 +85,7 @@ class BeautySolutionIntegrationTests {
 				.param("enabled", "true")    
 				.with(csrf()))                    
                 .andExpect(status().is3xxRedirection())
-				.andExpect(view().name("redirect:/beauty-solution/7"));
+				.andExpect(view().name("redirect:/beauty-solution/61"));
 	}
 
 

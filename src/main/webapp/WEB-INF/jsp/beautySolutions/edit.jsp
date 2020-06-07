@@ -15,14 +15,14 @@
                 <petclinic:inputField label="Title" name="title"/>
                 <c:if test="${beautySolution['new']}">
 	                <div class="control-group">
-	                    <petclinic:selectField name="type" label="Type" names="${types}" size="${types.size()}"/>
+	                    <petclinic:selectField name="type" label="Type" names="${types}" size="1"/>
 	                </div>
                 </c:if>
                 <c:if test="${!beautySolution['new']}">
                 	<input type="hidden" name="type" value="${beautySolution.type}"/>
                 </c:if>
                 <div class="control-group">
-                    <petclinic:selectField name="vet" label="Vet" itemLabel="firstName" names="${vets}" size="${vets.size()}"/>
+                    <petclinic:selectField name="vet" label="Vet" itemLabel="firstName" names="${vets}" size="1"/>
                 </div>
                 <petclinic:inputField label="Price" name="price"/>
                 <petclinic:checkboxField label="Enabled" name="enabled"/>
